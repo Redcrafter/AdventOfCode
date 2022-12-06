@@ -19,6 +19,8 @@
 #include "./2021/day-21.hpp"
 #include "./2021/day-7.hpp"
 
+#include "./2022/day-6.hpp"
+
 template <class T>
 inline void DoNotOptimize(const T& value) {
     asm volatile(""
@@ -61,6 +63,7 @@ float test(R(func)()) {
 }
 
 struct Test {
+    int Year;
     int Day;
     int Part;
     uint64_t (*func)();
@@ -73,31 +76,34 @@ int main() {
 #endif
 
     Test idk[] = {
-        {1, 1, Day1::part1, 1226},
-        {1, 2, Day1::part2, 1252},
-        {7, 1, Day7::func<1>, 336131},
-        {7, 2, Day7::func<2>, 92676646},
-        {11, 1, Day11::func<1>, 1739},
-        {11, 2, Day11::func<2>, 324},
-        {11, 1, Day11_bit::part1, 1739},
-        {11, 2, Day11_bit::part2, 324},
-        {13, 1, Day13::part1, 751},
-        // {13, 2, Day13::part2, N/A},
-        {20, 2, Day20::part2, 19492},
-        {21, 1, Day21::part1, 576600},
-        {21, 2, Day21::part2, 131888061854776},
+        {2021, 1, 1, Day1::part1, 1226},
+        {2021, 1, 2, Day1::part2, 1252},
+        {2021, 7, 1, Day7::func<1>, 336131},
+        {2021, 7, 2, Day7::func<2>, 92676646},
+        {2021, 11, 1, Day11::func<1>, 1739},
+        {2021, 11, 2, Day11::func<2>, 324},
+        {2021, 11, 1, Day11_bit::part1, 1739},
+        {2021, 11, 2, Day11_bit::part2, 324},
+        {2021, 13, 1, Day13::part1, 751},
+        // {2021, 13, 2, Day13::part2, N/A},
+        {2021, 20, 2, Day20::part2, 19492},
+        {2021, 21, 1, Day21::part1, 576600},
+        {2021, 21, 2, Day21::part2, 131888061854776},
+
+        {2022, 6, 1, y2022::Day6::part1, 1953},
+        {2022, 6, 2, y2022::Day6::part2, 2301},
     };
 
     for (auto&& i : idk) {
         auto res = i.func();
         if (res != i.expected) {
-            std::cout << "Assertion failed " << i.Day << "-" << i.Part << " " << res << " != " << i.expected << std::endl;
+            std::cout << "Assertion failed " << i.Year << "-" << i.Day << "-" << i.Part << " " << res << " != " << i.expected << std::endl;
         }
 
-        std::cout << "Day " << i.Day << "-" << i.Part << " took " << test(i.func) << "μs" << std::endl;
+        std::cout << "Day " << i.Year << "-" << i.Day << "-" << i.Part << " took " << test(i.func) << "μs" << std::endl;
     }
 
-    std::cout << "Day 13-2 took " << test(Day13::part2) << "μs" << std::endl;
+    std::cout << "Day 2021-13-2 took " << test(Day13::part2) << "μs" << std::endl;
 
     return 0;
 }

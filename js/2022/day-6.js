@@ -52,14 +52,12 @@ function s4(size) {
     let counter = new Int32Array(26);
     let invalid = 0;
 
-    function add(c) {
+    for (let i = 0; i < size; i++) {
+        let c = input[i];
         if (counter[c] == 1) {
             invalid++;
         }
         counter[c]++;
-    }
-    for (let i = 0; i < size; i++) {
-        add(input[i]);
     }
 
     for (let i = size; i < input.length; i++) {
@@ -81,11 +79,46 @@ function s4(size) {
 }
 
 export function part1() {
-    return s4(4);
+    let i = 0;
+    while (true) {
+        let d = input[i + 3];
+        let c = input[i + 2];
+        if (d == c) {
+            i += 3;
+            continue;
+        }
+
+        let b = input[i + 1];
+        if (d == b || c == b) {
+            i += 2;
+            continue;
+        }
+
+        let a = input[i];
+        if (d == a || c == a || b == a) {
+            i += 1;
+            continue;
+        }
+
+        return i + 4;
+    }
 }
 
 export function part2() {
-    return s4(14);
+    let i = 0;
+    loop: while (true) {
+        for (let j = 12; j >= 0; j--) {
+            for (let k = j + 1; k <= 13; k++) {
+                if (input[i + j] == input[i + k]) {
+                    i += j + 1;
+                    continue loop;
+
+                }
+            }
+        }
+
+        return i + 14;
+    }
 }
 
 import { fileURLToPath } from 'url';
