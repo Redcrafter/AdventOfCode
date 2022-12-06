@@ -13,7 +13,7 @@ function heuristic(pos0, pos1) {
 * @param {GridNode} start
 * @param {GridNode} end
 */
-function astar(graph, start, end) {
+export function astar(graph, start, end) {
     let openHeap = new BinaryHeap();
 
     start.h = heuristic(start, end);
@@ -84,20 +84,20 @@ export class Graph {
      * @param {number} width
      * @param {number} height
      */
-    constructor(width, height) {
+    constructor(width, height, costFunc) {
         this.grid = [];
         for (let x = 0; x < width; x++) {
             this.grid[x] = [];
 
             for (let y = 0; y < height; y++) {
-                this.grid[x][y] = new GridNode(x, y);;
+                this.grid[x][y] = new GridNode(x, y, costFunc);
             }
         }
     }
 }
 
 class GridNode {
-    constructor(x, y) {
+    constructor(x, y, costFunc) {
         this.x = x;
         this.y = y;
 
@@ -107,13 +107,15 @@ class GridNode {
         this.visited = false;
         this.closed = false;
         this.parent = null;
+
+        this.costFunc = costFunc;
     }
     getCost() {
-        return ((input[this.y % _height][this.x % _width] + Math.floor(this.y / _height) + Math.floor(this.x / _width) - 1) % 9) + 1;
+        return this.costFunc(this.x, this.y);
     }
 }
 
-class BinaryHeap {
+export class BinaryHeap {
     constructor() {
         this.content = [];
     }

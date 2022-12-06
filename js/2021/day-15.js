@@ -33,8 +33,10 @@ export function part2_old() {
     let width = _width * 5;
     let height = _height * 5;
 
-    let g = new Graph(width, height);
-    let result = astar.search(g, g.grid[0][0], g.grid[width - 1][height - 1]);
+    let g = new Graph(width, height, (x, y) => {
+        return ((input[y % _height][x % _width] + Math.floor(y / _height) + Math.floor(x / _width) - 1) % 9) + 1;
+    });
+    let result = astar(g, g.grid[0][0], g.grid[width - 1][height - 1]);
 
     return result.f;
 }
