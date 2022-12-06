@@ -114,3 +114,17 @@ export function extractNumbers(dat) {
 
     return dat.match(/\d+/g)?.map(Number);
 }
+
+/**
+ * @template {T}
+ * @param {T[]} arr 
+ * @param {number} size 
+ * @returns {T[][]}
+ */
+export function window(arr, size) {
+    let res = []
+    for (let i = size; i < arr.length; i++) {
+        res.push(arr.slice(i - size, i));
+    }
+    return res;
+}
