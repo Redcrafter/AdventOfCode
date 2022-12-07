@@ -1,3 +1,8 @@
+
+function now() {
+    return process.hrtime.bigint();
+}
+
 /**
  * @param {number} day 
  * @param {number} part 
@@ -5,24 +10,24 @@
  */
 function runTest(func) {
     // force v8 to optimize functions
-    let start = performance.now();
-    for (let i = 0; i < 1000 && (performance.now() - start) < 10000; i++) {
+    let start = now();
+    for (let i = 0; i < 1000 && (now() - start) < 1_000_000_000; i++) {
         func();
     }
 
     let i = 0;
-    let time = 0;
-    while (i < 100000 && time < 10000) { // time < 2000
-        let start = performance.now();
+    let time = 0n;
+    while (time < 20_000_000_000) {
+        let start = now();
         func();
-        let end = performance.now();
+        let end = now();
 
         time += end - start;
         i++;
     }
-    time /= i;
+    time /= BigInt(i * 1000);
 
-    return (time * 1000).toFixed(4).padStart(10, " ") + "μs";
+    return Number(time).toFixed(4).padStart(10, " ") + "μs";
 }
 
 async function doDay(year, day) {
