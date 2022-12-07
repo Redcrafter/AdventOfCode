@@ -1,9 +1,19 @@
-import { getInput, window } from "../util.js";
+import { getInput } from "../util.js";
 const input = getInput();
+
+function pi(str) {
+    let val = 0;
+    for (let i = 0; ; i++) {
+        const c = str.charCodeAt(i);
+        if (c == 32) return val;
+
+        val = val * 10 + c - 48
+    }
+}
 
 function calcTree() {
     function makeNode(parent) {
-        return { parent, ownSize: 0, children: [], s: 0 };
+        return { parent, children: [], s: 0 };
     }
     let root = makeNode(null);
     let current = root;
@@ -26,13 +36,12 @@ function calcTree() {
         } else {
             let size = 0;
             while (i < input.length && input[i][0] != "$") {
-                if(input[i][0] != "d") {
-                    size += parseInt(input[i]);
+                if (input[i][0] != "d") {
+                    size += pi(input[i]);
                 }
                 i++;
             }
-            current.ownSize = size;
-            current.s += size;
+            current.s = size;
         }
     }
 
