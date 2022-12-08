@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <tuple>
 #include <vector>
 
 #ifdef _MSC_VER
@@ -21,6 +22,7 @@
 
 #include "./2022/day-6.hpp"
 #include "./2022/day-7.hpp"
+#include "./2022/day-8.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -45,22 +47,32 @@ inline void DoNotOptimize(T& value) {
 #endif
 }
 
+auto toMicro(const std::chrono::nanoseconds& time) {
+    return std::chrono::duration_cast<std::chrono::duration<double, std::micro>>(time).count();
+}
+
 template <typename R>
-float test(R(func)()) {
+auto test(R(func)()) {
     std::chrono::nanoseconds time{};
+    std::chrono::nanoseconds min {999999999999999999llu};
+    std::chrono::nanoseconds max {0};
     int i = 0;
-    while (i < 100000 && time < std::chrono::seconds(10)) {  // time < std::chrono::seconds(2)
+    while (time < std::chrono::seconds(20)) {  // i < 100000 && time < std::chrono::seconds(2)
         auto start = std::chrono::high_resolution_clock::now();
         auto val = func();
         DoNotOptimize(val);
         auto end = std::chrono::high_resolution_clock::now();
 
-        time += end - start;
+        auto dt = end - start;
+
+        if(dt < min) min = dt;
+        if(dt > max) max = dt;
+        time += dt;
 
         i++;
     }
 
-    return std::chrono::duration_cast<std::chrono::duration<double, std::micro>>(time).count() / i;
+    return std::tuple(toMicro(min), toMicro(max), toMicro(time) / i);
 }
 
 struct Test {
@@ -105,10 +117,12 @@ int main() {
             std::cout << "Assertion failed " << i.Year << "-" << i.Day << "-" << i.Part << " " << res << " != " << i.expected << std::endl;
         }
 
-        std::cout << "Day " << i.Year << "-" << i.Day << "-" << i.Part << " took " << test(i.func) << "μs" << std::endl;
+        auto [min,max,avg] = test(i.func);
+        std::cout << "Day " << i.Year << "-" << i.Day << "-" << i.Part << " took " << min << "μs/" << max << "μs/" << avg << "μs" << std::endl;
     }
 
-    std::cout << "Day 2021-13-2 took " << test(Day13::part2) << "μs" << std::endl;
+    auto [min,max,avg] = test(Day13::part2);
+    std::cout << "Day 2021-13-2 took" << min << "μs/" << max << "μs/" << avg << "μs" << std::endl;
 
     return 0;
 }
