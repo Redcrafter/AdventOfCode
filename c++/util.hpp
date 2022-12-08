@@ -41,3 +41,19 @@ std::vector<std::string> split(const std::string& str, const char c) {
 
     return res;
 }
+
+template <int width, int height, typename T>
+class Grid {
+   public:
+    std::array<T, width * height> data{0};
+
+    Grid() = default;
+
+    T operator()(int x, int y) const {
+        return data[x + y * width];
+    }
+
+    T& operator()(int x, int y) {
+        return data[x + y * width];
+    }
+};
