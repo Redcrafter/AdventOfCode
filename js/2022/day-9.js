@@ -1,19 +1,22 @@
 import { getInput, pi } from "../util.js";
-let input = getInput();
+const input = getInput();
 
 const arrSize = 520;
 
 export function part1() {
-    let grid = new Uint8Array(arrSize * arrSize);
+    const grid = new Uint32Array(arrSize * arrSize);
 
     let hx = arrSize / 2;
     let hy = arrSize / 2;
     let tx = arrSize / 2;
     let ty = arrSize / 2;
 
+    grid[arrSize / 2 * (1 + arrSize)] = 1;
+    let res = 1;
+
     for (let i = 0; i < input.length; i++) {
-        let a = input[i];
-        let b = pi(a, 2);
+        const a = input[i];
+        const b = pi(a, 2);
 
         let mx = 0
         let my = 0;
@@ -29,39 +32,43 @@ export function part1() {
             hx += mx;
             hy += my;
 
-            let dx = hx - tx;
-            let dy = hy - ty;
+            const dx = hx - tx;
+            const dy = hy - ty;
 
-            if (Math.abs(dx) == 1 && Math.abs(dy) > 1 || Math.abs(dx) > 1 && Math.abs(dy) == 1) {
+            const ax = Math.abs(dx);
+            const ay = Math.abs(dy);
+
+            if (ax >= 1 && ay > 1 || ax > 1 && ay >= 1) {
                 tx += Math.sign(dx);
                 ty += Math.sign(dy);
-            } else if (Math.abs(dx) > 1) {
+            } else if (ax > 1) {
                 tx += Math.sign(dx);
-            } else if (Math.abs(dy) > 1) {
+            } else if (ay > 1) {
                 ty += Math.sign(dy);
+            } else {
+                continue
             }
 
-            grid[tx + ty * arrSize] = 1;
+            if (grid[tx + ty * arrSize] == 0) {
+                res++;
+                grid[tx + ty * arrSize] = 1;
+            }
         }
-
-    }
-    let res = 0;
-
-    for (let i = 0; i < grid.length; i++) {
-        res += grid[i];
     }
 
     return res;
 }
 
 export function part2() {
-    let grid = new Uint8Array(arrSize * arrSize);
+    const grid = new Uint8Array(arrSize * arrSize);
 
-    let nodes = [];
+    const nodes = [];
     for (let i = 0; i < 10; i++) {
         nodes.push([arrSize / 2, arrSize / 2]);
     }
+
     grid[arrSize / 2 * (1 + arrSize)] = 1;
+    let res = 1;
 
     for (let i = 0; i < input.length; i++) {
         let a = input[i];
@@ -83,17 +90,20 @@ export function part2() {
             last[1] += my;
 
             for (let k = 1; k < 10; k++) {
-                let n = nodes[k];
+                const n = nodes[k];
 
-                let dx = last[0] - n[0];
-                let dy = last[1] - n[1];
+                const dx = last[0] - n[0];
+                const dy = last[1] - n[1];
 
-                if (Math.abs(dx) >= 1 && Math.abs(dy) > 1 || Math.abs(dx) > 1 && Math.abs(dy) >= 1) {
+                const ax = Math.abs(dx);
+                const ay = Math.abs(dy);
+
+                if (ax >= 1 && ay > 1 || ax > 1 && ay >= 1) {
                     n[0] += Math.sign(dx);
                     n[1] += Math.sign(dy);
-                } else if (Math.abs(dx) > 1) {
+                } else if (ax > 1) {
                     n[0] += Math.sign(dx);
-                } else if (Math.abs(dy) > 1) {
+                } else if (ay > 1) {
                     n[1] += Math.sign(dy);
                 } else {
                     continue loop;
@@ -101,14 +111,13 @@ export function part2() {
                 last = n;
             }
 
-            grid[nodes[9][0] + nodes[9][1] * arrSize] = 1;
+            if (grid[nodes[9][0] + nodes[9][1] * arrSize] == 0) {
+                res++;
+                grid[nodes[9][0] + nodes[9][1] * arrSize] = 1;
+            }
         }
     }
 
-    let res = 0;
-    for (let i = 0; i < grid.length; i++) {
-        res += grid[i];
-    }
     return res;
 }
 
