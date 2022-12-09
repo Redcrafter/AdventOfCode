@@ -4,7 +4,7 @@ function now() {
 }
 
 function format(n) {
-    return (Number(n) / 1000).toFixed(1).padStart(7, " ") + "μs";
+    return (n / 1000).toFixed(1).padStart(6, " ") + "μs";
 }
 
 /**
@@ -15,21 +15,23 @@ function format(n) {
 function runTest(func) {
     // force v8 to optimize functions
     let start = now();
-    for (let i = 0; i < 1000 && (now() - start) < 1_000_000_000; i++) {
+    while((now() - start) < 1_000_000_000) {
         func();
     }
 
     let i = 0;
-    let time = 0n;
-    let min = 9999999999999n;
-    let max = 0n;
+    let time = 0;
+    let min = Infinity;
+    let max = 0;
+    let times = [];
 
-    while (time < 10_000_000_000) {
+    while (time < 20_000_000_000) {
         let start = now();
         func();
         let end = now();
 
-        let dt = end - start;
+        let dt = Number(end - start);
+        times.push(dt);
 
         if (dt < min) min = dt;
         if (dt > max) max = dt;
@@ -38,22 +40,115 @@ function runTest(func) {
         i++;
     }
 
-    return [min, max, time / BigInt(i)];
+    return [min, max, time / i, times];
+}
+
+function median(arr) {
+    let mid = arr.length / 2;
+    if (arr.length % 2 == 0) {
+        return (arr[mid] + arr[mid + 1]) / 2;
+    } else {
+        return arr[Math.floor(mid)];
+    }
+}
+
+function drawGraph(times, mean) {
+    const height = 5;
+    let width = 100;
+
+    times.sort((a, b) => a - b);
+
+    let q2 = median(times);
+    let q1 = median(times.slice(0, times.length / 2));
+    let q3 = median(times.slice(times.length / 2));
+    let iqr = q3 - q1;
+
+    if(iqr < 100) iqr = 100;
+
+    let upper = q3 + (1.5 * iqr);
+    let lower = q1 - (1.5 * iqr);
+    lower = Math.max(lower, times[0]);
+
+    let range = upper - lower;
+
+    let dist = new Uint32Array(width);
+    let dMax = 0;
+
+    let stdDiv = 0;
+
+    for (const item of times) {
+        stdDiv += (item - mean) ** 2;
+
+        let pos = Math.floor(((item - lower) / range) * width);
+        if (pos < 0 || pos >= width) continue;
+
+        dist[pos]++;
+        dMax = Math.max(dMax, dist[pos]);
+    }
+
+    stdDiv = Math.sqrt(stdDiv / (times.length - 1));
+
+    const blocks = " ▁▂▃▄▅▆▇█";
+    let result = [];
+    for (let i = 0; i < height; i++) {
+        result.push(new Array(width).fill(" "));
+    }
+
+    for (let x = 0; x < dist.length; x++) {
+        let h = (dist[x] / dMax) * height;
+
+        let y = height - 1;
+        while (h > 0) {
+            result[y][x] = blocks[Math.min(8, Math.floor(h * 9))];
+            y--;
+            h--;
+        }
+    }
+
+    console.log(`Range (min … max): ${format(times[0])} … ${format(times.at(-1))}`);
+    console.log(`Time  (median):    ${format(q2)}`);
+    console.log(`Time  (mean ± σ):  ${format(mean)} ± ${format(stdDiv)}`);
+    console.log();
+
+    for (let y = 0; y < height; y++) {
+        process.stdout.write(result[y].join(""));
+        process.stdout.write("\n");
+    }
+
+    let mid = Math.floor(((q2 - lower) / range) * width) + 1;
+    // console.log(q2, lower, range);
+
+    process.stdout.write("└");
+    process.stdout.write("─".repeat(mid - 2));
+    process.stdout.write("┴");
+    process.stdout.write("─".repeat(width - mid - 1));
+    process.stdout.write("┘\n");
+
+    let l = (lower / 1000).toFixed(1) + "μs";
+    let m = (q2 / 1000).toFixed(1) + "μs";
+    let r = (upper / 1000).toFixed(1) + "μs"
+    process.stdout.write(l);
+    process.stdout.write(" ".repeat(mid - l.length - m.length / 2));
+    process.stdout.write(m);
+    process.stdout.write(" ".repeat(width - mid - m.length / 2 + 1 - r.length));
+    process.stdout.write(r);
+    process.stdout.write("\n\n");
 }
 
 async function doDay(year, day) {
     let mod = await import(`./${year}/day-${day}.js`);
 
     let p1 = runTest(mod.part1);
-    console.log(`${year} ${day.toString().padStart(2)}-${1} ${p1.map(format).join(" ")}`);
+    console.log(`Year ${year} Day ${day} Part 1`);
+    drawGraph(p1[3], p1[2]);
 
     let p2 = runTest(mod.part2);
-    console.log(`${year} ${day.toString().padStart(2)}-${2} ${p2.map(format).join(" ")}`);
+    console.log(`Year ${year} Day ${day} Part 2`);
+
+    drawGraph(p2[3], p2[2]);
 
     return [p1, p2];
 }
-
-console.log("                min       max   average");
 
 let table = [];
 for (const year of [2022]) {
