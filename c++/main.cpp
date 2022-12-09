@@ -23,6 +23,7 @@
 #include "./2022/day-6.hpp"
 #include "./2022/day-7.hpp"
 #include "./2022/day-8.hpp"
+#include "./2022/day-9.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -108,7 +109,9 @@ int main() {
         {2022, 7, 1, y2022::Day7::part1, 1667443},
         {2022, 7, 2, y2022::Day7::part2, 8998590},
         {2022, 8, 1, y2022::Day8::part1, 1859},
-        {2022, 8, 2, y2022::Day8::part2, 332640}
+        {2022, 8, 2, y2022::Day8::part2, 332640},
+        {2022, 9, 1, y2022::Day9::part1, 5981},
+        {2022, 9, 2, y2022::Day9::part2, 2352}
     };
 
     for (auto&& i : idk) {
