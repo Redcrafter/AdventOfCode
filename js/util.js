@@ -128,3 +128,19 @@ export function window(arr, size) {
     }
     return res;
 }
+
+/**
+ * @param {string} str 
+ * @param {number} start 
+ * @returns {number}
+ */
+export function pi(str, start = 0) {
+    let val = 0;
+    for (let i = start; i < str.length; i++) {
+        const c = str.charCodeAt(i);
+        if (c < 48 || c > 57) break;
+
+        val = val * 10 + c - 48
+    }
+    return val;
+}
