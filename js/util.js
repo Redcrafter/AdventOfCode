@@ -2,12 +2,12 @@ import fs from "fs";
 import { fileURLToPath } from 'url';
 
 function _getCallerFile() {
-    var originalFunc = Error.prepareStackTrace;
+    let originalFunc = Error.prepareStackTrace;
 
-    var callerfile;
+    let callerfile;
     try {
-        var err = new Error();
-        var currentfile;
+        let err = new Error();
+        let currentfile;
 
         Error.prepareStackTrace = function (err, stack) { return stack; };
 
@@ -130,17 +130,24 @@ export function window(arr, size) {
 }
 
 /**
+ * fairly fast int parsing with support for negative numbers
  * @param {string} str 
  * @param {number} start 
  * @returns {number}
  */
-export function pi(str, start = 0) {
+export function parseInt(str, start = 0) {
     let val = 0;
+    let neg = 1;
+    if (str.charCodeAt(start) == 45) {
+        start++;
+        neg = -1;
+    }
+
     for (let i = start; i < str.length; i++) {
         const c = str.charCodeAt(i);
         if (c < 48 || c > 57) break;
 
         val = val * 10 + c - 48
     }
-    return val;
+    return val * neg;
 }

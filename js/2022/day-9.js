@@ -1,7 +1,15 @@
-import { getInput, pi } from "../util.js";
+import { getInput } from "../util.js";
 const input = getInput();
 
 const arrSize = 520;
+
+function pi(str) {
+    let val = 0;
+    for (let i = 2; i < str.length ; i++) {
+        val = val * 10 + str.charCodeAt(i) - 48
+    }
+    return val;
+}
 
 export function part1() {
     const grid = new Uint32Array(arrSize * arrSize);
@@ -16,7 +24,7 @@ export function part1() {
 
     for (let i = 0; i < input.length; i++) {
         const a = input[i];
-        const b = pi(a, 2);
+        const b = pi(a);
 
         let mx = 0
         let my = 0;
@@ -72,7 +80,7 @@ export function part2() {
 
     for (let i = 0; i < input.length; i++) {
         let a = input[i];
-        let b = pi(a, 2);
+        let b = pi(a);
 
         let mx = 0
         let my = 0;

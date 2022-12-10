@@ -1,5 +1,15 @@
-import { getInput, pi } from "../util.js";
+import { getInput, } from "../util.js";
 const input = getInput();
+
+function pi(str) {
+    let val = 0;
+
+    for (let i = 0; ; i++) {
+        const c = str.charCodeAt(i);
+        if (c == 32) return val;
+        val = val * 10 + c - 48
+    }
+}
 
 function calcTree() {
     function makeNode(parent) {
