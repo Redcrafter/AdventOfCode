@@ -80,8 +80,5 @@ export function part2() {
     return best;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 336131);
-    console.assert(part2() == 92676646);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

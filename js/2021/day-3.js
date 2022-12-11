@@ -46,8 +46,5 @@ export function part2() {
     return a[0] * b[0];
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 3687446);
-    console.assert(part2() == 4406844);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

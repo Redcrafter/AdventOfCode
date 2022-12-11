@@ -22,8 +22,5 @@ export function part2() {
     return countSlope(1, 1) * countSlope(3, 1) * countSlope(5, 1) * countSlope(7, 1) * countSlope(1, 2);
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 286)
-    console.assert(part2() == 3638606400)
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

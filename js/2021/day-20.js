@@ -111,8 +111,5 @@ export function part2() {
     return count;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 5301);
-    console.assert(part2() == 19492);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

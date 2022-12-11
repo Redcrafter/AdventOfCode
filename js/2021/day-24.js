@@ -36,8 +36,5 @@ export function part2() {
     return 11911316711816;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 49917929934999);
-    console.assert(part2() == 11911316711816);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

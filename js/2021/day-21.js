@@ -89,8 +89,5 @@ export function part2() {
     return Math.max(p1Win, p2Win);
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 576600);
-    console.assert(part2() == 131888061854776);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

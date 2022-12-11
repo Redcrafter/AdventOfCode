@@ -1,8 +1,8 @@
-import { getInput, array_split } from "../util.js";
+import { getInput, arraySplit } from "../util.js";
 const input = getInput();
 
 const numbers = input[0].split(",").map(x => parseInt(x));
-const boards = array_split(input.slice(1).map(x => array_split(x, 3).map(x => parseInt(x))), 5);
+const boards = arraySplit(input.slice(1).map(x => arraySplit(x, 3).map(x => parseInt(x))), 5);
 
 function testWin(b) {
     for (let i = 0; i < 5; i++) {
@@ -69,8 +69,5 @@ export function part2() {
     return -1;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 41668);
-    console.assert(part2() == 10478);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

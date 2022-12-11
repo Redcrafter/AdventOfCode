@@ -1,13 +1,14 @@
 # AdventOfCode
 
 ## Usage
-Place your inputs into `data/year/dayX.txt`
-
 ### Js
-run a benchmark using `node js/main.js` or \
-run individual days using `node js/{year}/{day}.js` you will have to replace the result asserts at the end of the given file
+To download inputs and print results enter your session token in `js/api.js` and then run `node js/test.js` \
+run a benchmark with `node js/benchmark.js` \
+run individual days using `node js/{year}/{day}.js`
 
 ### C++
+Place your inputs into `data/year/dayX.txt`
+
 Compile `c++/main.cpp` using your favorite compiler e.g.
 ```
 cd c++/

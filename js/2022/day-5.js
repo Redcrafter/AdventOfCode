@@ -63,8 +63,5 @@ export function part2() {
     return String.fromCharCode(...stacks.map(x => x.at(-1)));
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == "JRVNHHCSJ");
-    console.assert(part2() == "GNFBSBJLH");
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

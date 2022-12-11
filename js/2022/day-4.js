@@ -23,8 +23,5 @@ export function part2() {
     return res;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.log(part1() == 595);
-    console.log(part2() == 952);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

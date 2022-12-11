@@ -1,25 +1,31 @@
 import fs from "fs";
 import { fileURLToPath } from 'url';
 
-function _getCallerFile() {
+/** @returns {NodeJS.CallSite[]} */
+export function getCallStack() {
     let originalFunc = Error.prepareStackTrace;
 
-    let callerfile;
+    let stack = [];
     try {
         let err = new Error();
-        let currentfile;
-
         Error.prepareStackTrace = function (err, stack) { return stack; };
-
-        currentfile = err.stack.shift().getFileName();
-
-        while (err.stack.length) {
-            callerfile = err.stack.shift().getFileName();
-            if (currentfile !== callerfile) break;
-        }
+        stack = err.stack;
     } catch (e) { }
-
     Error.prepareStackTrace = originalFunc;
+
+    stack.shift();
+    return stack;
+}
+
+export function _getCallerFile() {
+    let stack = getCallStack();
+
+    let currentfile = stack.shift().getFileName();
+    let callerfile;
+    while (stack.length) {
+        callerfile = stack.shift().getFileName();
+        if (currentfile !== callerfile) break;
+    }
 
     return fileURLToPath(callerfile);
 }
@@ -70,16 +76,7 @@ export function getInput(skipEmpty = true) {
     let year = test.at(-2);
     let day = test.at(-1);
 
-    let path = `data/${year}/day${day}.txt`;
-
-    /* 
-    if(!fs.existsSync(path)) {
-        let text = await(await fetch("https://adventofcode.com/2022/day/1/input", {
-            headers: { Cookie: `session=${session}` }
-        })).text();
-        fs.writeFileSync(path, text);
-    }
-    */
+    let path = `./data/${year}/day${day}.txt`;
 
     return readLines(path, skipEmpty);
 }

@@ -149,8 +149,5 @@ export function part2() {
     return val;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.log(part1() == 821);
-    console.log(part2() == 2056021084691);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

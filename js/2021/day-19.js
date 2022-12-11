@@ -1,6 +1,6 @@
-import { array_split, getInput } from "../util.js";
+import { arraySplit, getInput } from "../util.js";
 
-const input = array_split(getInput().slice(1), x => x.match(/---/)).map(x => x.map(y => y.split(",").map(z => parseInt(z))));
+const input = arraySplit(getInput().slice(1), x => x.match(/---/)).map(x => x.map(y => y.split(",").map(z => parseInt(z))));
 
 let rotates = [
     (x, y, z) => [x, y, z], (x, y, z) => [x, y, -z], (x, y, z) => [x, -y, z], (x, y, z) => [x, -y, -z], (x, y, z) => [-x, y, z], (x, y, z) => [-x, y, -z], (x, y, z) => [-x, -y, z], (x, y, z) => [-x, -y, -z],
@@ -138,8 +138,5 @@ export function part2() {
     return max;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 496);
-    console.assert(part2() == 14478);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

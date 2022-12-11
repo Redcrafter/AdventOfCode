@@ -129,8 +129,5 @@ export function part2() {
     return res;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 5981);
-    console.assert(part2() == 2352);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

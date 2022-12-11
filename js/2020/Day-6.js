@@ -1,5 +1,5 @@
-import { array_split, getInput } from "../util.js";
-const input = array_split(getInput(false), x => x == "");
+import { arraySplit, getInput } from "../util.js";
+const input = arraySplit(getInput(false), x => x == "");
 
 export function part1() {
     let count = 0;
@@ -39,8 +39,5 @@ export function part2() {
 
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 6351);
-    console.assert(part2() == 3143);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

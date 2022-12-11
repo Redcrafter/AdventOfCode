@@ -71,8 +71,5 @@ export function part2() {
     return hits;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 4560);
-    console.assert(part2() == 3344);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

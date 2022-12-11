@@ -123,8 +123,5 @@ export function part2() {
     }
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.log(part1() == 1739);
-    console.log(part2() == 324);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

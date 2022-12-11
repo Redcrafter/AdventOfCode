@@ -50,8 +50,5 @@ export function part2() {
 
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 906)
-    console.assert(part2() == 519)
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

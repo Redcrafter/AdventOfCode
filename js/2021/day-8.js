@@ -98,8 +98,5 @@ export function part2() {
     return sum;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 421);
-    console.assert(part2() == 986163);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

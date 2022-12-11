@@ -91,8 +91,5 @@ export function part2() {
     return sums[Math.floor(sums.length / 2)];
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 243939);
-    console.assert(part2() == 2421222841);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

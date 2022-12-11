@@ -22,10 +22,6 @@ const input = arraySplit(getInput(), 6).map(x => {
     return { i, nums, func, mod, t, f, add, mul, pow };
 });
 
-function asdf(count) {
-
-}
-
 export function part1() {
     const b = new Int32Array(input.length);
 
@@ -96,8 +92,5 @@ export function part2() {
     return b[0] * b[1];
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.log(part1() == 113220);
-    console.log(part2() == 30599555965);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

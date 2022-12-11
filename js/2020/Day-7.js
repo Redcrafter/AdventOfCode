@@ -59,8 +59,5 @@ export function part2() {
     return countBags("shiny gold") - 1;
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 142);
-    console.assert(part2() == 10219);
-}
+import { checkAnsweres } from "../test.js";
+checkAnsweres();
