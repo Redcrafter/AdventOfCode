@@ -6,13 +6,6 @@
 
 namespace y2022::Day9 {
 
-template<typename T>
-struct Point {
-    T x;
-    T y;
-    // operator+()
-};
-
 int praseInt(const std::string& str, int start = 0) {
     int val = 0;
     for (int i = start; i < str.size(); i++) {

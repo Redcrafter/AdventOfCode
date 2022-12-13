@@ -49,11 +49,22 @@ class Grid {
 
     Grid() = default;
 
-    T operator()(int x, int y) const {
+    inline T operator()(int x, int y) const {
         return data[x + y * width];
     }
 
-    T& operator()(int x, int y) {
+    inline T& operator()(int x, int y) {
         return data[x + y * width];
+    }
+};
+
+template<typename T>
+struct Point {
+    T x;
+    T y;
+    
+    inline void operator+=(const Point& other) {
+        x += other.x;
+        y += other.y;
     }
 };
