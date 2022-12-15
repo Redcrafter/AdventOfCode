@@ -109,7 +109,7 @@ export function extractNumbers(dat) {
     if (Array.isArray(dat))
         return dat.map(extractNumbers);
 
-    return dat.match(/\d+/g)?.map(Number);
+    return dat.match(/-?\d+/g)?.map(Number);
 }
 
 /**
