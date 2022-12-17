@@ -55,8 +55,6 @@ export function part2() {
     return runStuff(256);
 }
 
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    console.assert(part1() == 383160);
-    console.assert(part2() == 1721148811504);
-}
+
+import { checkAnsweres } from "../test.js";
+checkAnsweres();

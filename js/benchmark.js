@@ -15,7 +15,7 @@ function format(n) {
 function runTest(func) {
     // force v8 to optimize functions
     let start = now();
-    while((now() - start) < 1_000_000_000) {
+    while ((now() - start) < 1_000_000_000) {
         func();
     }
 
@@ -63,7 +63,7 @@ function drawGraph(times, mean) {
     let q3 = median(times.slice(times.length / 2));
     let iqr = q3 - q1;
 
-    if(iqr < 100) iqr = 100;
+    if (iqr < 100) iqr = 100;
 
     let upper = q3 + (1.5 * iqr);
     let lower = q1 - (1.5 * iqr);
@@ -115,8 +115,11 @@ function drawGraph(times, mean) {
         process.stdout.write("\n");
     }
 
+    if (q2 == lower) {
+        q2 = lower + range / 2;
+    }
+
     let mid = Math.floor(((q2 - lower) / range) * width) + 1;
-    // console.log(q2, lower, range);
 
     process.stdout.write("└");
     process.stdout.write("─".repeat(mid - 2));
@@ -128,7 +131,7 @@ function drawGraph(times, mean) {
     let m = (q2 / 1000).toFixed(1) + "μs";
     let r = (upper / 1000).toFixed(1) + "μs"
     process.stdout.write(l);
-    process.stdout.write(" ".repeat(mid - l.length - m.length / 2));
+    process.stdout.write(" ".repeat(Math.max(1, mid - l.length - m.length / 2)));
     process.stdout.write(m);
     process.stdout.write(" ".repeat(width - mid - m.length / 2 + 1 - r.length));
     process.stdout.write(r);
