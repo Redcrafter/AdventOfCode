@@ -72,18 +72,19 @@ export function part2() {
     // find pairs of diamonds which are exactly 1 space apart
     for (let i = 0; i < input.length; i++) {
         const a = input[i];
-        const d1 = man(...a);
+        const d1 = man(a[0], a[1], a[2], a[3]);
 
         for (let j = i + 1; j < input.length; j++) {
             const b = input[j];
 
             if (a == b) continue;
 
-            const d2 = man(...b);
+            const d2 = man(b[0], b[1], b[2], b[3]);
             const test = man(a[0], a[1], b[0], b[1]);
 
             if (test == d1 + d2 + 2) {
                 p.push([a, b]);
+                break;
             }
         }
     }

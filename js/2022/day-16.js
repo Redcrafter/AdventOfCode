@@ -315,17 +315,15 @@ export function part2() {
 
     // "AA" -> last item of prio so bitCount
     const paths = [[26, 0, bitCount, prioSet]];
-    const best = new Map(); // todo: could replace with array?
-    let pos = 0;
+    const best = new Uint16Array(prioSet);
 
-    while (pos < paths.length) {
-        let [time, pressure, curr, remaining] = paths[pos++];
+    while (paths.length) {
+        let [time, pressure, curr, remaining] = paths.pop();
         let dist = bitDist[curr];
 
         let closed = prioSet & (~remaining);
-        let b = best.get(closed);
-        if (!b || b < pressure) {
-            best.set(closed, pressure);
+        if (best[closed] < pressure) {
+            best[closed] = pressure;
         }
 
         for (let i = 0; i < bitCount; i++) {
@@ -341,7 +339,14 @@ export function part2() {
         }
     }
 
-    let partitions = [...best];
+    let partitions = [];
+    for (let i = 0; i < best.length; i++) {
+        const item = best[i];
+        if (item != 0) {
+            partitions.push([i, item]);
+        }
+    }
+
     partitions.sort((a, b) => b[1] - a[1]);
 
     let ans = 0
