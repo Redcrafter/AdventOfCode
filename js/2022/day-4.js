@@ -1,5 +1,5 @@
 import { extractNumbers, getInput } from "../util.js";
-const input = extractNumbers(getInput());
+const input = extractNumbers(getInput(), false);
 
 export function part1() {
     // return input.reduce((a, [x, y, z, w]) => a + ((x <= z && y >= w) || (z <= x && w >= y)), 0);

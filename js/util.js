@@ -105,11 +105,15 @@ export function zip(...arrays) {
     return res;
 }
 
-export function extractNumbers(dat) {
+export function extractNumbers(dat, readNegative = true) {
     if (Array.isArray(dat))
-        return dat.map(extractNumbers);
+        return dat.map(x => extractNumbers(x, readNegative));
 
-    return dat.match(/-?\d+/g)?.map(Number);
+    if (readNegative) {
+        return dat.match(/-?\d+/g)?.map(Number);
+    } else {
+        return dat.match(/\d+/g)?.map(Number);
+    }
 }
 
 /**
