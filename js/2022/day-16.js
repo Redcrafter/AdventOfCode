@@ -288,8 +288,13 @@ export function part1() {
     let maxRate = Math.max(...times);
 
     while (pos < paths.length) {
-        let [time, pressure, curr, remaining] = paths[pos++];
-        let dist = bitDist[curr];
+        const el = paths[pos++];
+        const time = el[0];
+        const pressure = el[1];
+        const curr = el[2];
+        const remaining = el[3];
+    
+        const dist = bitDist[curr];
 
         if (pressure + time * maxRate < max) continue;
         max = Math.max(max, pressure);
@@ -318,8 +323,13 @@ export function part2() {
     const best = new Uint16Array(prioSet);
 
     while (paths.length) {
-        let [time, pressure, curr, remaining] = paths.pop();
-        let dist = bitDist[curr];
+        const el = paths.pop();
+        const time = el[0];
+        const pressure = el[1];
+        const curr = el[2];
+        const remaining = el[3];
+
+        const dist = bitDist[curr];
 
         let closed = prioSet & (~remaining);
         if (best[closed] < pressure) {
@@ -349,20 +359,22 @@ export function part2() {
 
     partitions.sort((a, b) => b[1] - a[1]);
 
-    let ans = 0
+    let ans = 0;
     for (let a = 0; a < partitions.length; a++) {
         const i = partitions[a];
+        let i0 = i[0];
+        let i1 = i[1];
 
         for (let b = a + 1; b < partitions.length; b++) {
             const j = partitions[b];
 
-            if (!(i[0] & j[0]) && ans < i[1] + j[1]) {
-                ans = i[1] + j[1];
+            if (!(i0 & j[0]) && ans < i1 + j[1]) {
+                ans = i1 + j[1];
             }
         }
 
-        if (i[1] < Math.floor(ans / 2)) {
-            break
+        if (i1 < Math.floor(ans / 2)) {
+            break;
         }
     }
     return ans;

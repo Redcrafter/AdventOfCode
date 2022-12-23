@@ -8,7 +8,16 @@ function calc(blue, T) {
     let maxGeode = 0;
 
     while (queue.length) {
-        const [ore, clay, obsidian, geode, oreRobot, clayRobot, obsidianRobot, geodeRobot, time] = queue.pop();
+        const el = queue.pop();
+        const ore = el[0];
+        const clay = el[1];
+        const obsidian = el[2];
+        const geode = el[3];
+        const oreRobot = el[4];
+        const clayRobot = el[5];
+        const obsidianRobot = el[6];
+        const geodeRobot = el[7];
+        const time = el[8];
         maxGeode = Math.max(maxGeode, geode + geodeRobot * time);
 
         if (obsidianRobot != 0) {
