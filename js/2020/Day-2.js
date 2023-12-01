@@ -2,11 +2,11 @@ import { getInput } from "../util.js";
 const input = getInput().map(x => x.split(/(\d+)-(\d+) (\w): /).slice(1));
 
 function counteLetter(str, l) {
-    const asdf = l.charAt(0);
+    const char = l.charAt(0);
 
     let c = 0;
     for (let i = 0; i < str.length; i++) {
-        c += str.charAt(i) == asdf;
+        c += str.charAt(i) == char;
     }
     return c;
 }
