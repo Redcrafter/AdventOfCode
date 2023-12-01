@@ -36,5 +36,5 @@ export function part2() {
     return 11911316711816;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

@@ -113,5 +113,5 @@ export function part2() {
     return calc(input[0], 32) * calc(input[1], 32) * calc(input[2], 32)
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

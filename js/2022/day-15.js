@@ -125,5 +125,5 @@ export function part2() {
     return x * 4000000 + y;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

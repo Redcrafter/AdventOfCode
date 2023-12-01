@@ -22,5 +22,5 @@ export function part2() {
     return countSlope(1, 1) * countSlope(3, 1) * countSlope(5, 1) * countSlope(7, 1) * countSlope(1, 2);
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

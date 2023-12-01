@@ -207,5 +207,5 @@ export function part2() {
     return i;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

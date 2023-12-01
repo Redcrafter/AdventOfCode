@@ -50,5 +50,5 @@ export function part2() {
     return Math.min(...range) + Math.max(...range);
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

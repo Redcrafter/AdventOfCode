@@ -32,7 +32,7 @@ function format(pad, val) {
     return val.join("\n");
 }
 
-export async function checkAnsweres() {
+export async function checkAnswers() {
     let stack = getCallStack();
     let callFile = stack[1].getFileName();
 

@@ -63,5 +63,5 @@ export function part2() {
     return String.fromCharCode(...stacks.map(x => x.at(-1)));
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

@@ -93,5 +93,5 @@ export function part2() {
     return run(40);
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

@@ -173,5 +173,5 @@ export function part2() {
 }
 
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

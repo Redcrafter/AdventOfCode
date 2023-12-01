@@ -92,5 +92,5 @@ export function part2() {
     return b.at(-1) * b.at(-2);
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

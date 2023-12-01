@@ -30,5 +30,5 @@ export function part2() {
     return res;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

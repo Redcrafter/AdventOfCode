@@ -76,5 +76,5 @@ export function part2() {
     return a * b * c;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

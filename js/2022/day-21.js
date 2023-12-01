@@ -83,5 +83,5 @@ export function part2() {
     return -test.b / test.m;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();

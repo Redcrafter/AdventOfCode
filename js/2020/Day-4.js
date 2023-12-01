@@ -45,5 +45,5 @@ export function part2() {
     return valid;
 }
 
-import { checkAnsweres } from "../test.js";
-checkAnsweres();
+import { checkAnswers } from "../test.js";
+checkAnswers();
