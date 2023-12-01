@@ -1,10 +1,15 @@
 
+const warmUpTime = 1 * 1e9; // 1 second
+
+const testTime = 30 * 1e9; // 30 seconds
+const maxIters = 1_000_000;
+
 function now() {
     return process.hrtime.bigint();
 }
 
 function format(n) {
-    return (n / 1000).toFixed(1).padStart(6, " ") + "μs";
+    return (n / 1000).toFixed(1).padStart(7) + "μs";
 }
 
 /**
@@ -15,7 +20,7 @@ function format(n) {
 function runTest(func) {
     // force v8 to optimize functions
     let start = now();
-    while ((now() - start) < 1_000_000_000) {
+    while ((now() - start) < warmUpTime) {
         func();
     }
 
@@ -25,7 +30,7 @@ function runTest(func) {
     let max = 0;
     let times = [];
 
-    while (time < 20_000_000_000) {
+    while (time < testTime && i < maxIters) {
         let start = now();
         func();
         let end = now();
@@ -84,6 +89,14 @@ function drawGraph(times, mean) {
 
         dist[pos]++;
         dMax = Math.max(dMax, dist[pos]);
+    }
+
+    // interpolate gaps if time resoultion is not high enough
+    // doesn't work for 2 wide gaps
+    for (let i = 1; i < dist.length - 1; i++) {
+        if(dist[i] == 0) {
+            dist[i] = (dist[i - 1] + dist[i + 1]) / 2;
+        }
     }
 
     stdDiv = Math.sqrt(stdDiv / (times.length - 1));
@@ -147,14 +160,13 @@ async function doDay(year, day) {
 
     let p2 = runTest(mod.part2);
     console.log(`Year ${year} Day ${day} Part 2`);
-
     drawGraph(p2[3], p2[2]);
 
     return [p1, p2];
 }
 
 let table = [];
-for (const year of [2022]) {
+for (const year of [2020, 2021, 2022, 2023]) {
     for (let i = 1; i <= 25; i++) {
         try {
             let res = await doDay(year, i);
@@ -164,7 +176,8 @@ for (const year of [2022]) {
                 part: 1,
                 min: format(res[0][0]),
                 max: format(res[0][1]),
-                avg: format(res[0][2])
+                avg: format(res[0][2]),
+                med: format(median(res[0][3]))
             });
             table.push({
                 year,
@@ -172,7 +185,8 @@ for (const year of [2022]) {
                 part: 2,
                 min: format(res[1][0]),
                 max: format(res[1][1]),
-                avg: format(res[1][2])
+                avg: format(res[1][2]),
+                med: format(median(res[1][3]))
             });
         } catch (e) { }
     }

@@ -1,7 +1,7 @@
 import { getInput } from "../util.js";
 
 const input = getInput();
-let hash = "#".charCodeAt(0);
+const hash = "#".charCodeAt(0);
 
 export function part1() {
     const h = Math.floor(input.length / 2);

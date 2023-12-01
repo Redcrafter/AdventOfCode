@@ -53,8 +53,8 @@ export function part1() {
         }
     }
 
-    b.sort((a, b) => b - a);
-    return b[0] * b[1];
+    b.sort();
+    return b.at(-1) * b.at(-2);
 }
 
 export function part2() {
@@ -88,8 +88,8 @@ export function part2() {
         }
     }
 
-    b.sort((a, b) => b - a);
-    return b[0] * b[1];
+    b.sort();
+    return b.at(-1) * b.at(-2);
 }
 
 import { checkAnsweres } from "../test.js";

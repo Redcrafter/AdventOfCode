@@ -94,6 +94,7 @@ export function sum(arr) {
 }
 
 /**
+ * [0, 0], [1, 1] => [[0, 1], [0, 1]]
  * @param  {...any[]} arrays 
  */
 export function zip(...arrays) {
