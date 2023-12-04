@@ -2,7 +2,7 @@
 #include <array>
 #include <bit>
 
-namespace Day11_bit {
+namespace y2021::Day11_bit {
 
 using uint128_t = unsigned __int128;
 using Board = uint128_t;
@@ -98,4 +98,4 @@ uint64_t part2() {
     }
 }
 
-}  // namespace Day11_bit
+}  // namespace y2021::Day11_bit

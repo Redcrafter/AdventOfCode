@@ -4,7 +4,7 @@
 #include <chrono>
 #include <iostream>
 
-namespace Day7 {
+namespace y2021::Day7 {
 
 std::array<int, 1000> parseData() {
     std::array<int, 1000> data;
@@ -53,4 +53,4 @@ uint64_t func() {
     return best;
 }
 
-}  // namespace Day7
+}  // namespace y2021::Day7

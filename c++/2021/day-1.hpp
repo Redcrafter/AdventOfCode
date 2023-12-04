@@ -4,7 +4,7 @@
 
 #include "../util.hpp"
 
-namespace Day1 {
+namespace y2021::Day1 {
 
 std::array<uint16_t, 2000> parseData() {
     std::array<uint16_t, 2000> data;
@@ -38,4 +38,4 @@ uint64_t part2() {
     return count;
 }
 
-}  // namespace Day1
+}  // namespace y2021::Day1

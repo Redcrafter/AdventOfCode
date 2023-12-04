@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 
-namespace Day11 {
+namespace y2021::Day11 {
 
 std::array<uint8_t, 256> parseData() {
     std::array<uint8_t, 256> data;
@@ -91,4 +91,4 @@ uint64_t func() {
     return flashes;
 }
 
-}  // namespace Day11
+}  // namespace y2021::Day11

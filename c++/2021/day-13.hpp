@@ -2,11 +2,7 @@
 #include <string>
 #include <vector>
 
-namespace Day13 {
-
-bool isNum(char c) {
-    return '0' <= c && c <= '9';
-}
+namespace y2021::Day13 {
 
 struct Pos {
     int x;
@@ -64,7 +60,7 @@ Data parseInput() {
     size_t next = 0;
 
     for (auto&& str : input) {
-        if (isNum(str[0])) {
+        if (isDigit(str[0])) {
             auto stuff = split(str, ',');
 
             d.points.push_back({std::stoi(stuff[0]), std::stoi(stuff[1])});
@@ -131,4 +127,4 @@ std::string part2() {
     return str;
 }
 
-}  // namespace Day13
+}  // namespace y2021::Day13

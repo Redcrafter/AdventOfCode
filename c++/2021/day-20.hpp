@@ -2,7 +2,7 @@
 #include <array>
 #include <cstdint>
 
-namespace Day20 {
+namespace y2021::Day20 {
 
 uint64_t part2() {
     auto input = readLines("../data/2021/day20.txt");
@@ -25,7 +25,7 @@ uint64_t part2() {
     }
 
     for (int i = 0; i < 25; i++) {
-        #pragma clang loop unroll(full)
+        // #pragma clang loop unroll(full)
         for (int i = width + 1; i < grid.size() - width - 1; i++) {
             int num =
                 grid[i - width - 1] << 8 | grid[i - width] << 7 | grid[i - width + 1] << 6 |
@@ -44,10 +44,8 @@ uint64_t part2() {
             next[i * width] = inf;
             next[i * width + (width - 1)] = inf;
         }
-        
 
-
-        #pragma clang loop unroll(full)
+        // #pragma clang loop unroll(full)
         for (int i = width + 1; i < next.size() - width - 1; i++) {
             int num =
                 next[i - width - 1] << 8 | next[i - width] << 7 | next[i - width + 1] << 6 |
@@ -75,4 +73,4 @@ uint64_t part2() {
     return count;
 }
 
-}  // namespace Day20
+}  // namespace y2021::Day20

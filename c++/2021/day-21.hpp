@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Day21 {
+namespace y2021::Day21 {
 
 const int player1 = 2;
 const int player2 = 5;
@@ -106,4 +106,4 @@ uint64_t part2() {
     return std::max(p1Win, p2Win);
 }
 
-}  // namespace Day21
+}  // namespace y2021::Day21

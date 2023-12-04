@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Day12 {
+namespace y2021::Day12 {
 
 bool isChar(char c) {
     return 'A' <= c && c <= 'Z';
@@ -116,4 +116,4 @@ int part2() {
     return count;
 }
 
-}  // namespace Day12
+}  // namespace y2021::Day12

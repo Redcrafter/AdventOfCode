@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <iostream>
+#include <span>
 #include <tuple>
 #include <vector>
 
@@ -12,77 +14,78 @@
 #endif
 
 #include "./2021/day-1.hpp"
+#include "./2021/day-7.hpp"
 #include "./2021/day-11-bit.hpp"
 #include "./2021/day-11.hpp"
 #include "./2021/day-12.hpp"
 #include "./2021/day-13.hpp"
 #include "./2021/day-20.hpp"
 #include "./2021/day-21.hpp"
-#include "./2021/day-7.hpp"
 
 #include "./2022/day-6.hpp"
 #include "./2022/day-7.hpp"
 #include "./2022/day-8.hpp"
 #include "./2022/day-9.hpp"
+#include "./2022/day-12.hpp"
+
+#include "./2023/day-1.hpp"
+#include "./2023/day-2.hpp"
+#include "./2023/day-3.hpp"
+#include "./2023/day-4.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
-    asm volatile(""
-                 :
-                 : "r,m"(value)
-                 : "memory");
+    asm volatile("" : : "r,m"(value) : "memory");
 }
 
 template <class T>
 inline void DoNotOptimize(T& value) {
 #if defined(__clang__)
-    asm volatile(""
-                 : "+r,m"(value)
-                 :
-                 : "memory");
+    asm volatile("" : "+r,m"(value) : : "memory");
 #else
-    asm volatile(""
-                 : "+m,r"(value)
-                 :
-                 : "memory");
+    asm volatile("" : "+m,r"(value) : : "memory");
 #endif
-}
-
-auto toMicro(const std::chrono::nanoseconds& time) {
-    return std::chrono::duration_cast<std::chrono::duration<double, std::micro>>(time).count();
 }
 
 template <typename R>
 auto test(R(func)()) {
     std::chrono::nanoseconds time{};
-    std::chrono::nanoseconds min {999999999999999999llu};
-    std::chrono::nanoseconds max {0};
+    std::vector<std::chrono::nanoseconds> times;
+
     int i = 0;
-    while (time < std::chrono::seconds(20)) {  // i < 100000 && time < std::chrono::seconds(2)
+    while (time < std::chrono::seconds(5)) {
         auto start = std::chrono::high_resolution_clock::now();
         auto val = func();
         DoNotOptimize(val);
         auto end = std::chrono::high_resolution_clock::now();
 
         auto dt = end - start;
-
-        if(dt < min) min = dt;
-        if(dt > max) max = dt;
         time += dt;
+        times.push_back(dt);
 
         i++;
     }
 
-    return std::tuple(toMicro(min), toMicro(max), toMicro(time) / i);
+    return std::tuple(time / i, times);
 }
 
 struct Test {
-    int Year;
-    int Day;
-    int Part;
+    const char* name;
     uint64_t (*func)();
     uint64_t expected;
 };
+
+template <typename T>
+auto median(const std::span<T>& arr) {
+    auto mid = arr.size() / 2;
+    if (arr.size() % 2 == 0) {
+        return (arr[mid] + arr[mid + 1]) / 2;
+    } else {
+        return arr[mid];
+    }
+}
+
+#define entry(func, result) { #func, func, result }
 
 int main() {
 #ifdef _MSC_VER
@@ -90,44 +93,57 @@ int main() {
 #endif
 
     Test idk[] = {
-        {2021, 1, 1, Day1::part1, 1226},
-        {2021, 1, 2, Day1::part2, 1252},
-        {2021, 7, 1, Day7::func<1>, 336131},
-        {2021, 7, 2, Day7::func<2>, 92676646},
-        {2021, 11, 1, Day11::func<1>, 1739},
-        {2021, 11, 2, Day11::func<2>, 324},
-        {2021, 11, 1, Day11_bit::part1, 1739},
-        {2021, 11, 2, Day11_bit::part2, 324},
-        {2021, 13, 1, Day13::part1, 751},
-        // {2021, 13, 2, Day13::part2, N/A},
-        {2021, 20, 2, Day20::part2, 19492},
-        {2021, 21, 1, Day21::part1, 576600},
-        {2021, 21, 2, Day21::part2, 131888061854776},
+        entry(y2021::Day1::part1, 1226),
+        entry(y2021::Day1::part2, 1252),
+        entry(y2021::Day7::func<1>, 336131),
+        entry(y2021::Day7::func<2>, 92676646),
+        entry(y2021::Day11::func<1>, 1739),
+        entry(y2021::Day11::func<2>, 324),
+        entry(y2021::Day11_bit::part1, 1739),
+        entry(y2021::Day11_bit::part2, 324),
+        entry(y2021::Day13::part1, 751),
+        // entry(y2021::Day13::part2, N/A),
+        entry(y2021::Day20::part2, 19492),
+        entry(y2021::Day21::part1, 576600),
+        entry(y2021::Day21::part2, 131888061854776),
 
-        {2022, 6, 1, y2022::Day6::part1, 1953},
-        {2022, 6, 2, y2022::Day6::part2, 2301},
-        {2022, 7, 1, y2022::Day7::part1, 1667443},
-        {2022, 7, 2, y2022::Day7::part2, 8998590},
-        {2022, 8, 1, y2022::Day8::part1, 1859},
-        {2022, 8, 2, y2022::Day8::part2, 332640},
-        {2022, 9, 1, y2022::Day9::part1, 5981},
-        {2022, 9, 2, y2022::Day9::part2, 2352},
-        {2022, 9, 1, y2022::Day12::part1, 528},
-        {2022, 9, 2, y2022::Day12::part2, 522},
+        entry(y2022::Day6::part1, 1953),
+        entry(y2022::Day6::part2, 2301),
+        entry(y2022::Day7::part1, 1667443),
+        entry(y2022::Day7::part2, 8998590),
+        entry(y2022::Day8::part1, 1859),
+        entry(y2022::Day8::part2, 332640),
+        entry(y2022::Day9::part1, 5981),
+        entry(y2022::Day9::part2, 2352),
+        entry(y2022::Day12::part1, 528),
+        entry(y2022::Day12::part2, 522),
+
+        entry(y2023::Day1::part1, 52974),
+        entry(y2023::Day1::part2, 53340),
+        entry(y2023::Day2::part1, 3059),
+        entry(y2023::Day2::part2, 65371),
+        entry(y2023::Day3::part1, 531561),
+        entry(y2023::Day3::part2, 83279367),
+        entry(y2023::Day4::part1, 21138),
+        entry(y2023::Day4::part2, 7185540),
     };
+    
+    printf("        min │        max │     median │       mean │ name\n");
+    printf("────────────┼────────────┼────────────┼────────────┼───────────\n");
 
     for (auto&& i : idk) {
         auto res = i.func();
         if (res != i.expected) {
-            std::cout << "Assertion failed " << i.Year << "-" << i.Day << "-" << i.Part << " " << res << " != " << i.expected << std::endl;
+            printf("%s incorrect solution %lu != %lu\n", i.name, res, i.expected);
         }
 
-        auto [min,max,avg] = test(i.func);
-        std::cout << "Day " << i.Year << "-" << i.Day << "-" << i.Part << " took " << min << "μs/" << max << "μs/" << avg << "μs" << std::endl;
-    }
+        auto [mean, times] = test(i.func);
 
-    auto [min,max,avg] = test(Day13::part2);
-    std::cout << "Day 2021-13-2 took" << min << "μs/" << max << "μs/" << avg << "μs" << std::endl;
+        std::sort(times.begin(), times.end());
+        auto med = median<std::chrono::nanoseconds>(times);
+
+        printf("%9.2fμs │%9.2fμs │%9.2fμs │%9.2fμs │ %s\n", times[0].count() / 1000.0, times[times.size() - 1].count() / 1000.0, med.count() / 1000.0, mean.count() / 1000.0, i.name);
+    }
 
     return 0;
 }
