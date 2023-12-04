@@ -8,23 +8,20 @@ export function part1() {
     for (let i = 0; i < input.length; i++) {
         const line = input[i];
 
-        let val = 0;
         for (let j = 0; j < line.length; j++) {
             const c = line.charCodeAt(j);
             if (c >= 48 && c <= 57) {
-                val = (c - 48) * 10;
+                result += (c - 48) * 10;
                 break;
             }
         }
         for (let j = line.length - 1; j >= 0; j--) {
             const c = line.charCodeAt(j);
             if (c >= 48 && c <= 57) {
-                val += c - 48;
+                result += c - 48;
                 break;
             }
         }
-
-        result += val;
     }
 
     return result;
