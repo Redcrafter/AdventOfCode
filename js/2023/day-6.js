@@ -4,7 +4,7 @@ const input1 = extractNumbers(getInput());
 const input2 = extractNumbers(getInput().map(x => x.replace(/ /g, "")));
 
 function solve(time, dist) {
-    return 2 * Math.floor(Math.sqrt(time * time / 4 - dist - 1) + time / 2) + 1 - time;
+    return 2 * Math.floor(0.5 * (Math.sqrt(time * time - 4 * dist - 4) + time)) + 1 - time;
 }
 
 export function part1() {

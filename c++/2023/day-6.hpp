@@ -12,7 +12,7 @@ namespace y2023::Day6 {
 
 const auto input = readFile("../data/2023/day6.txt");
 
-#define solve(ftype) 2u * (uint32_t)(std::sqrt((ftype)(time * time / 4.0f - dist - 1)) + time / 2.0f) + 1 - time;
+#define solve(ftype) 2u * (uint32_t)(0.5f * (std::sqrt((ftype)(time * time - 4 * dist - 4)) + time)) + 1 - time;
 
 auto parse() {
     std::array<uint32_t, 4> times;
