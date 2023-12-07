@@ -33,6 +33,7 @@
 #include "./2023/day-3.hpp"
 #include "./2023/day-4.hpp"
 #include "./2023/day-5.hpp"
+#include "./2023/day-6.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -51,23 +52,29 @@ inline void DoNotOptimize(T& value) {
 template <typename R>
 auto test(R(func)()) {
     std::chrono::nanoseconds time{};
-    std::vector<std::chrono::nanoseconds> times;
+    std::vector<std::chrono::duration<double, std::nano>> times;
+
+    const auto runs = 100;
 
     int i = 0;
-    while (time < std::chrono::seconds(5)) {
+    while (time < std::chrono::seconds(1)) {
         auto start = std::chrono::high_resolution_clock::now();
+
+        for (size_t i = 0; i < runs; i++) {
         auto val = func();
         DoNotOptimize(val);
+        }
+
         auto end = std::chrono::high_resolution_clock::now();
 
-        auto dt = end - start;
+        auto dt = (end - start);
         time += dt;
-        times.push_back(dt);
+        times.push_back(dt / (double)runs);
 
         i++;
     }
 
-    return std::tuple(time / i, times);
+    return std::tuple(time / (double)(i * runs), times);
 }
 
 struct Test {
@@ -84,6 +91,21 @@ auto median(const std::span<T>& arr) {
     } else {
         return arr[mid];
     }
+}
+
+std::string formatTime(std::chrono::duration<double, std::nano> value) {
+    // clang does not support std::format yet. come on
+    char buf[256];
+    if (value < std::chrono::nanoseconds(100)) {
+        sprintf(buf, "%9.2fns", value.count());
+    } else if(value < std::chrono::microseconds(100)) {
+        sprintf(buf, "%9.2fμs", value.count() / 1e3);
+    } else if(value < std::chrono::milliseconds(100)) {
+        sprintf(buf, "%9.2fμs", value.count() / 1e6);
+    } else {
+        sprintf(buf, "%9.2fs ", value.count() / 1e9);
+    }
+    return buf;
 }
 
 #define entry(func, result) { #func, func, result }
@@ -129,6 +151,9 @@ int main() {
         entry(y2023::Day4::part2, 7185540),
         entry(y2023::Day5::part1, 650599855),
         entry(y2023::Day5::part2, 1240035),
+        entry(y2023::Day6::part1, 1159152),
+        entry(y2023::Day6::part2, 41513103),
+        entry(y2023::Day6::part2_dumb, 41513103),
     };
     
     printf("        min │        max │     median │       mean │ name\n");
@@ -143,9 +168,13 @@ int main() {
         auto [mean, times] = test(i.func);
 
         std::sort(times.begin(), times.end());
-        auto med = median<std::chrono::nanoseconds>(times);
+        auto med = median<decltype(times)::value_type>(times);
 
-        printf("%9.2fμs │%9.2fμs │%9.2fμs │%9.2fμs │ %s\n", times[0].count() / 1000.0, times[times.size() - 1].count() / 1000.0, med.count() / 1000.0, mean.count() / 1000.0, i.name);
+        std::cout << formatTime(times[0]) << " │" 
+                  << formatTime(times[times.size() - 1]) << " │" 
+                  << formatTime(med) << " │"
+                  << formatTime(mean) << " │ " 
+                  << i.name << std::endl;
     }
 
     return 0;

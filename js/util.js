@@ -106,6 +106,12 @@ export function zip(...arrays) {
     return res;
 }
 
+/**
+ * 
+ * @param {string|string[]} dat 
+ * @param {boolean} readNegative 
+ * @returns {number[][]}
+ */
 export function extractNumbers(dat, readNegative = true) {
     if (Array.isArray(dat))
         return dat.map(x => extractNumbers(x, readNegative));
