@@ -34,6 +34,7 @@
 #include "./2023/day-4.hpp"
 #include "./2023/day-5.hpp"
 #include "./2023/day-6.hpp"
+#include "./2023/day-7.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -57,7 +58,7 @@ auto test(R(func)()) {
     const auto runs = 100;
 
     int i = 0;
-    while (time < std::chrono::seconds(1)) {
+    while (time < std::chrono::seconds(5)) {
         auto start = std::chrono::high_resolution_clock::now();
 
         for (size_t i = 0; i < runs; i++) {
@@ -101,7 +102,7 @@ std::string formatTime(std::chrono::duration<double, std::nano> value) {
     } else if(value < std::chrono::microseconds(100)) {
         sprintf(buf, "%9.2fμs", value.count() / 1e3);
     } else if(value < std::chrono::milliseconds(100)) {
-        sprintf(buf, "%9.2fμs", value.count() / 1e6);
+        sprintf(buf, "%9.2fms", value.count() / 1e6);
     } else {
         sprintf(buf, "%9.2fs ", value.count() / 1e9);
     }
@@ -154,6 +155,8 @@ int main() {
         entry(y2023::Day6::part1, 1159152),
         entry(y2023::Day6::part2, 41513103),
         entry(y2023::Day6::part2_dumb, 41513103),
+        entry(y2023::Day7::part1, 249748283),
+        entry(y2023::Day7::part2, 248029057),
     };
     
     printf("        min │        max │     median │       mean │ name\n");
