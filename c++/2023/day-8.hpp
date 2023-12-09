@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <vector>
 
 #include "../util.hpp"
 
@@ -7,7 +8,7 @@ namespace y2023::Day8 {
 
 const auto input = readFile("../data/2023/day8.txt");
 
-std::array<std::array<uint32_t, 2>, 'ZZZ' + 1> map; // too big for heap. causes segfault
+std::array<std::array<uint32_t, 2>, 'ZZZ' + 1> map; // too big for stack. causes segfault
 
 uint64_t part1() {
     size_t pos = 0;
@@ -30,7 +31,10 @@ uint64_t part1() {
     auto curr = 'AAA';
     int i = 0;
     while (curr != 'ZZZ') {
-        curr = map[curr][input[(i++) % dirLen] == 'L' ? 0 : 1];
+        #pragma clang loop unroll_count(8)
+        for (int j = 0; j < dirLen; j++)
+            curr = map[curr][input[j] == 'L' ? 0 : 1];
+        i += dirLen;
     }
     return i;
 }
@@ -76,7 +80,10 @@ uint64_t part2() {
         auto curr = starts[i];
         int j = 0;
         while ((curr >> 16) != 'Z') {
-            curr = map[curr][input[(j++) % dirLen] == 'L' ? 0 : 1];
+            #pragma clang loop unroll_count(8)
+            for (int k = 0; k < dirLen; k++)
+                curr = map[curr][input[k] == 'L' ? 0 : 1];
+            j += dirLen;
         }
         result = lcm(j, result);
     }

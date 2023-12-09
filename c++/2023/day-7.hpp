@@ -1,10 +1,7 @@
 #pragma once
-#include <emmintrin.h>
-#include <immintrin.h>
-
 #include <algorithm>
 #include <array>
-#include <iostream>
+#include <tuple>
 
 #include "../util.hpp"
 
@@ -26,8 +23,7 @@ uint32_t readInt(size_t& pos) {
     return val;
 }
 
-always__inline
-auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t charMap[]) {
+always__inline auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t charMap[]) {
     auto hand = *(uint64_t*)(input.data() + pos);
     pos += 6;
     auto bet = readInt(pos);
@@ -55,8 +51,7 @@ auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t charMap[]) {
     return std::tuple(five, four, three, two, value, bet);
 }
 
-always__inline
-auto calcResult(std::array<Card, 1000>& cards) {
+always__inline auto calcResult(std::array<Card, 1000>& cards) {
     std::sort(cards.begin(), cards.end(), [](auto a, auto b) { return a.score < b.score; });
 
     uint64_t result = 0;

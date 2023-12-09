@@ -1,10 +1,7 @@
 #pragma once
-#include <emmintrin.h>
-#include <immintrin.h>
-
-#include <algorithm>
 #include <array>
-#include <iostream>
+#include <cmath>
+#include <tuple>
 
 #include "../util.hpp"
 
