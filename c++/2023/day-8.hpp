@@ -91,4 +91,68 @@ uint64_t part2() {
     return result;
 }
 
+uint64_t part1_cheat() {
+    size_t pos = 0;
+    while (input[pos++] != '\n') {
+    }
+    auto dirLen = pos - 1;
+    pos++;
+
+    while (pos < input.size()) {
+        auto id = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
+        pos += 7;
+        auto l = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
+        pos += 5;
+        auto r = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
+        pos += 5;
+
+        map[id] = {l, r};
+    }
+
+    auto curr = 'AAA';
+    int i = 0;
+    while (curr != 'ZZZ') {
+        curr = map[curr][1];
+        i += dirLen;
+    }
+    return i;
+}
+
+uint64_t part2_cheat() {
+    size_t pos = 0;
+    while (input[pos++] != '\n') {
+    }
+    auto dirLen = pos - 1;
+    pos++;
+
+    std::vector<int> starts;
+
+    while (pos < input.size()) {
+        auto id = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
+        pos += 7;
+        auto l = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
+        pos += 5;
+        auto r = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
+        pos += 5;
+
+        map[id] = {l, r};
+        if ((id >> 16) == 'A') {
+            starts.push_back(id);
+        }
+    }
+
+    uint64_t result = 1;
+    for (size_t i = 0; i < starts.size(); i++) {
+        auto curr = starts[i];
+        int j = 0;
+        while ((curr >> 16) != 'Z') {
+            curr = map[curr][1];
+            j += dirLen;
+        }
+        result = lcm(j, result);
+    }
+
+    return result;
+}
+
 }  // namespace y2023::Day8

@@ -159,7 +159,9 @@ int main() {
         entry(y2023::Day7::part1, 249748283),
         entry(y2023::Day7::part2, 248029057),
         entry(y2023::Day8::part1, 12599),
+        entry(y2023::Day8::part1_cheat, 12599),
         entry(y2023::Day8::part2, 8245452805243),
+        entry(y2023::Day8::part2_cheat, 8245452805243),
     };
     
     printf("        min │        max │     median │       mean │ name\n");
