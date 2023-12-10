@@ -12,6 +12,6 @@ Place your inputs into `data/year/dayX.txt`
 Compile `c++/main.cpp` using your favorite compiler e.g.
 ```
 cd c++/
-clang++ -std=c++2a -O3 main.cpp
+clang++ -std=c++23 -O3 -march=native ./main.cpp
 ./a.out
 ```
