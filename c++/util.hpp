@@ -1,4 +1,7 @@
 #pragma once
+#include <emmintrin.h>
+#include <immintrin.h>
+
 #include <fstream>
 #include <string>
 #include <vector>
@@ -81,3 +84,14 @@ struct Point {
         y += other.y;
     }
 };
+
+auto findChar(const char* str, char c) {
+    const auto cmp_val = _mm256_set1_epi8(c);
+
+    for (size_t i = 0;; i += 32) {
+        auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(_mm256_loadu_si256((__m256i*)(str + i)), cmp_val));
+        if (mask != 0) {
+            return i + _tzcnt_u32(mask);
+        }
+    }
+}

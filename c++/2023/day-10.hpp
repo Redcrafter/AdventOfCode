@@ -25,18 +25,6 @@ struct Position {
     Dir from;
 };
 
-auto findStart() {
-    const auto cmp_val = _mm256_set1_epi8('S');
-
-    auto ptr = (__m256i*)input.data();
-    for (size_t i = 0;; i++) {
-        auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(*(ptr + i), cmp_val));
-        if (mask != 0) {
-            return i * 32 + _tzcnt_u32(mask);
-        }
-    }
-}
-
 always__inline auto getStarts(int start) {
     std::array<Position, 2> starts;
     int i = 0;
@@ -90,7 +78,7 @@ always__inline void step(Position& p) {
 }
 
 uint64_t part1() {
-    int start = findStart();
+    int start = findChar(input.data(), 'S');
     auto starts = getStarts(start);
 
     int i = 2;
@@ -111,7 +99,7 @@ uint64_t part1() {
 }
 
 uint64_t part2() {
-    int start = findStart();
+    int start = findChar(input.data(), 'S');
     auto starts = getStarts(start);
 
     auto lx = start % width;
