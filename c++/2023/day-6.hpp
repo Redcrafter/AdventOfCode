@@ -66,4 +66,6 @@ uint64_t part2_dumb() {
     return count;
 }
 
+#undef solve
+
 }  // namespace y2023::Day6

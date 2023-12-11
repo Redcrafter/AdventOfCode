@@ -79,9 +79,37 @@ struct Point {
     T x;
     T y;
 
-    inline void operator+=(const Point& other) {
-        x += other.x;
-        y += other.y;
+    Point() {}
+    Point(T v) : x(v), y(v) {}
+    Point(T x, T y) : x(x), y(y) {}
+
+    Point<T>& operator+=(const Point<T>& rhs) {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+    Point<T>& operator-=(const Point<T>& rhs) {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+    Point<T>& operator*=(const Point<T>& rhs) {
+        x *= rhs.x;
+        y *= rhs.y;
+        return *this;
+    }
+
+    friend Point<T> operator+(Point<T> lhs, const Point<T>& rhs) {
+        lhs += rhs;
+        return lhs;
+    }
+    friend Point<T> operator-(Point<T> lhs, const Point<T>& rhs) {
+        lhs -= rhs;
+        return lhs;
+    }
+    friend Point<T> operator*(Point<T> lhs, const Point<T>& rhs) {
+        lhs *= rhs;
+        return lhs;
     }
 };
 
