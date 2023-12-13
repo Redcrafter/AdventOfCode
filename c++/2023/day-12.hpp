@@ -1,0 +1,143 @@
+#pragma once
+#include <algorithm>
+#include <array>
+#include <span>
+#include <vector>
+
+#include "../util.hpp"
+
+namespace y2023::Day12 {
+
+const auto input = readFile("../data/2023/day12.txt");
+
+std::array<int64_t, 128 * 32> cache;
+
+uint64_t rec(std::span<const char> line, std::span<const uint32_t> nums, uint32_t numi, uint32_t pos) {
+    auto id = (numi * 128) + pos;
+    if (cache[id] != -1)
+        return cache[id];
+
+    const auto num = nums[numi];
+
+    auto end = pos + num;
+
+    if (end > line.size() || (end < line.size() && line[end] == '#') || contains(line.subspan(pos, num), '.')) {
+        cache[id] = 0;
+        return 0;
+    }
+    if (numi + 1 < nums.size()) {
+        uint64_t n = 0;
+        for (int i = end + 1; i < line.size(); i++) {
+            n += rec(line, nums, numi + 1, i);
+            if (line[i] == '#') {
+                break;
+            }
+        }
+        cache[id] = n;
+        return n;
+    }
+    if (contains(line.data(), end + 1, line.size(), '#')) {
+        cache[id] = 0;
+        return 0;
+    }
+
+    cache[id] = 1;
+    return 1;
+}
+
+uint64_t solveLine(std::span<const char> line, std::span<const uint32_t> nums) {
+    uint64_t asd = 0;
+    cache.fill(-1);
+    for (int i = 0; i < line.size(); i++) {
+        asd += rec(line, nums, 0, i);
+        if (line[i] == '#') {
+            break;
+        }
+    }
+    return asd;
+}
+
+uint32_t readInt(size_t& pos) {
+    uint32_t val = 0;
+    char c;
+    while (isDigit(c = input[pos])) {
+        val = val * 10 + c - '0';
+        pos++;
+    }
+    return val;
+}
+
+uint64_t part1() {
+    std::vector<uint32_t> nums;
+
+    uint64_t result = 0;
+
+    size_t pos = 0;
+    while (pos < input.size()) {
+        auto s = pos;
+        while (input[pos++] != ' ') {
+        }
+
+        auto line = std::span<const char>(input.data() + s, pos - s - 1);
+
+        nums.clear();
+        while (true) {
+            auto n = readInt(pos);
+            nums.push_back(n);
+
+            if (input[pos++] == '\n') {
+                break;
+            }
+        }
+
+        result += solveLine(line, nums);
+    }
+
+    return result;
+}
+
+uint64_t part2() {
+    std::vector<char> line;
+    std::vector<uint32_t> nums;
+
+    uint64_t result = 0;
+
+    size_t pos = 0;
+    while (pos < input.size()) {
+        auto s = pos;
+        line.clear();
+        while (true) {
+            char c = input[pos++];
+            if (c == ' ') break;
+            line.push_back(c);
+        }
+
+        nums.clear();
+        while (true) {
+            auto n = readInt(pos);
+            nums.push_back(n);
+
+            if (input[pos++] == '\n') {
+                break;
+            }
+        }
+
+        auto ls = line.size();
+        auto ns = nums.size();
+
+        for (size_t i = 0; i < 4; i++) {
+            line.push_back('?');
+            for (size_t j = 0; j < ls; j++) {
+                line.push_back(line[j]);
+            }
+            for (size_t j = 0; j < ns; j++) {
+                nums.push_back(nums[j]);
+            }
+        }
+
+        result += solveLine(line, nums);
+    }
+    return result;
+}
+
+}  // namespace y2023::Day12

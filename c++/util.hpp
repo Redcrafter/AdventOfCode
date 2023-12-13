@@ -123,3 +123,21 @@ auto findChar(const char* str, char c) {
         }
     }
 }
+
+template <typename T>
+bool contains(const std::span<const T> arr, T search) {
+    bool ok = false;
+    for (auto& i : arr) {
+        ok |= i == search;
+    }
+    return ok;
+}
+
+template <typename T>
+bool contains(const T* ptr, int start, int end, T search) {
+    bool ok = false;
+    for (size_t i = start; i < end; i++) {
+        ok |= ptr[i] == search;
+    }
+    return ok;
+}
