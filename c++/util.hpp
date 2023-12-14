@@ -2,6 +2,7 @@
 #include <emmintrin.h>
 #include <immintrin.h>
 
+#include <bit>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -75,6 +76,44 @@ class Grid {
 };
 
 template <typename T>
+class DynGrid {
+   private:
+    T* data;
+    int _width;
+    int _height;
+    int _capacity;
+
+   public:
+    DynGrid(int width, int height) : _width(width), _height(height), _capacity(width * height) {
+        data = new T[width * height];
+    }
+    ~DynGrid() {
+        delete[] data;
+    }
+
+    void fill(T val) {
+        std::fill_n(data, _width * _height, val);
+    }
+    void reserve(int width, int height) {
+        auto s = width * height;
+        if (_capacity < s) {
+            delete[] data;
+            data = new T[width * height];
+            _capacity = s;
+        }
+        _width = width;
+        _height = height;
+    }
+
+    inline T operator()(int x, int y) const {
+        return data[x + y * _width];
+    }
+    inline T& operator()(int x, int y) {
+        return data[x + y * _width];
+    }
+};
+
+template <typename T>
 struct Point {
     T x;
     T y;
@@ -119,7 +158,7 @@ auto findChar(const char* str, char c) {
     for (size_t i = 0;; i += 32) {
         auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(_mm256_loadu_si256((__m256i*)(str + i)), cmp_val));
         if (mask != 0) {
-            return i + _tzcnt_u32(mask);
+            return i + std::countr_zero((uint32_t)mask);
         }
     }
 }
