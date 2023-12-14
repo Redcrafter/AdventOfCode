@@ -41,6 +41,7 @@
 #include "./2023/day-11.hpp"
 #include "./2023/day-12.hpp"
 #include "./2023/day-13.hpp"
+#include "./2023/day-14.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -68,8 +69,8 @@ auto test(R(func)()) {
         auto start = std::chrono::high_resolution_clock::now();
 
         for (size_t i = 0; i < runs; i++) {
-        auto val = func();
-        DoNotOptimize(val);
+            auto val = func();
+            DoNotOptimize(val);
         }
 
         auto end = std::chrono::high_resolution_clock::now();
@@ -105,9 +106,9 @@ std::string formatTime(std::chrono::duration<double, std::nano> value) {
     char buf[256];
     if (value < std::chrono::nanoseconds(100)) {
         sprintf(buf, "%9.2fns", value.count());
-    } else if(value < std::chrono::microseconds(100)) {
+    } else if (value < std::chrono::microseconds(100)) {
         sprintf(buf, "%9.2fμs", value.count() / 1e3);
-    } else if(value < std::chrono::milliseconds(100)) {
+    } else if (value < std::chrono::milliseconds(100)) {
         sprintf(buf, "%9.2fms", value.count() / 1e6);
     } else {
         sprintf(buf, "%9.2fs ", value.count() / 1e9);
@@ -185,8 +186,10 @@ int main() {
         entry(y2023::Day12::part2, 6555315065024),
         entry(y2023::Day13::part1, 33780),
         entry(y2023::Day13::part2, 23479),
+        entry(y2023::Day14::part1, 105461),
+        entry(y2023::Day14::part2, 102829),
     };
-    
+
     printf("        min │        max │     median │       mean │ name\n");
     printf("────────────┼────────────┼────────────┼────────────┼───────────\n");
 
@@ -201,10 +204,10 @@ int main() {
         std::sort(times.begin(), times.end());
         auto med = median<decltype(times)::value_type>(times);
 
-        std::cout << formatTime(times[0]) << " │" 
-                  << formatTime(times[times.size() - 1]) << " │" 
+        std::cout << formatTime(times[0]) << " │"
+                  << formatTime(times[times.size() - 1]) << " │"
                   << formatTime(med) << " │"
-                  << formatTime(mean) << " │ " 
+                  << formatTime(mean) << " │ "
                   << i.name << std::endl;
     }
 
