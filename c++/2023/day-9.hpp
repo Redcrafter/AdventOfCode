@@ -16,18 +16,23 @@ always__inline auto readLine(size_t& pos, std::array<int32_t, size>& arr) {
     while (true) {
         char c = input[pos];
         int n = 0;
-        int s = 1;
 
         if (c == '-') {
             c = input[++pos];
-            s = -1;
-        }
-        while (isDigit(c)) {
-            n = n * 10 + (c - '0');
-            c = input[++pos];
+
+            while (isDigit(c)) {
+                n = n * 10 + (c - '0');
+                c = input[++pos];
+            }
+            arr[asd++] = -n;
+        } else {
+            while (isDigit(c)) {
+                n = n * 10 + (c - '0');
+                c = input[++pos];
+            }
+            arr[asd++] = n;
         }
         pos++;
-        arr[asd++] = n * s;
         if (c == '\n') {
             break;
         }
@@ -148,6 +153,52 @@ uint64_t part2_math() {
         result += s;
     }
 
+    return result;
+}
+
+// all lines can be summed togther so we have to compute the continuation only once
+uint64_t part1_sum() {
+    size_t pos = 0;
+
+    std::array<int32_t, size> arr;
+    std::array<int64_t, size> sum;
+    sum.fill(0);
+
+    int size;
+    while (pos < input.size()) {
+        size = readLine(pos, arr);
+        for (size_t i = 0; i < size; i++) {
+            sum[i] += arr[i];
+        }
+    }
+
+    int64_t result = 0;
+    for (size_t i = 0; i < size; i++) {
+        result = table[size][i] * sum[i] - result;
+    }
+    return result;
+}
+
+uint64_t part2_sum() {
+    size_t pos = 0;
+
+    std::array<int32_t, size> arr;
+    std::array<int64_t, size> sum;
+    sum.fill(0);
+
+    int size;
+    while (pos < input.size()) {
+        size = readLine(pos, arr);
+
+        for (size_t i = 0; i < size; i++) {
+            sum[i] += arr[i];
+        }
+    }
+
+    int64_t result = 0;
+    for (size_t i = 0; i < size; i++) {
+        result = table[size][i] * sum[size - i - 1] - result;
+    }
     return result;
 }
 
