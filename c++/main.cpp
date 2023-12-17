@@ -44,6 +44,7 @@
 #include "./2023/day-14.hpp"
 #include "./2023/day-15.hpp"
 #include "./2023/day-16.hpp"
+#include "./2023/day-17.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -196,6 +197,8 @@ int main() {
         entry(y2023::Day16::part2, 7228),
         entry(y2023::Day16::part2_precalc, 7228),
         entry(y2023::Day16::part2_bits, 7228),
+        entry(y2023::Day17::part1, 1138),
+        entry(y2023::Day17::part2, 1312),
     };
 
     printf("        min │        max │     median │       mean │ name\n");

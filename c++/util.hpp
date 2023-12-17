@@ -59,19 +59,75 @@ bool inline isDigit(char c) {
     return c >= '0' && c <= '9';
 }
 
+template <typename T>
+struct Point {
+    T x;
+    T y;
+
+    Point() {}
+    Point(T v) : x(v), y(v) {}
+    Point(T x, T y) : x(x), y(y) {}
+
+    Point<T> sign() {
+        return {T((x > 0) - (x < 0)), T((y > 0) - (y < 0))};
+    }
+
+    Point<T>& operator+=(const Point<T>& rhs) {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+    Point<T>& operator-=(const Point<T>& rhs) {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+    Point<T>& operator*=(const Point<T>& rhs) {
+        x *= rhs.x;
+        y *= rhs.y;
+        return *this;
+    }
+
+    friend Point<T> operator+(Point<T> lhs, const Point<T>& rhs) {
+        lhs += rhs;
+        return lhs;
+    }
+    friend Point<T> operator-(Point<T> lhs, const Point<T>& rhs) {
+        lhs -= rhs;
+        return lhs;
+    }
+    friend Point<T> operator*(Point<T> lhs, const Point<T>& rhs) {
+        lhs *= rhs;
+        return lhs;
+    }
+    friend bool operator==(const Point<T>& lhs, const Point<T>& rhs) {
+        return lhs.x == rhs.x && lhs.y == rhs.y;
+    }
+};
+
 template <int width, int height, typename T>
 class Grid {
    public:
-    std::array<T, width * height> data{0};
+    std::array<T, width * height> data;
 
     Grid() = default;
 
+    void fill(T val) {
+        data.fill(val);
+    }
     inline T operator()(int x, int y) const {
         return data[x + y * width];
     }
-
     inline T& operator()(int x, int y) {
         return data[x + y * width];
+    }
+    template <typename V>
+    inline T operator()(Point<V> pos) const {
+        return data[pos.x + pos.y * width];
+    }
+    template <typename V>
+    inline T& operator()(Point<V> pos) {
+        return data[pos.x + pos.y * width];
     }
 };
 
@@ -113,42 +169,37 @@ class DynGrid {
     }
 };
 
-template <typename T>
-struct Point {
-    T x;
-    T y;
+template <typename T, size_t _size>
+class FixedVector {
+   private:
+    std::array<T, _size> data;
+    uint32_t pos = 0;
 
-    Point() {}
-    Point(T v) : x(v), y(v) {}
-    Point(T x, T y) : x(x), y(y) {}
+   public:
+    FixedVector() {}
 
-    Point<T>& operator+=(const Point<T>& rhs) {
-        x += rhs.x;
-        y += rhs.y;
-        return *this;
+    void push_back(const T& value) {
+        data[pos] = value;
+        pos++;
     }
-    Point<T>& operator-=(const Point<T>& rhs) {
-        x -= rhs.x;
-        y -= rhs.y;
-        return *this;
+    void erase(int index) {
+        pos--;
+        for (; index < pos; index++) {
+            data[index] = data[index + 1];
+        }
     }
-    Point<T>& operator*=(const Point<T>& rhs) {
-        x *= rhs.x;
-        y *= rhs.y;
-        return *this;
+    auto size() const {
+        return pos;
+    }
+    constexpr size_t capacity() const {
+        return _size;
     }
 
-    friend Point<T> operator+(Point<T> lhs, const Point<T>& rhs) {
-        lhs += rhs;
-        return lhs;
+    T operator[](int index) const {
+        return data[index];
     }
-    friend Point<T> operator-(Point<T> lhs, const Point<T>& rhs) {
-        lhs -= rhs;
-        return lhs;
-    }
-    friend Point<T> operator*(Point<T> lhs, const Point<T>& rhs) {
-        lhs *= rhs;
-        return lhs;
+    T& operator[](int index) {
+        return data[index];
     }
 };
 

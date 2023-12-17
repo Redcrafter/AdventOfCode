@@ -2,3 +2,4 @@
 data/
 .vscode/
 c++/a.out
+node_modules/
