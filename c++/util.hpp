@@ -231,3 +231,33 @@ bool contains(const T* ptr, int start, int end, T search) {
     }
     return ok;
 }
+
+template<typename T = uint32_t>
+T readInt(const std::string& input, size_t& pos) {
+    T val = input[pos++] & 0xF;
+    char c;
+    while (isDigit(c = input[pos++])) {
+        val = val * 10 + (c & 0xF);
+    }
+    return val;
+}
+
+// reads an integer with a maximum of 4 digits
+uint32_t readInt4(const std::string& input, size_t& pos) {
+    uint32_t val = *(uint32_t*)(input.data() + pos);
+
+    if (!isDigit(val >> 8)) {
+        pos += 2;
+        return (val & 0xF);
+    }
+    if (!isDigit(val >> 16)) {
+        pos += 3;
+        return (val & 0xF) * 10 + ((val >> 8) & 0xF);
+    }
+    if (!isDigit(val >> 24)) {
+        pos += 4;
+        return (val & 0xF) * 100 + ((val >> 8) & 0xF) * 10 + ((val >> 16) & 0xF);
+    }
+    pos += 5;
+    return (val & 0xF) * 1000 + ((val >> 8) & 0xF) * 100 + ((val >> 16) & 0xF) * 10 + ((val >> 24) & 0xF);
+}

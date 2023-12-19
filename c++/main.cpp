@@ -46,6 +46,7 @@
 #include "./2023/day-16.hpp"
 #include "./2023/day-17.hpp"
 #include "./2023/day-18.hpp"
+#include "./2023/day-19.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -109,13 +110,13 @@ std::string formatTime(std::chrono::duration<double, std::nano> value) {
     // clang does not support std::format yet. come on
     char buf[256];
     if (value < std::chrono::nanoseconds(100)) {
-        sprintf(buf, "%9.2fns", value.count());
+        sprintf(buf, "%7.2fns", value.count());
     } else if (value < std::chrono::microseconds(100)) {
-        sprintf(buf, "%9.2fμs", value.count() / 1e3);
+        sprintf(buf, "%7.2fμs", value.count() / 1e3);
     } else if (value < std::chrono::milliseconds(100)) {
-        sprintf(buf, "%9.2fms", value.count() / 1e6);
+        sprintf(buf, "%7.2fms", value.count() / 1e6);
     } else {
-        sprintf(buf, "%9.2fs ", value.count() / 1e9);
+        sprintf(buf, "%7.2fs ", value.count() / 1e9);
     }
     return buf;
 }
@@ -202,10 +203,12 @@ int main() {
         entry(y2023::Day17::part2, 1312),
         entry(y2023::Day18::part1, 48795),
         entry(y2023::Day18::part2, 40654918441248),
+        entry(y2023::Day19::part1, 420739),
+        entry(y2023::Day19::part2, 130251901420382),
     };
 
-    printf("        min │        max │     median │       mean │ name\n");
-    printf("────────────┼────────────┼────────────┼────────────┼───────────\n");
+    printf("      min │      max │   median │     mean │ name\n");
+    printf("──────────┼──────────┼──────────┼──────────┼───────────\n");
 
     for (auto&& i : idk) {
         auto res = i.func();
