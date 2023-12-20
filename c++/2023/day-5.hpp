@@ -10,22 +10,13 @@ namespace y2023::Day5 {
 
 const auto input = readFile("../data/2023/day5.txt");
 
-uint32_t readInt(size_t& pos) {
-    uint32_t val = 0;
-    char c;
-    while (isDigit(c = input[pos++])) {
-        val = val * 10 + c - '0';
-    }
-    return val;
-}
-
 always__inline auto parseInput() {
     std::vector<uint32_t> seeds;
     std::array<std::vector<std::tuple<uint32_t, uint32_t, uint32_t>>, 7> maps;
 
     size_t pos = 7;
     while (input[pos] != '\n') {
-        seeds.push_back(readInt(pos));
+        seeds.push_back(readInt(input, pos));
     }
 
     int n = 0;
@@ -38,9 +29,9 @@ always__inline auto parseInput() {
         }
 
         while (pos << input.size() && input[pos] != '\n') {
-            auto a = readInt(pos);
-            auto b = readInt(pos);
-            auto c = readInt(pos);
+            auto a = readInt(input, pos);
+            auto b = readInt(input, pos);
+            auto c = readInt(input, pos);
             curr.emplace_back(a, b, c);
         }
 

@@ -20,7 +20,7 @@ uint64_t part1() {
         if ((dist >> 8) == ' ') {
             dist = dist & 0xF;
         } else {
-            dist = ((dist >> 8) & 0xF) + ((dist & 0xFF) & 0xF) * 10;
+            dist = ((dist >> 8) & 0xF) + (dist & 0xF) * 10;
             pos++;
         }
         pos += 12;
@@ -48,31 +48,29 @@ uint64_t part2() {
     int64_t y = 0;
 
     while (pos < input.size()) {
-        if (input[pos + 3] == ' ') {
-            pos += 6;
-        } else {
-            pos += 7;
-        }
-
+        pos += 6;
         auto dv = *(uint64_t*)(input.data() + pos);
-        auto dir = input[pos + 5];
-        pos += 8;
-
-        auto dist = 0;
-        for (size_t i = 0; i < 5; i++) {
-            auto v = dv & 0xFF;
-            dist = (dist << 4) | (v <= '9' ? (v & 0xF) : (v - 'a' + 10));
+        if((dv & 0xFF) == '#') {
             dv >>= 8;
+            pos++;
+        }
+        pos += 8;
+        auto dir = (dv >> 40) & 0xF;
+
+        int dist = hextoint(dv);
+        for (size_t i = 1; i < 5; i++) {
+            dv >>= 8;
+            dist = (dist << 4) | hextoint(dv);
         }
 
-        if (dir == '2') {
+        if (dir == 2) {
             m += 2 * y * dist + dist;
-        } else if (dir == '0') {
+        } else if (dir == 0) {
             m += -2 * y * dist + dist;
-        } else if (dir == '3') {
+        } else if (dir == 3) {
             y -= dist;
             m += dist;
-        } else if (dir == '1') {
+        } else if (dir == 1) {
             y += dist;
             m += dist;
         }

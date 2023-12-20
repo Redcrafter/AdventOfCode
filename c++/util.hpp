@@ -8,9 +8,9 @@
 #include <vector>
 
 #if defined(__clang__) || defined(__GNUC__)
-#define always__inline __attribute__((always_inline))
+#define always__inline __attribute__((always_inline)) inline
 #elif defined(_MSC_VER)
-#define always__inline __forceinline
+#define always__inline __forceinline inline
 #else
 #define always__inline
 #endif
@@ -260,4 +260,21 @@ uint32_t readInt4(const std::string& input, size_t& pos) {
     }
     pos += 5;
     return (val & 0xF) * 1000 + ((val >> 8) & 0xF) * 100 + ((val >> 16) & 0xF) * 10 + ((val >> 24) & 0xF);
+}
+
+constexpr auto makeHexLookup() {
+    std::array<uint8_t, 256> data;
+    data.fill(0);
+    for (auto i = '0'; i <= '9'; i++) {
+        data[i] = i - '0';
+    }
+    for (auto i = 'a'; i <= 'f'; i++) {
+        data[i] = i - 'a' + 10;
+    }
+    return data;
+}
+const auto hexLookup = makeHexLookup();
+
+uint8_t hextoint(char x) {
+    return hexLookup[x];
 }

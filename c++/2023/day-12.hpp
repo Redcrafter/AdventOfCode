@@ -57,16 +57,6 @@ uint64_t solveLine(std::span<const char> line, std::span<const uint32_t> nums) {
     return asd;
 }
 
-uint32_t readInt(size_t& pos) {
-    uint32_t val = 0;
-    char c;
-    while (isDigit(c = input[pos])) {
-        val = val * 10 + c - '0';
-        pos++;
-    }
-    return val;
-}
-
 uint64_t part1() {
     std::vector<uint32_t> nums;
 
@@ -82,10 +72,10 @@ uint64_t part1() {
 
         nums.clear();
         while (true) {
-            auto n = readInt(pos);
+            auto n = readInt(input, pos);
             nums.push_back(n);
 
-            if (input[pos++] == '\n') {
+            if (input[pos - 1] == '\n') {
                 break;
             }
         }
@@ -114,10 +104,10 @@ uint64_t part2() {
 
         nums.clear();
         while (true) {
-            auto n = readInt(pos);
+            auto n = readInt(input, pos);
             nums.push_back(n);
 
-            if (input[pos++] == '\n') {
+            if (input[pos - 1] == '\n') {
                 break;
             }
         }

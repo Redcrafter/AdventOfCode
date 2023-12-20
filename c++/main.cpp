@@ -109,11 +109,11 @@ auto median(const std::span<T>& arr) {
 std::string formatTime(std::chrono::duration<double, std::nano> value) {
     // clang does not support std::format yet. come on
     char buf[256];
-    if (value < std::chrono::nanoseconds(100)) {
+    if (value < std::chrono::microseconds(1)) {
         sprintf(buf, "%7.2fns", value.count());
-    } else if (value < std::chrono::microseconds(100)) {
+    } else if (value < std::chrono::milliseconds(1)) {
         sprintf(buf, "%7.2fμs", value.count() / 1e3);
-    } else if (value < std::chrono::milliseconds(100)) {
+    } else if (value < std::chrono::seconds(1)) {
         sprintf(buf, "%7.2fms", value.count() / 1e6);
     } else {
         sprintf(buf, "%7.2fs ", value.count() / 1e9);

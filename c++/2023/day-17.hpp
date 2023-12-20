@@ -58,7 +58,7 @@ uint64_t solve() {
     size_t pos = 0;
     for (size_t y = 0; y < height; y++) {
         for (size_t x = 0; x < width; x++) {
-            dat(x, y) = input[pos++] - '0';
+            dat(x, y) = input[pos++] & 0xF;
         }
         pos++;
     }

@@ -14,19 +14,10 @@ struct Card {
     uint32_t bet;
 };
 
-uint32_t readInt(size_t& pos) {
-    uint32_t val = 0;
-    char c;
-    while (isDigit(c = input[pos++])) {
-        val = val * 10 + c - '0';
-    }
-    return val;
-}
-
 always__inline auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t charMap[]) {
     auto hand = *(uint64_t*)(input.data() + pos);
     pos += 6;
-    auto bet = readInt(pos);
+    auto bet = readInt(input, pos);
 
     scores.fill(0);
     int value = 0;
