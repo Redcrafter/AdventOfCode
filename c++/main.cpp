@@ -48,6 +48,7 @@
 #include "./2023/day-18.hpp"
 #include "./2023/day-19.hpp"
 #include "./2023/day-20.hpp"
+#include "./2023/day-21.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -101,7 +102,7 @@ template <typename T>
 auto median(const std::span<T>& arr) {
     auto mid = arr.size() / 2;
     if (arr.size() % 2 == 0) {
-        return (arr[mid] + arr[mid + 1]) / 2;
+        return (arr[mid - 1] + arr[mid]) / 2;
     } else {
         return arr[mid];
     }
@@ -210,6 +211,10 @@ int main() {
         entry(y2023::Day20::part1_cheat, 883726240),
         entry(y2023::Day20::part2, 211712400442661),
         entry(y2023::Day20::part2_cheat, 211712400442661),
+        entry(y2023::Day21::part1, 3731),
+        entry(y2023::Day21::part1_cheat, 3731),
+        entry(y2023::Day21::part2, 617565692567199),
+        entry(y2023::Day21::part2_cheat, 617565692567199),
     };
 
     printf("      min │      max │   median │     mean │ name\n");
