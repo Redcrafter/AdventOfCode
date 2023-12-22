@@ -1,7 +1,5 @@
 #pragma once
-#include <array>
-#include <unordered_set>
-
+#include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2022::Day8 {

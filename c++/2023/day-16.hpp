@@ -1,10 +1,11 @@
 #pragma once
 #include <array>
+#include <bitset>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include <bitset>
 
+#include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day16 {
@@ -14,7 +15,7 @@ const auto input = readFile("../data/2023/day16.txt");
 const int width = 110;
 const int height = 110;
 
-using pt = Point<int8_t>;
+using pt = vec2<int8_t>;
 using bt = std::bitset<width * height>;
 using loopinfo = std::unordered_map<int, std::unordered_set<int>>;
 

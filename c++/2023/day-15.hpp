@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
-#include <map>
 
+#include "../fixedVector.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day15 {
@@ -39,7 +39,7 @@ struct El {
 };
 
 uint64_t part2() {
-    std::array<FixedVector<El, 9>, 256> boxes;
+    std::array<fixedVector<El, 9>, 256> boxes;
 
     size_t pos = 0;
     while (pos < input.length()) {

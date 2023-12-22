@@ -1,7 +1,8 @@
 #pragma once
-#include <queue>
-#include <unordered_set>
+#include <array>
+#include <vector>
 
+#include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day17 {
@@ -12,17 +13,17 @@ const auto width = 141;
 const auto height = 141;
 
 struct El {
-    Point<int16_t> pos;
+    vec2<int16_t> pos;
     bool vert;
 };
 
 using dt = Grid<width, height, uint8_t>;
-using qt = std::array<std::vector<El>, 1024 + 512>; // might not be big enough for some inputs?
+using qt = std::array<std::vector<El>, 1024 + 512>;  // might not be big enough for some inputs?
 using gt = Grid<width, height, std::array<uint16_t, 4>>;
 
 template <int start, int end, int dx, int dy, bool vert>
-always__inline void add(dt& dat, qt& queue, gt& grid, Point<int16_t> pos, uint16_t dist) {
-    Point<int16_t> delta(dx, dy);
+always__inline void add(dt& dat, qt& queue, gt& grid, vec2<int16_t> pos, uint16_t dist) {
+    vec2<int16_t> delta(dx, dy);
     pos += delta;
 
     for (size_t i = 1; i < start; i++) {

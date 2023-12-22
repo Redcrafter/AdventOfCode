@@ -127,7 +127,7 @@ export function part1() {
 
     let res = 0;
     for (let i = 0; i < stuff.length; i++) {
-        const [p0, p1, c] = stuff[i];
+        const [p0, p1] = stuff[i];
 
         if (asd(p0, p1, i + 1)) {
             res++;

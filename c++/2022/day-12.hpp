@@ -26,7 +26,7 @@ auto parseInput() {
 
 const auto [input, width, height] = parseInput();
 
-Point<int> findEnd() {
+vec2<int> findEnd() {
     for (int i = 0; i < input.size(); i++) {
         if (input[i] == 'E') {
             return {i % width, i / width};
@@ -47,7 +47,7 @@ inline uint64_t bsf() {
 
     auto pos = 0;
 
-    std::vector<Point<int>> heap;
+    std::vector<vec2<int>> heap;
     heap.push_back(end);
 
     while (pos < heap.size()) {

@@ -1,6 +1,4 @@
 #pragma once
-#include <string>
-
 #include "../util.hpp"
 
 namespace y2023::Day1 {
@@ -84,9 +82,10 @@ uint64_t part2() {
             }
         }
 
-        while(input[pos++] != '\n') { }
+        while (input[pos++] != '\n') {
+        }
 
-        for (int j = pos - 1; ; j--) {
+        for (int j = pos - 1;; j--) {
             auto c = input[j];
             auto test = *(uint64_t*)(input.data() + j);
 

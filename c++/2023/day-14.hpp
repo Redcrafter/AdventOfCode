@@ -2,6 +2,7 @@
 #include <array>
 #include <unordered_map>
 
+#include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day14 {

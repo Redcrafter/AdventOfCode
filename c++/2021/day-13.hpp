@@ -56,9 +56,6 @@ Data parseInput() {
 
     Data d{};
 
-    size_t last = 0;
-    size_t next = 0;
-
     for (auto&& str : input) {
         if (isDigit(str[0])) {
             auto stuff = split(str, ',');

@@ -21,7 +21,7 @@ always__inline auto parseInput() {
 
     int n = 0;
     while (pos < input.size()) {
-        std::vector<std::tuple<uint32_t, uint32_t, uint32_t>> curr;
+        auto& curr = maps[n++];
         curr.reserve(40);
 
         pos++;
@@ -34,11 +34,9 @@ always__inline auto parseInput() {
             auto c = readInt(input, pos);
             curr.emplace_back(a, b, c);
         }
-
-        maps[n++] = std::move(curr);
     }
 
-    return std::tuple(std::move(seeds), std::move(maps));
+    return std::tuple(seeds, maps);
 }
 
 uint64_t part1() {
@@ -48,7 +46,7 @@ uint64_t part1() {
 
     for (auto val : seeds) {
         for (const auto& map : maps) {
-            for (const auto [drs, srs, len] : map) {
+            for (const auto& [drs, srs, len] : map) {
                 if (val >= srs && val < srs + len) {
                     val = (val - srs) + drs;
                     break;
@@ -82,7 +80,7 @@ uint64_t part2() {
 
     for (const auto& map : maps) {
         n_ranges.clear();
-        for (const auto [rs, re] : ranges) {
+        for (const auto& [rs, re] : ranges) {
             auto test = std::lower_bound(map.begin(), map.end(), rs, [](const auto& a, const auto& b) { return std::get<1>(a) < b; });
             auto asd = std::distance(map.begin(), test);
 

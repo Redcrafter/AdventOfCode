@@ -1,20 +1,24 @@
 #pragma once
 #include <algorithm>
 #include <bitset>
+#include <tuple>
 #include <vector>
 
+#include "../fixedVector.hpp"
+#include "../grid.hpp"
 #include "../util.hpp"
+#include "../vec3.hpp"
 
 namespace y2023::Day22 {
 
 const auto input = readFile("../data/2023/day22.txt");
 
 struct Object {
-    Vec3<int> start;
-    Vec3<int> end;
+    vec3<int> start;
+    vec3<int> end;
 
-    FixedVector<int, 10> above;
-    FixedVector<int, 10> below;
+    fixedVector<int, 10> above;
+    fixedVector<int, 10> below;
 
     void addS(int val) {
         for (auto i : above) {
@@ -30,13 +34,13 @@ struct Object {
     }
 };
 
-Vec3<int> readVec(size_t& pos) {
+vec3<int> readVec(size_t& pos) {
     auto x = input[pos] & 0xF;
     auto y = input[pos + 2] & 0xF;
     pos += 4;
     auto z = readInt(input, pos) - 1;
 
-    return Vec3<int>(x, y, z);
+    return vec3<int>(x, y, z);
 }
 
 std::vector<Object> objects;

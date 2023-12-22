@@ -59,7 +59,7 @@ uint64_t part2_dumb() {
         dist = dist * 10000 + dists[i];
     }
 
-    int count;
+    int count = 0;
     for (size_t i = 1; i < time; i++) {
         count += i * (time - i) > dist;
     }

@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>
 #include <array>
 #include <span>
 #include <vector>
@@ -94,7 +93,6 @@ uint64_t part2() {
 
     size_t pos = 0;
     while (pos < input.size()) {
-        auto s = pos;
         line.clear();
         while (true) {
             char c = input[pos++];

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../util.hpp"
+#include "../vec2.hpp"
 
 namespace y2023::Day19 {
 
@@ -16,11 +17,11 @@ struct Rule {
 };
 
 struct Part {
-    // use point as range caues i don't wanna make a new type
-    Point<int> x;
-    Point<int> m;
-    Point<int> a;
-    Point<int> s;
+    // use vec2 as range caues i don't wanna make a new type
+    vec2<int> x;
+    vec2<int> m;
+    vec2<int> a;
+    vec2<int> s;
 };
 
 uint32_t readStr(size_t& pos) {
@@ -36,7 +37,7 @@ uint32_t readStr(size_t& pos) {
     return val;
 }
 
-std::array<std::vector<Rule>, 'zzz'> rules; // could be compressed to 26^3 entries
+std::array<std::vector<Rule>, 'z' | ('z' << 8) | ('z' << 16)> rules; // could be compressed to 26^3 entries
 auto parseRules(size_t& pos) {
     while (true) {
         auto label = readStr(pos);
@@ -81,7 +82,7 @@ uint64_t part1() {
         auto a = readInt4(input, pos); pos += 2;
         auto s = readInt4(input, pos); pos++;
 
-        auto l = 'in';
+        auto l = ('i' << 8) | 'n';
         while (true) {
             if (l == 'A') {
                 result += x + m + a + s;
@@ -131,7 +132,7 @@ uint64_t count(int rule, Part p) {
             break;
         }
 
-        Point<int>* val = nullptr;
+        vec2<int>* val = nullptr;
         if (sub.prop == 'x') val = &p.x;
         else if (sub.prop == 'm') val = &p.m;
         else if (sub.prop == 'a') val = &p.a;
@@ -156,7 +157,7 @@ uint64_t count(int rule, Part p) {
 uint64_t part2() {
     size_t pos = 0;
     parseRules(pos);
-    return count('in', Part{{1, 4000}, {1, 4000}, {1, 4000}, {1, 4000}});
+    return count(('i' << 8) | 'n', Part{{1, 4000}, {1, 4000}, {1, 4000}, {1, 4000}});
 }
 
 }  // namespace y2023::Day19

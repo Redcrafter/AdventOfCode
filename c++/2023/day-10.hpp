@@ -1,10 +1,5 @@
 #pragma once
-#include <emmintrin.h>
-#include <immintrin.h>
-
-#include <algorithm>
 #include <array>
-#include <vector>
 
 #include "../util.hpp"
 

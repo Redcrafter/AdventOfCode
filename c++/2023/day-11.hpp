@@ -1,12 +1,12 @@
 #pragma once
 #include <emmintrin.h>
-#include <immintrin.h>
 
 #include <algorithm>
 #include <array>
 #include <vector>
 
 #include "../util.hpp"
+#include "../vec2.hpp"
 
 namespace y2023::Day11 {
 
@@ -19,10 +19,9 @@ uint64_t solve_old(uint32_t add) {
     const auto cmp_val_128 = _mm_set1_epi8('#');
     const auto cmp_mask_128 = _mm_set_epi64x(0xFFFFFFFF, 0xFFFFFFFFFFFFFFFF);
 
-    std::vector<Point<int32_t>> galac;
+    std::vector<vec2<int32_t>> galac;
 
     size_t pos = 0;
-    uint32_t height = 0;
     uint32_t y_offset = 0;
     while (pos < input.size()) {
         bool ok = true;
@@ -52,7 +51,6 @@ uint64_t solve_old(uint32_t add) {
         }
 
         pos += 13;
-        height++;
         y_offset++;
         if (ok) y_offset += add;
     }
@@ -90,8 +88,8 @@ uint64_t solve_general(int64_t add) {
     int32_t _count = 0;
 
     const uint8_t size = findChar(input.data(), '\n') + 1;
-    std::vector<Point<int32_t>> data(size - 1);
-    std::fill(data.begin(), data.end(), Point(0));
+    std::vector<vec2<int32_t>> data(size - 1);
+    std::fill(data.begin(), data.end(), vec2(0));
 
     while (pos < input.size()) {
         auto v = _mm256_loadu_si256((__m256i *)(input.data() + pos));
@@ -111,8 +109,8 @@ uint64_t solve_general(int64_t add) {
     }
 
     int64_t score = 0;
-    Point count = {0, 0};
-    Point rmn = Point(_count) - count;
+    vec2 count = {0, 0};
+    vec2 rmn = vec2(_count) - count;
 
     for (size_t i = 0; i < data.size(); i++) {
         score += rmn.x * count.x * ((data[i].x == 0) ? add : 1);
@@ -131,7 +129,7 @@ uint64_t solve(int64_t add) {
     const auto cmp_mask_128 = _mm_set_epi64x(0xFFFFFFFF, 0xFFFFFFFFFFFFFFFF);
 
     // specialized for 140x140 input
-    std::array<Point<int32_t>, 140> data;
+    std::array<vec2<int32_t>, 140> data;
     data.fill({0, 0});
 
     size_t pos = 0;
@@ -170,8 +168,8 @@ uint64_t solve(int64_t add) {
     }
 
     int64_t score = 0;
-    Point count = {0, 0};
-    Point rmn = Point(_count) - count;
+    vec2 count = {0, 0};
+    vec2 rmn = vec2(_count) - count;
 
     for (size_t i = 0; i < data.size(); i++) {
         score += rmn.x * count.x * ((data[i].x == 0) ? add : 1);

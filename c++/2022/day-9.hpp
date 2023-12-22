@@ -59,7 +59,7 @@ uint64_t part1() {
             auto ax = std::abs(dx);
             auto ay = std::abs(dy);
 
-            if (ax >= 1 && ay > 1 || ax > 1 && ay >= 1) {
+            if ((ax >= 1 && ay > 1) || (ax > 1 && ay >= 1)) {
                 tx += sgn(dx);
                 ty += sgn(dy);
             } else if (ax > 1) {
@@ -85,7 +85,7 @@ uint64_t part1() {
 uint64_t part2() {
     Grid<arrSize, arrSize, bool> grid{};
 
-    std::array<Point<int>, 10> nodes;
+    std::array<vec2<int>, 10> nodes;
     for (auto i = 0; i < 10; i++) {
         nodes[i] = { arrSize / 2, arrSize / 2 };
     }
@@ -121,7 +121,7 @@ uint64_t part2() {
                 auto ax = std::abs(dx);
                 auto ay = std::abs(dy);
 
-                if (ax >= 1 && ay > 1 || ax > 1 && ay >= 1) {
+                if ((ax >= 1 && ay > 1) || (ax > 1 && ay >= 1)) {
                     n->x += sgn(dx);
                     n->y += sgn(dy);
                 } else if (ax > 1) {

@@ -1,5 +1,7 @@
 #pragma once
+#include <algorithm>
 #include <array>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -14,7 +16,7 @@ struct El {
     uint8_t type = 0;
 };
 
-std::array<El, 'zz'> map;
+std::array<El, 'z' | ('z' << 8)> map;
 
 always__inline void parse() {
     size_t pos = 0;
@@ -129,7 +131,7 @@ uint64_t part2() {
             if (t.type == '&') {
                 states[j][i] = false;
             }
-            if (j == 'xr') {
+            if (j == (('x' << 8) | 'r')) {
                 rx = i;
             }
         }

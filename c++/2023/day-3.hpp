@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../util.hpp"
 
 namespace y2023::Day3 {
@@ -43,7 +42,7 @@ uint64_t part1() {
     while (pos < input.length()) {
         auto c = input[pos++];
 
-        if (!isDigit(c)) 
+        if (!isDigit(c))
             continue;
 
         int start = pos;

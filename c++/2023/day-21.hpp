@@ -1,8 +1,9 @@
 #pragma once
 #include <array>
-#include <unordered_map>
+#include <tuple>
 #include <vector>
 
+#include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day21 {

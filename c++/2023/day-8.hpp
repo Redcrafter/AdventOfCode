@@ -8,7 +8,10 @@ namespace y2023::Day8 {
 
 const auto input = readFile("../data/2023/day8.txt");
 
-std::array<std::array<uint32_t, 2>, 'ZZZ' + 1> map; // too big for stack. causes segfault
+const auto ZZZ = 'Z' + ('Z' << 8) + ('Z' << 16);
+const auto AAA = 'A' + ('A' << 8) + ('A' << 16);
+
+std::array<std::array<uint32_t, 2>, ZZZ + 1> map;  // too big for stack. causes segfault
 
 uint64_t part1() {
     size_t pos = 0;
@@ -28,10 +31,10 @@ uint64_t part1() {
         map[id] = {l, r};
     }
 
-    auto curr = 'AAA';
+    auto curr = AAA;
     int i = 0;
-    while (curr != 'ZZZ') {
-        #pragma clang loop unroll_count(8)
+    while (curr != ZZZ) {
+#pragma clang loop unroll_count(8)
         for (int j = 0; j < dirLen; j++)
             curr = map[curr][input[j] == 'L' ? 0 : 1];
         i += dirLen;
@@ -80,7 +83,7 @@ uint64_t part2() {
         auto curr = starts[i];
         int j = 0;
         while ((curr >> 16) != 'Z') {
-            #pragma clang loop unroll_count(8)
+#pragma clang loop unroll_count(8)
             for (int k = 0; k < dirLen; k++)
                 curr = map[curr][input[k] == 'L' ? 0 : 1];
             j += dirLen;
@@ -109,9 +112,9 @@ uint64_t part1_cheat() {
         map[id] = {l, r};
     }
 
-    auto curr = 'AAA';
+    auto curr = AAA;
     int i = 0;
-    while (curr != 'ZZZ') {
+    while (curr != ZZZ) {
         curr = map[curr][1];
         i += dirLen;
     }

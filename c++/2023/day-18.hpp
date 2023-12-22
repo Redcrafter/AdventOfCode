@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../util.hpp"
 
 namespace y2023::Day18 {
@@ -50,7 +49,7 @@ uint64_t part2() {
     while (pos < input.size()) {
         pos += 6;
         auto dv = *(uint64_t*)(input.data() + pos);
-        if((dv & 0xFF) == '#') {
+        if ((dv & 0xFF) == '#') {
             dv >>= 8;
             pos++;
         }

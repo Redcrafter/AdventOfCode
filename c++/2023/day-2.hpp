@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../util.hpp"
 
 namespace y2023::Day2 {
