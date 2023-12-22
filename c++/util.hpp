@@ -105,6 +105,56 @@ struct Point {
     }
 };
 
+template <typename T>
+struct Vec3 {
+    T x;
+    T y;
+    T z;
+
+    Vec3() {}
+    Vec3(T v) : x(v), y(v) {}
+    Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
+
+    Vec3<T> sign() {
+        return {T((x > 0) - (x < 0)), T((y > 0) - (y < 0)), T((z > 0) - (z < 0))};
+    }
+
+    Vec3<T>& operator+=(const Vec3<T>& rhs) {
+        x += rhs.x;
+        y += rhs.y;
+        z += rhs.z;
+        return *this;
+    }
+    Vec3<T>& operator-=(const Vec3<T>& rhs) {
+        x -= rhs.x;
+        y -= rhs.y;
+        z -= rhs.z;
+        return *this;
+    }
+    Vec3<T>& operator*=(const Vec3<T>& rhs) {
+        x *= rhs.x;
+        y *= rhs.y;
+        z *= rhs.z;
+        return *this;
+    }
+
+    friend Vec3<T> operator+(Vec3<T> lhs, const Vec3<T>& rhs) {
+        lhs += rhs;
+        return lhs;
+    }
+    friend Vec3<T> operator-(Vec3<T> lhs, const Vec3<T>& rhs) {
+        lhs -= rhs;
+        return lhs;
+    }
+    friend Vec3<T> operator*(Vec3<T> lhs, const Vec3<T>& rhs) {
+        lhs *= rhs;
+        return lhs;
+    }
+    friend bool operator==(const Vec3<T>& lhs, const Vec3<T>& rhs) {
+        return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+    }
+};
+
 template <int width, int height, typename T>
 class Grid {
    public:
@@ -193,6 +243,15 @@ class FixedVector {
     }
     constexpr size_t capacity() const {
         return _size;
+    }
+    auto begin() {
+        return data.begin();
+    }
+    auto end() {
+        return data.begin() + pos;
+    }
+    operator std::span<T>() {
+        return std::span<T>(data).subspan(0, pos);
     }
 
     T operator[](int index) const {
