@@ -21,6 +21,14 @@ class fixedVector {
             data[index] = data[index + 1];
         }
     }
+
+    void clear() {
+        for (size_t i = 0; i < pos; i++) {
+            data[i].~T();
+        }
+        
+        pos = 0;
+    }
     auto size() const {
         return pos;
     }
