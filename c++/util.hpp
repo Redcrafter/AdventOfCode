@@ -88,6 +88,24 @@ bool contains(const T* ptr, int start, int end, T search) {
     return ok;
 }
 
+template <typename T = int32_t>
+T readSInt(const std::string& input, size_t& pos) {
+    char c = input[pos++];
+    T val = 0;
+
+    if (c == '-') {
+        while (isDigit(c = input[pos++])) {
+            val = val * 10 + (c & 0xF);
+        }
+        return -val;
+    }
+    val = c & 0xF;
+    while (isDigit(c = input[pos++])) {
+        val = val * 10 + (c & 0xF);
+    }
+    return val;
+}
+
 template <typename T = uint32_t>
 T readInt(const std::string& input, size_t& pos) {
     T val = input[pos++] & 0xF;

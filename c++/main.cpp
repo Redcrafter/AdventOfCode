@@ -51,6 +51,7 @@
 #include "./2023/day-21.hpp"
 #include "./2023/day-22.hpp"
 #include "./2023/day-23.hpp"
+#include "./2023/day-24.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -71,7 +72,14 @@ auto test(R(func)()) {
     std::chrono::nanoseconds time{};
     std::vector<std::chrono::duration<double, std::nano>> times;
 
-    const auto runs = 100;
+    // time 1 run to determine loop count
+    auto start = std::chrono::high_resolution_clock::now();
+    auto val = func();
+    DoNotOptimize(val);
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // make it so 1 sample step takes ~100ms
+    const auto runs = std::ceil((100 * 1000 * 1000.0) / (end - start).count());
 
     int i = 0;
     while (time < std::chrono::seconds(5)) {
@@ -221,6 +229,8 @@ int main() {
         entry(y2023::Day22::part2, 69915),
         entry(y2023::Day23::part1, 2010),
         entry(y2023::Day23::part2, 6318),
+        entry(y2023::Day24::part1, 15107),
+        entry(y2023::Day24::part2, 856642398547748),
     };
 
     printf("      min │      max │   median │     mean │ name\n");

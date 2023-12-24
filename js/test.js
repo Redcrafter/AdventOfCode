@@ -48,8 +48,8 @@ export async function checkAnswers() {
     let mod = await import(`./${year}/day-${day}.js`);
 
     if (!solutions) {
-        let p1 = mod.part1();
-        let p2 = mod.part2();
+        let p1 = await mod.part1();
+        let p2 = await mod.part2();
         console.log(`[${year}-${day.padStart(2)}-1] ${format(12, p1)}`);
         console.log(`[${year}-${day.padStart(2)}-2] ${format(12, p2)}`);
 
@@ -64,19 +64,19 @@ export async function checkAnswers() {
 
     if (!sol) {
         console.log(`${red}Missing solutions for Year ${year} Day ${day} showing results:${reset}`);
-        console.log(`Part 1: ${format(8, mod.part1())}`);
-        console.log(`Part 2: ${format(8, mod.part2())}`);
+        console.log(`Part 1: ${format(8, await mod.part1())}`);
+        console.log(`Part 2: ${format(8, await mod.part2())}`);
         return;
     }
 
-    let p1 = mod.part1();
+    let p1 = await mod.part1();
     if (p1 === sol[0]) {
         console.log(`${green}[${year}-${day}-1] Passed${reset}`);
     } else {
         console.log(`[${year}-${day}-1] Failed - Result: ${p1} - Expected: ${sol[0]}`);
     }
 
-    let p2 = mod.part2();
+    let p2 = await mod.part2();
     if (p2 === sol[1]) {
         console.log(`${green}[${year}-${day}-2] Passed${reset}`);
     } else {
