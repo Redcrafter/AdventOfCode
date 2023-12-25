@@ -88,7 +88,7 @@ uint64_t solve() {
                 goto end;
             }
         }
-    end:
+    end:;
     }
 
     return result;

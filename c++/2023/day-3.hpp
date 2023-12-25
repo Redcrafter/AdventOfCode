@@ -100,7 +100,7 @@ uint64_t part2() {
             }
         }
 
-    end:
+    end:;
     }
 
     return result;

@@ -17,7 +17,7 @@ struct Card {
 always__inline auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t charMap[]) {
     auto hand = *(uint64_t*)(input.data() + pos);
     pos += 6;
-    auto bet = readInt(input, pos);
+    auto bet = readUInt(input, pos);
 
     scores.fill(0);
     int value = 0;

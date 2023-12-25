@@ -50,7 +50,7 @@ auto parseRules(size_t& pos) {
             auto c1 = input[pos++];
 
             if (c1 == '>' || c1 == '<') {
-                auto val = readInt4(input, pos);
+                auto val = readUInt4(input, pos);
                 auto next = readStr(pos);
 
                 r.emplace_back(c, c1, val, next);
@@ -77,10 +77,10 @@ uint64_t part1() {
     uint64_t result = 0;
     while (pos < input.size()) {
         pos += 3;
-        auto x = readInt4(input, pos); pos += 2;
-        auto m = readInt4(input, pos); pos += 2;
-        auto a = readInt4(input, pos); pos += 2;
-        auto s = readInt4(input, pos); pos++;
+        auto x = readUInt4(input, pos); pos += 2;
+        auto m = readUInt4(input, pos); pos += 2;
+        auto a = readUInt4(input, pos); pos += 2;
+        auto s = readUInt4(input, pos); pos++;
 
         auto l = ('i' << 8) | 'n';
         while (true) {

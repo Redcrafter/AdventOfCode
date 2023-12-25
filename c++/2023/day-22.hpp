@@ -38,7 +38,7 @@ vec3<int> readVec(size_t& pos) {
     auto x = input[pos] & 0xF;
     auto y = input[pos + 2] & 0xF;
     pos += 4;
-    auto z = readInt(input, pos) - 1;
+    auto z = readUInt(input, pos) - 1;
 
     return vec3<int>(x, y, z);
 }

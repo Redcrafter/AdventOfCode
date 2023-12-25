@@ -16,7 +16,7 @@ always__inline auto parseInput() {
 
     size_t pos = 7;
     while (input[pos] != '\n') {
-        seeds.push_back(readInt(input, pos));
+        seeds.push_back(readUInt(input, pos));
     }
 
     int n = 0;
@@ -29,9 +29,9 @@ always__inline auto parseInput() {
         }
 
         while (pos << input.size() && input[pos] != '\n') {
-            auto a = readInt(input, pos);
-            auto b = readInt(input, pos);
-            auto c = readInt(input, pos);
+            auto a = readUInt(input, pos);
+            auto b = readUInt(input, pos);
+            auto c = readUInt(input, pos);
             curr.emplace_back(a, b, c);
         }
     }

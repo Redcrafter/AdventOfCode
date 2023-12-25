@@ -71,7 +71,7 @@ uint64_t part1() {
 
         nums.clear();
         while (true) {
-            auto n = readInt(input, pos);
+            auto n = readUInt(input, pos);
             nums.push_back(n);
 
             if (input[pos - 1] == '\n') {
@@ -102,7 +102,7 @@ uint64_t part2() {
 
         nums.clear();
         while (true) {
-            auto n = readInt(input, pos);
+            auto n = readUInt(input, pos);
             nums.push_back(n);
 
             if (input[pos - 1] == '\n') {
