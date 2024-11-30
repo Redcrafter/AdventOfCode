@@ -37,7 +37,7 @@ export async function checkAnswers() {
     let callFile = stack[1].getFileName();
 
     // only check if day is run directly
-    if (!testAll && process.argv[1] !== fileURLToPath(callFile)) {
+    if (!testAll && process.argv[1] !== callFile) {
         return;
     }
 
@@ -87,7 +87,7 @@ export async function checkAnswers() {
 async function main() {
     testAll = true;
 
-    for (const year of [2020, 2021, 2022]) {
+    for (const year of [2020, 2021, 2022, 2023, 2024]) {
         for (let i = 1; i <= 25; i++) {
             if (!fs.existsSync(`./js/${year}/day-${i}.js`))
                 continue;

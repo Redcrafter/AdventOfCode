@@ -101,7 +101,7 @@ export function part1() {
     }
 }
 
-export async function part2() {
+export function part2() {
     return 0;
 }
 

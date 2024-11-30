@@ -1,16 +1,15 @@
 import fs from "fs";
-import { fileURLToPath } from 'url';
 
 /** @returns {NodeJS.CallSite[]} */
 export function getCallStack() {
-    let originalFunc = Error.prepareStackTrace;
+    const originalFunc = Error.prepareStackTrace;
 
     let stack = [];
     try {
-        let err = new Error();
-        Error.prepareStackTrace = function (err, stack) { return stack; };
+        const err = new Error();
+        Error.prepareStackTrace = function (_, stack) { return stack; };
         stack = err.stack;
-    } catch (e) { }
+    } catch { }
     Error.prepareStackTrace = originalFunc;
 
     stack.shift();
@@ -18,16 +17,16 @@ export function getCallStack() {
 }
 
 export function _getCallerFile() {
-    let stack = getCallStack();
+    const stack = getCallStack();
 
-    let currentfile = stack.shift().getFileName();
+    const currentfile = stack.shift().getFileName();
     let callerfile;
     while (stack.length) {
         callerfile = stack.shift().getFileName();
         if (currentfile !== callerfile) break;
     }
 
-    return fileURLToPath(callerfile);
+    return callerfile;
 }
 
 /**
@@ -48,7 +47,7 @@ export function readLines(path, skipEmpty = true) {
  * @returns {T[][]}
  */
 export function arraySplit(array, size) {
-    let sections = [];
+    const sections = [];
     let current = [];
 
     if (typeof size == "number") {
@@ -71,12 +70,12 @@ export function arraySplit(array, size) {
 }
 
 export function getInput(skipEmpty = true) {
-    let test = _getCallerFile().match(/\d+/g);
+    const test = _getCallerFile().match(/\d+/g);
 
-    let year = test.at(-2);
-    let day = test.at(-1);
+    const year = test.at(-2);
+    const day = test.at(-1);
 
-    let path = `./data/${year}/day${day}.txt`;
+    const path = `./data/${year}/day${day}.txt`;
 
     return readLines(path, skipEmpty);
 }
@@ -98,8 +97,8 @@ export function sum(arr) {
  * @param  {...any[]} arrays 
  */
 export function zip(...arrays) {
-    let res = [];
-    let len = Math.max(...arrays.map(x => x.length));
+    const res = [];
+    const len = Math.max(...arrays.map(x => x.length));
     for (let i = 0; i < len; i++) {
         res.push(arrays.map(x => x[i]));
     }
@@ -130,7 +129,7 @@ export function extractNumbers(dat, readNegative = true) {
  * @returns {T[][]}
  */
 export function window(arr, size) {
-    let res = []
+    const res = []
     for (let i = size; i < arr.length; i++) {
         res.push(arr.slice(i - size, i));
     }

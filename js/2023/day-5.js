@@ -87,7 +87,6 @@ export function part2() {
 
         _seeds = nseeds;
     }
-    console.log(_seeds);
 
     for (const r of _seeds) {
         result = Math.min(result, r[0]);

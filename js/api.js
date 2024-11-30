@@ -8,10 +8,10 @@ if(session.length == 0) {
 }
 
 export async function downloadInput(year, day) {
-    let path = `./data/${year}/day${day}.txt`;
+    const path = `./data/${year}/day${day}.txt`;
     if (fs.existsSync(path)) return;
 
-    let req = await fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
+    const req = await fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
         headers: { Cookie: `session=${session}` }
     });
     if (req.ok) {

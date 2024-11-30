@@ -1,7 +1,7 @@
 # AdventOfCode
 
 ## Usage
-### Js
+### Js (node & deno)
 To download inputs and print results enter your session token in `js/api.js` and then run `node js/test.js` \
 run a benchmark with `node js/benchmark.js` \
 run individual days using `node js/{year}/{day}.js`

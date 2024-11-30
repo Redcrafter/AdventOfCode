@@ -1,0 +1,7 @@
+{
+    "imports": {
+        "fs": "node:fs",
+        "url": "node:url",
+        "readline": "node:readline"
+    }
+}
