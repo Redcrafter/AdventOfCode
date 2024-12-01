@@ -32,7 +32,7 @@ export function _getCallerFile() {
 /**
  * @param {string} path 
  * @param {bool} skipEmpty 
- * @returns 
+ * @returns {string[]}
  */
 export function readLines(path, skipEmpty = true) {
     let lines = fs.readFileSync(path).toString().split("\n");
@@ -41,6 +41,7 @@ export function readLines(path, skipEmpty = true) {
 }
 
 /**
+ * splits array into chunks of size or based on predicate
  * @template T
  * @param {T[]} array 
  * @param {number|(T) => bool} size
@@ -128,9 +129,9 @@ export function extractNumbers(dat, readNegative = true) {
  * @param {number} size 
  * @returns {T[][]}
  */
-export function window(arr, size) {
+export function window(arr, size, step = 1) {
     const res = []
-    for (let i = size; i < arr.length; i++) {
+    for (let i = size; i < arr.length; i += step) {
         res.push(arr.slice(i - size, i));
     }
     return res;
@@ -157,4 +158,56 @@ export function parseInt(str, start = 0) {
         val = val * 10 + c - 48
     }
     return val * neg;
+}
+
+/**
+ * see https://stackoverflow.com/a/46720474
+ * @param {ArrayLike<number>} input
+ */
+export function radixSortUint32(input) {
+    const arrayConstr = input.length < (1 << 16) ? Uint16Array : Uint32Array;
+    const numberOfBins = 256 * 4;
+    const count = new arrayConstr(numberOfBins);
+
+    const output = new Uint32Array(input.length);
+
+    // count all bytes in one pass
+    for (let i = 0; i < input.length; i++) {
+        const val = input[i];
+        count[val & 0xFF]++;
+        count[((val >> 8) & 0xFF) | 256]++;
+        count[((val >> 16) & 0xFF) | 512]++;
+        count[((val >> 24) & 0xFF) | 768]++;
+    }
+
+    // create summed array
+    for (let j = 0; j < 4; j++) {
+        let t = 0;
+        let sum = 0;
+        const offset = j * 256;
+        for (let i = 0; i < 256; i++) {
+            t = count[i + offset];
+            count[i + offset] = sum;
+            sum += t;
+        }
+    }
+
+    for (let i = 0; i < input.length; i++) {
+        const val = input[i];
+        output[count[val & 0xFF]++] = val;
+    }
+    for (let i = 0; i < input.length; i++) {
+        const val = output[i];
+        input[count[((val >> 8) & 0xFF) | 256]++] = val;
+    }
+    for (let i = 0; i < input.length; i++) {
+        const val = input[i];
+        output[count[((val >> 16) & 0xFF) | 512]++] = val;
+    }
+    for (let i = 0; i < input.length; i++) {
+        const val = output[i];
+        input[count[((val >> 24) & 0xFF) | 768]++] = val;
+    }
+
+    return input;
 }
