@@ -54,6 +54,9 @@
 #include "./2023/day-24.hpp"
 #include "./2023/day-25.hpp"
 
+#include "./2024/day-1.hpp"
+#include "./2024/day-2.hpp"
+
 template <class T>
 inline void DoNotOptimize(const T& value) {
     asm volatile("" : : "r,m"(value) : "memory");
@@ -233,6 +236,11 @@ int main() {
         entry(y2023::Day24::part1, 15107),
         entry(y2023::Day24::part2, 856642398547748),
         entry(y2023::Day25::part1, 544523),
+
+        entry(y2024::Day1::part1, 1388114),
+        entry(y2024::Day1::part2, 23529853),
+        entry(y2024::Day2::part1, 252),
+        entry(y2024::Day2::part2, 324),
     };
 
     printf("      min │      max │   median │     mean │ name\n");
