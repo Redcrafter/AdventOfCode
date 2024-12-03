@@ -35,6 +35,8 @@ function format(pad, val) {
 export async function checkAnswers() {
     let stack = getCallStack();
     let callFile = stack[1].getFileName();
+    if (callFile.startsWith("file://"))
+        callFile = fileURLToPath(callFile);
 
     // only check if day is run directly
     if (!testAll && process.argv[1] !== callFile) {
