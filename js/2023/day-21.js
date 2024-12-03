@@ -13,7 +13,7 @@ export function part1() {
 
     positions.add(sx + sy * width)
 
-    for (let i = 0; i < 65; i++) {
+    for (let i = 0; i < 64; i++) {
         let next = new Set();
 
         for (const p of positions) {
@@ -53,7 +53,7 @@ export function part2() {
             if (get(x, y - 1) != "#") next.add(JSON.stringify({ x, y: y - 1 }));
             if (get(x, y + 1) != "#") next.add(JSON.stringify({ x, y: y + 1 }));
         }
-        if (i == 65 || i == 65 + 131) {
+        if (i == 64 || i == 65) {
             vals.push(positions.size);
         }
         positions = next;
@@ -64,8 +64,8 @@ export function part2() {
     let n = (26501365 - 65) / 131;
 
     let delta = (vals[2] - vals[1]) - (vals[1] - vals[0]);
-    let step = vals[1] - vals[0];
-    let asd = vals[0];
+    let step = vals[2] - vals[1];
+    let asd = vals[1];
 
     for (let i = 0; i < n; i++) {
         asd += step;
