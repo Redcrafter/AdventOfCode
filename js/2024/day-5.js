@@ -21,8 +21,7 @@ export function part1() {
     for (const el of input1) map[el[0] + el[1] * 100] = 1;
 
     let result = 0;
-    for (let i = 0; i < input2.length; i++) {
-        const item = input2[i];
+    for (const item of input2) {
         if (check(map, item)) result += item[(item.length / 2) | 0];
     }
     return result;
@@ -34,9 +33,7 @@ export function part2() {
     const map = new Uint8Array(100 * 100);
     for (const el of input1) map[el[0] + el[1] * 100] = 1;
 
-    for (let i = 0; i < input2.length; i++) {
-        const item = input2[i];
-
+    for (const item of input2) {
         let eq = true;
         const sorted = item.slice();
         // insertion sort + equality check
