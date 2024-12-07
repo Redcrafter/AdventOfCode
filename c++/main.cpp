@@ -58,6 +58,7 @@
 #include "./2024/day-2.hpp"
 #include "./2024/day-4.hpp"
 #include "./2024/day-5.hpp"
+#include "./2024/day-6.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
@@ -247,6 +248,8 @@ int main() {
         entry(y2024::Day4::part2, 1902),
         entry(y2024::Day5::part1, 5108),
         entry(y2024::Day5::part2, 7380),
+        entry(y2024::Day6::part1, 5329),
+        entry(y2024::Day6::part2, 2162),
     };
 
     printf("      min │      max │   median │     mean │ name\n");
