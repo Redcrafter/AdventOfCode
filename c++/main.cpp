@@ -59,6 +59,7 @@
 #include "./2024/day-4.hpp"
 #include "./2024/day-5.hpp"
 #include "./2024/day-6.hpp"
+#include "./2024/day-7.hpp"
 
 template <class T>
 inline void DoNotOptimize(const T& value) {
