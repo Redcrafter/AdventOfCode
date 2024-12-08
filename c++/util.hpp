@@ -70,6 +70,25 @@ auto findChar(const char* str, char c) {
     }
 }
 
+template <size_t N>
+struct StringLiteral {
+    constexpr StringLiteral(const char (&str)[N]) {
+        std::copy_n(str, N, value);
+    }
+
+    char value[N];
+};
+
+template <StringLiteral val>
+bool stringMatch(const std::string& str, size_t& pos) {
+    for (size_t i = 0; i < sizeof(val) - 1; i++) {
+        if (str[pos + i] != val.value[i]) return false;
+    }
+
+    pos += sizeof(val) - 1;
+    return true;
+}
+
 template <typename T>
 bool contains(const std::span<const T> arr, T search) {
     bool ok = false;

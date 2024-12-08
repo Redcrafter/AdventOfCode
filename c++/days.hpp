@@ -43,6 +43,7 @@
 
 #include "./2024/day-1.hpp"
 #include "./2024/day-2.hpp"
+#include "./2024/day-3.hpp"
 #include "./2024/day-4.hpp"
 #include "./2024/day-5.hpp"
 #include "./2024/day-6.hpp"

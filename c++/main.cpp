@@ -192,6 +192,8 @@ int main() {
         entry(y2024::Day1::part2, 23529853),
         entry(y2024::Day2::part1, 252),
         entry(y2024::Day2::part2, 324),
+        entry(y2024::Day3::part1, 159892596),
+        entry(y2024::Day3::part2, 92626942),
         entry(y2024::Day4::part1, 2562),
         entry(y2024::Day4::part2, 1902),
         entry(y2024::Day5::part1, 5108),
