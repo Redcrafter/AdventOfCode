@@ -20,7 +20,7 @@ if (!fs.existsSync(`./data/solutions.json`)) {
 }
 
 function format(pad, val) {
-    if (val === null) {
+    if (val === null || val === undefined) {
         return "N/A";
     }
     val = val.toString().split("\n");

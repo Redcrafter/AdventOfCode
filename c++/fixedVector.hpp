@@ -15,6 +15,9 @@ class fixedVector {
         data[pos] = value;
         pos++;
     }
+    void pop_back() {
+        pos--;
+    }
     void erase(int index) {
         pos--;
         for (; index < pos; index++) {
@@ -26,14 +29,20 @@ class fixedVector {
         for (size_t i = 0; i < pos; i++) {
             data[i].~T();
         }
-        
+
         pos = 0;
     }
     auto size() const {
         return pos;
     }
+    auto empty() const {
+        return pos == 0;
+    }
     constexpr size_t capacity() const {
         return _size;
+    }
+    auto back() {
+        return data[pos - 1];
     }
     auto begin() {
         return data.begin();
