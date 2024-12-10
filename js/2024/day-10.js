@@ -38,24 +38,29 @@ export function part1() {
     return result;
 }
 
-function count2(x, y, h) {
+function count2(x, y, h, known) {
     if (x < 0 || x >= width || y < 0 || y >= height) return 0;
     if (input[x + y * width] != h) return 0;
     if (h == 9) return 1;
+    if (known[x + y * width] != -1) return known[x + y * width];
 
-    return count2(x - 1, y, h + 1) +
-        count2(x + 1, y, h + 1) +
-        count2(x, y + 1, h + 1) +
-        count2(x, y - 1, h + 1);
+    const result = count2(x - 1, y, h + 1, known) +
+        count2(x + 1, y, h + 1, known) +
+        count2(x, y + 1, h + 1, known) +
+        count2(x, y - 1, h + 1, known);
+    known[x + y * width] = result;
+    return result;
 }
 
 export function part2() {
     let result = 0;
+    const known = new Int8Array(width * height);
+    known.fill(-1);
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             if (input[x + y * width] == 0) {
-                result += count2(x, y, 0);
+                result += count2(x, y, 0, known);
             }
         }
     }
