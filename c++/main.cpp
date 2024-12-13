@@ -210,6 +210,8 @@ int main() {
         entry(y2024::Day10::part2, 1058),
         entry(y2024::Day11::part1, 217812),
         entry(y2024::Day11::part2, 259112729857522),
+        entry(y2024::Day12::part1, 1450422),
+        entry(y2024::Day12::part2, 906606),
     };
 
     printf("      min │      max │   median │     mean │ name\n");
