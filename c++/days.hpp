@@ -53,3 +53,4 @@
 #include "./2024/day-10.hpp"
 #include "./2024/day-11.hpp"
 #include "./2024/day-12.hpp"
+#include "./2024/day-13.hpp"
