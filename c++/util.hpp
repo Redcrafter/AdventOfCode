@@ -41,13 +41,27 @@ template<typename T, bool readNegative = false>
 auto extractNumbers(std::string_view str) {
     std::vector<T> res;
 
-    static_assert(!readNegative);
-
     size_t i = 0;
     while(i < str.size()) {
         char c = str[i++];
 
-        // todo: if(readNegative && c == '-') { }
+        if(readNegative && c == '-') {
+            if(i < str.size() && isDigit(c = str[i])) {
+                i++;
+
+                T n = c & 0xF;
+                while(i < str.size()) {
+                    c = str[i++];
+                    if(!isDigit(c)) {
+                        i--;
+                        break;
+                    }
+                    n = (n * 10) + (c & 0xF);
+                }
+                res.push_back(-n);
+            }
+            continue;
+        }
 
         if(isDigit(c)) {
             T n = c & 0xF;
