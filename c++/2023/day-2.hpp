@@ -1,9 +1,10 @@
 #pragma once
+#include "../aoc.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day2 {
 
-const auto input = readFile("../data/2023/day2.txt");
+const auto input = aoc::getInput(2023, 2);
 
 uint64_t part1() {
     uint64_t result = 0;
@@ -12,15 +13,15 @@ uint64_t part1() {
 
     size_t pos = 1;
     size_t game = 0;
-    while (pos < input.size()) {
-        if (input[pos] == 'a') {
+    while(pos < input.size()) {
+        if(input[pos] == 'a') {
             result += ok * (game);
             game++;
             pos += 7 + (game > 9) + (game > 99);
             ok = true;
         } else {
             char v = input[pos++] - '0';
-            while (input[pos] != ' ') {
+            while(input[pos] != ' ') {
                 v = 10 * v + input[pos++] - '0';
             }
             pos += 2;
@@ -40,23 +41,23 @@ uint64_t part2() {
     int r = 0, g = 0, b = 0;
     size_t pos = 1;
     size_t game = 0;
-    while (pos < input.size()) {
-        if (input[pos] == 'a') {
+    while(pos < input.size()) {
+        if(input[pos] == 'a') {
             result += r * g * b;
             r = g = b = 0;
             game++;
             pos += 7 + (game > 9) + (game > 99);
         } else {
             char v = input[pos++] - '0';
-            while (input[pos] != ' ') {
+            while(input[pos] != ' ') {
                 v = 10 * v + input[pos++] - '0';
             }
             pos += 2;
             int col = (input[pos] >> 3) & 3;
 
-            if (col == 0)
+            if(col == 0)
                 r = v > r ? v : r;
-            else if (col == 2)
+            else if(col == 2)
                 g = v > g ? v : g;
             else
                 b = v > b ? v : b;
@@ -69,4 +70,7 @@ uint64_t part2() {
     return result;
 }
 
-}  // namespace y2023::Day2
+static auto p1 = aoc::test(part1, 2023, 2, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 2, 2, "part2");
+
+} // namespace y2023::Day2

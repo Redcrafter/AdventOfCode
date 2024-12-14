@@ -6,10 +6,14 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../aoc.hpp"
+
 namespace y2021::Day21 {
 
-const int player1 = 2;
-const int player2 = 5;
+auto input = aoc::getInput(2021, 21);
+
+const int player1 = input[28] - '0';
+const int player2 = input[58] - '0';
 
 uint64_t part1() {
     int p1 = player1 - 1;
@@ -31,14 +35,14 @@ uint64_t part1() {
         return roll() + roll() + roll();
     };
 
-    while (true) {
+    while(true) {
         p1 = (p1 + roll3()) % 10;
         p1Points += p1 + 1;
-        if (p1Points >= 1000) break;
+        if(p1Points >= 1000) break;
 
         p2 = (p2 + roll3()) % 10;
         p2Points += p2 + 1;
-        if (p2Points >= 1000) break;
+        if(p2Points >= 1000) break;
     }
 
     return std::min(p1Points, p2Points) * rolls;
@@ -61,7 +65,7 @@ struct State {
     int turn = 0;
 
     inline void next(int roll) {
-        if (turn == 0) {
+        if(turn == 0) {
             p1.step(roll);
         } else {
             p2.step(roll);
@@ -83,19 +87,19 @@ uint64_t part2() {
 
     uint64_t p1Win = 0;
     uint64_t p2Win = 0;
-    while (stack.size() > 0) {
+    while(stack.size() > 0) {
         State el = stack[stack.size() - 1];
         stack.pop_back();
 
-        for (auto &&i : rolls) {
+        for(auto&& i : rolls) {
             State next = el;
             next.next(i.first);
 
             next.count *= i.second;
 
-            if (next.p1.points >= 21) {
+            if(next.p1.points >= 21) {
                 p1Win += next.count;
-            } else if (next.p2.points >= 21) {
+            } else if(next.p2.points >= 21) {
                 p2Win += next.count;
             } else {
                 stack.emplace_back(next);
@@ -106,4 +110,7 @@ uint64_t part2() {
     return std::max(p1Win, p2Win);
 }
 
-}  // namespace y2021::Day21
+static auto p1 = aoc::test(part1, 2021, 21, 1, "part1");
+static auto p2 = aoc::test(part2, 2021, 21, 2, "part2");
+
+} // namespace y2021::Day21

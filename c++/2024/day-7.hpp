@@ -1,86 +1,116 @@
 #pragma once
 #include <array>
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 
+#include "../alignedAllocator.hpp"
+#include "../aoc.hpp"
+#include "../fixedVector.hpp"
 #include "../util.hpp"
 
 namespace y2024::Day7 {
 
-const auto input = readFile("../data/2024/day7.txt");
+const auto input = aoc::getInput(2024, 7);
+
+using vecType = fixedVector<uint16_t, 15>;
+using valType = std::pair<vecType, uint64_t>;
 
 auto parse() {
-    std::vector<std::pair<uint64_t, std::vector<uint32_t>>> res;
+    std::vector<valType> res;
+    res.reserve(900);
 
     size_t i = 0;
-    while (i < input.size()) {
-        std::vector<uint32_t> vals;
+    while(i < input.size()) {
+        vecType vals;
 
         auto v = readUInt<uint64_t>(input, i);
         i++;
 
-        while (input[i] != '\n') {
+        while(input[i] != '\n') {
             vals.push_back(readUInt<uint32_t>(input, i));
             i--;
         }
         i++;
 
-        res.emplace_back(v, std::move(vals));
+        res.emplace_back(vals, v);
     }
     return res;
 }
 auto lines = parse();
 
-bool test1(const std::vector<uint32_t>& vals, uint64_t res, int i) {
-    auto a = vals[i];
-
-    if (i == 1) {
-        auto b = vals[i - 1];
+template<int i, int j>
+[[clang::always_inline]]
+bool static_check1(const vecType& vals, uint64_t a, uint64_t res) {
+    auto b = vals[j];
+    if constexpr(j == i) {
         return (a + b == res) || (a * b == res);
     } else {
-        return ((res % a) == 0 && test1(vals, res / a, i - 1)) || (res >= a && test1(vals, res - a, i - 1));
+        return static_check1<i, j + 1>(vals, a + b, res) || static_check1<i, j + 1>(vals, a * b, res);
     }
+}
+
+bool test1(const vecType& vals, uint64_t res, int i) {
+    if(i == 4) return static_check1<4, 1>(vals, vals[0], res);
+
+    auto a = vals[i];
+    return ((res % a) == 0 && test1(vals, res / a, i - 1)) || (res >= a && test1(vals, res - a, i - 1));
+}
+
+[[clang::always_inline]]
+bool test11(const vecType& vals, uint64_t res, int i) {
+    if(i == 3) return static_check1<3, 1>(vals, vals[0], res);
+    if(i == 2) return static_check1<2, 1>(vals, vals[0], res);
+    if(i == 1) return static_check1<1, 1>(vals, vals[0], res);
+    return test1(vals, res, vals.size() - 1);
 }
 
 uint64_t part1() {
     uint64_t result = 0;
-    for (auto& [res, vals] : lines) {
-        result += res * test1(vals, res, vals.size() - 1);
+    for(auto& [vals, res] : lines) {
+        result += res * test11(vals, res, vals.size() - 1);
     }
     return result;
 }
 
 uint32_t digits(uint32_t x) {
-    uint32_t r = 10;
-    while (x >= 10) {
-        x /= 10;
-        r *= 10;
-    }
-    return r;
+    if(x >= 100) return 1000;
+    if(x >= 10) return 100;
+    return 10;
 }
 
-bool test2(const std::vector<uint32_t>& vals, uint64_t res, int i) {
-    auto a = vals[i];
+template<int i, int j>
+bool static_check2(const vecType& vals, uint64_t a, uint64_t res) {
+    auto b = vals[j];
+    auto l = digits(b);
 
-    if (i == 1) {
-        auto b = vals[i - 1];
-        return (a + b) == res || (a * b == res) || ((b * digits(a) + a) == res);
+    if constexpr(j == i) {
+        return (a + b == res) || (a * b == res) || (a * l + b == res);
     } else {
-        if ((res % a) == 0 && test2(vals, res / a, i - 1)) return true;  // reduces a lot and is fast
-
-        auto l = digits(a);
-        if (a == (res % l) && test2(vals, res / l, i - 1)) return true;  // reduces a lot and is slow
-
-        return res >= a && test2(vals, res - a, i - 1);  // reduces a little
+        return static_check2<i, j + 1>(vals, a + b, res) || static_check2<i, j + 1>(vals, a * b, res) || static_check2<i, j + 1>(vals, a * l + b, res);
     }
+}
+
+bool test2(const vecType& vals, uint64_t res, int i) {
+    if(i == 2) return static_check2<2, 1>(vals, vals[0], res);
+
+    auto a = vals[i];
+    auto l = digits(a);
+    return (a == (res % l) && test2(vals, res / l, i - 1)) ||
+           ((res % a) == 0 && test2(vals, res / a, i - 1)) ||
+           (res >= a && test2(vals, res - a, i - 1));
 }
 
 uint64_t part2() {
     uint64_t result = 0;
-    for (auto& [res, vals] : lines) {
-        result += res * test2(vals, res, vals.size() - 1);
+    for(auto& [vals, res] : lines) {
+        result += res * (test11(vals, res, vals.size() - 1) || test2(vals, res, vals.size() - 1));
     }
     return result;
 }
 
-}  // namespace y2024::Day7
+static auto p = aoc::test([]() { return parse().size(); }, 2024, 7, 0, "parse");
+static auto p1 = aoc::test(part1, 2024, 7, 1, "part1");
+static auto p2 = aoc::test(part2, 2024, 7, 2, "part2");
+
+} // namespace y2024::Day7

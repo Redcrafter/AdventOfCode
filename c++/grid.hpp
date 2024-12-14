@@ -3,9 +3,9 @@
 
 #include "vec2.hpp"
 
-template <int width, int height, typename T>
+template<int width, int height, typename T>
 class Grid {
-   public:
+  public:
     std::array<T, width * height> data;
 
     Grid() = default;
@@ -19,11 +19,11 @@ class Grid {
     T& operator()(int x, int y) {
         return data[x + y * width];
     }
-    template <typename V>
+    template<typename V>
     T operator()(vec2<V> pos) const {
         return data[pos.x + pos.y * width];
     }
-    template <typename V>
+    template<typename V>
     T& operator()(vec2<V> pos) {
         return data[pos.x + pos.y * width];
     }

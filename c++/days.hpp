@@ -2,8 +2,8 @@
 
 #include "./2021/day-1.hpp"
 #include "./2021/day-7.hpp"
-#include "./2021/day-11-bit.hpp"
 #include "./2021/day-11.hpp"
+#include "./2021/day-11-bit.hpp"
 #include "./2021/day-12.hpp"
 #include "./2021/day-13.hpp"
 #include "./2021/day-20.hpp"

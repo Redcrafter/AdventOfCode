@@ -1,11 +1,12 @@
 #pragma once
 #include <array>
 
+#include "../aoc.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day10 {
 
-const auto input = readFile("../data/2023/day10.txt");
+const auto input = aoc::getInput(2023, 10);
 const auto width = 141;
 
 enum Dir {
@@ -25,26 +26,26 @@ always__inline auto getStarts(int start) {
     int i = 0;
     {
         auto t = input[start - width];
-        if (t == '|' || t == '7' || t == 'F')
+        if(t == '|' || t == '7' || t == 'F')
             starts[i++] = {start - width, Dir::Bottom};
 
         auto b = input[start + width];
-        if (b == '|' || b == 'L' || b == 'J')
+        if(b == '|' || b == 'L' || b == 'J')
             starts[i++] = {start + width, Dir::Top};
 
         auto l = input[start - 1];
-        if (l == '-' || l == 'L' || l == 'F')
+        if(l == '-' || l == 'L' || l == 'F')
             starts[i++] = {start - 1, Dir::Right};
 
         auto r = input[start + 1];
-        if (r == '-' || r == 'J' || r == '7')
+        if(r == '-' || r == 'J' || r == '7')
             starts[i++] = {start + 1, Dir::Left};
     }
     return starts;
 }
 
 always__inline void step(Position& p) {
-    switch ((input[p.pos] & 0x1F) | p.from) {
+    switch((input[p.pos] & 0x1F) | p.from) {
         case ('|' & 0x1F) | Dir::Top:
         case ('7' & 0x1F) | Dir::Left:
         case ('F' & 0x1F) | Dir::Right:
@@ -77,14 +78,14 @@ uint64_t part1() {
     auto starts = getStarts(start);
 
     int i = 2;
-    while (true) {
-        if (starts[0].pos == starts[1].pos) {
+    while(true) {
+        if(starts[0].pos == starts[1].pos) {
             break;
         }
         step(starts[0]);
         i++;
 
-        if (starts[0].pos == starts[1].pos) {
+        if(starts[0].pos == starts[1].pos) {
             break;
         }
         step(starts[1]);
@@ -108,17 +109,17 @@ uint64_t part2() {
     auto area = 0;
     auto count = 0;
 
-    while (true) {
+    while(true) {
         area += (ly + y) * (lx - x);
         lx = x;
         ly = y;
         count++;
 
-        if (pos == start)
+        if(pos == start)
             break;
 
         // have to copy this code because of x and y
-        switch ((input[pos] & 0x1F) | from) {
+        switch((input[pos] & 0x1F) | from) {
             case ('|' & 0x1F) | Dir::Top:
             case ('7' & 0x1F) | Dir::Left:
             case ('F' & 0x1F) | Dir::Right:
@@ -155,4 +156,7 @@ uint64_t part2() {
     return std::abs(area / 2) - (count / 2) + 1;
 }
 
-}  // namespace y2023::Day10
+static auto p1 = aoc::test(part1, 2023, 10, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 10, 2, "part2");
+
+} // namespace y2023::Day10

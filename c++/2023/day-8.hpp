@@ -2,25 +2,26 @@
 #include <array>
 #include <vector>
 
+#include "../aoc.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day8 {
 
-const auto input = readFile("../data/2023/day8.txt");
+const auto input = aoc::getInput(2023, 8);
 
 const auto ZZZ = 'Z' + ('Z' << 8) + ('Z' << 16);
 const auto AAA = 'A' + ('A' << 8) + ('A' << 16);
 
-std::array<std::array<uint32_t, 2>, ZZZ + 1> map;  // too big for stack. causes segfault
+std::array<std::array<uint32_t, 2>, ZZZ + 1> map; // too big for stack. causes segfault
 
 uint64_t part1() {
     size_t pos = 0;
-    while (input[pos++] != '\n') {
+    while(input[pos++] != '\n') {
     }
     auto dirLen = pos - 1;
     pos++;
 
-    while (pos < input.size()) {
+    while(pos < input.size()) {
         auto id = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
         pos += 7;
         auto l = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
@@ -33,9 +34,9 @@ uint64_t part1() {
 
     auto curr = AAA;
     int i = 0;
-    while (curr != ZZZ) {
+    while(curr != ZZZ) {
 #pragma clang loop unroll_count(8)
-        for (int j = 0; j < dirLen; j++)
+        for(int j = 0; j < dirLen; j++)
             curr = map[curr][input[j] == 'L' ? 0 : 1];
         i += dirLen;
     }
@@ -43,7 +44,7 @@ uint64_t part1() {
 }
 
 uint64_t gcd(uint64_t a, uint64_t b) {
-    while (b != 0) {
+    while(b != 0) {
         auto t = b;
         b = a % b;
         a = t;
@@ -57,14 +58,14 @@ uint64_t lcm(uint64_t a, uint64_t b) {
 
 uint64_t part2() {
     size_t pos = 0;
-    while (input[pos++] != '\n') {
+    while(input[pos++] != '\n') {
     }
     auto dirLen = pos - 1;
     pos++;
 
     std::vector<int> starts;
 
-    while (pos < input.size()) {
+    while(pos < input.size()) {
         auto id = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
         pos += 7;
         auto l = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
@@ -73,18 +74,18 @@ uint64_t part2() {
         pos += 5;
 
         map[id] = {l, r};
-        if ((id >> 16) == 'A') {
+        if((id >> 16) == 'A') {
             starts.push_back(id);
         }
     }
 
     uint64_t result = 1;
-    for (size_t i = 0; i < starts.size(); i++) {
+    for(size_t i = 0; i < starts.size(); i++) {
         auto curr = starts[i];
         int j = 0;
-        while ((curr >> 16) != 'Z') {
+        while((curr >> 16) != 'Z') {
 #pragma clang loop unroll_count(8)
-            for (int k = 0; k < dirLen; k++)
+            for(int k = 0; k < dirLen; k++)
                 curr = map[curr][input[k] == 'L' ? 0 : 1];
             j += dirLen;
         }
@@ -96,12 +97,12 @@ uint64_t part2() {
 
 uint64_t part1_cheat() {
     size_t pos = 0;
-    while (input[pos++] != '\n') {
+    while(input[pos++] != '\n') {
     }
     auto dirLen = pos - 1;
     pos++;
 
-    while (pos < input.size()) {
+    while(pos < input.size()) {
         auto id = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
         pos += 7;
         auto l = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
@@ -114,7 +115,7 @@ uint64_t part1_cheat() {
 
     auto curr = AAA;
     int i = 0;
-    while (curr != ZZZ) {
+    while(curr != ZZZ) {
         curr = map[curr][1];
         i += dirLen;
     }
@@ -123,14 +124,14 @@ uint64_t part1_cheat() {
 
 uint64_t part2_cheat() {
     size_t pos = 0;
-    while (input[pos++] != '\n') {
+    while(input[pos++] != '\n') {
     }
     auto dirLen = pos - 1;
     pos++;
 
     std::vector<int> starts;
 
-    while (pos < input.size()) {
+    while(pos < input.size()) {
         auto id = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
         pos += 7;
         auto l = (*(uint32_t*)(input.data() + pos)) & 0xFFFFFF;
@@ -139,16 +140,16 @@ uint64_t part2_cheat() {
         pos += 5;
 
         map[id] = {l, r};
-        if ((id >> 16) == 'A') {
+        if((id >> 16) == 'A') {
             starts.push_back(id);
         }
     }
 
     uint64_t result = 1;
-    for (size_t i = 0; i < starts.size(); i++) {
+    for(size_t i = 0; i < starts.size(); i++) {
         auto curr = starts[i];
         int j = 0;
-        while ((curr >> 16) != 'Z') {
+        while((curr >> 16) != 'Z') {
             curr = map[curr][1];
             j += dirLen;
         }
@@ -158,4 +159,9 @@ uint64_t part2_cheat() {
     return result;
 }
 
-}  // namespace y2023::Day8
+static auto p1 = aoc::test(part1, 2023, 8, 1, "part1");
+static auto p1c = aoc::test(part1_cheat, 2023, 8, 1, "part1_cheat");
+static auto p2 = aoc::test(part2, 2023, 8, 2, "part2");
+static auto p2c = aoc::test(part2_cheat, 2023, 8, 2, "part2_cheat");
+
+} // namespace y2023::Day8

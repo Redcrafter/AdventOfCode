@@ -1,0 +1,10 @@
+SpaceAfterTemplateKeyword: false
+IndentWidth: 4
+PointerAlignment: Left
+ReferenceAlignment: Left
+BreakTemplateDeclarations: Leave
+ColumnLimit: 0
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+IndentCaseLabels: true
+SpaceBeforeParens: false

@@ -1,51 +1,30 @@
 #pragma once
-#include <algorithm>
-#include <array>
-#include <chrono>
-#include <iostream>
+#include "../aoc.hpp"
+#include "../util.hpp"
 
 namespace y2021::Day7 {
 
-std::array<int, 1000> parseData() {
-    std::array<int, 1000> data;
+const auto input = extractNumbers<int>(aoc::getInput(2021, 7));
 
-    auto line = readLines("../data/2021/day7.txt");
-    auto lines = split(line[0], ',');
-
-    for (size_t i = 0; i < lines.size(); i++) {
-        data[i] = std::stoi(lines[i]);
-    }
-
-    return data;
-}
-
-const auto input = parseData();
-
-template <int part>
+template<int part>
 uint64_t func() {
     static_assert(part == 1 || part == 2, "invalid day");
 
-    int min = std::numeric_limits<int>::max();
-    int max = 0;
-
-    for (auto item : input) {
-        min = std::min(min, item);
-        max = std::max(max, item);
-    }
+    auto [min, max] = std::ranges::minmax_element(input);
 
     unsigned int best = -1;
-    for (int i = min; i < max; i++) {
+    for(int i = *min; i < *max; i++) {
         int cost = 0;
-        for (int j = 0; j < input.size(); j++) {
+        for(int j = 0; j < input.size(); j++) {
             auto val = std::abs(input[j] - i);
-            if (part == 1) {
+            if(part == 1) {
                 cost += val;
-            } else if (part == 2) {
+            } else if(part == 2) {
                 cost += (val * (val + 1)) / 2;
             }
         }
 
-        if (cost < best)
+        if(cost < best)
             best = cost;
         else
             break;
@@ -53,4 +32,7 @@ uint64_t func() {
     return best;
 }
 
-}  // namespace y2021::Day7
+static auto p1 = aoc::test(func<1>, 2021, 7, 1, "part1");
+static auto p2 = aoc::test(func<2>, 2021, 7, 2, "part2");
+
+} // namespace y2021::Day7

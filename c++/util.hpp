@@ -1,10 +1,8 @@
 #pragma once
 #include <immintrin.h>
 
-#include <bit>
-#include <fstream>
 #include <span>
-#include <string>
+#include <string_view>
 #include <vector>
 
 #if defined(__clang__) || defined(__GNUC__)
@@ -15,36 +13,15 @@
 #define always__inline
 #endif
 
-std::string readFile(const char* path) {
-    std::ifstream file(path);
-    std::string res((std::istreambuf_iterator<char>(file)),
-                    (std::istreambuf_iterator<char>()));
-    return res;
-}
-
-std::vector<std::string> readLines(const char* path, bool skipEmpty = true) {
-    std::ifstream file(path);
-    std::vector<std::string> res;
-    std::string line;
-
-    while (file) {
-        std::getline(file, line);
-        if (skipEmpty && line.empty()) continue;
-        res.push_back(line);
-    }
-    // TODO: somehow fails if no empty last line
-
-    return res;
-}
-
-std::vector<std::string> split(const std::string& str, const char c) {
-    std::vector<std::string> res;
+template<typename T = std::string_view>
+std::vector<T> split(T str, const char c) {
+    std::vector<T> res;
 
     int start = 0;
     int pos = 0;
 
-    while (pos < str.size()) {
-        if (str[pos] == c) {
+    while(pos < str.size()) {
+        if(str[pos] == c) {
             res.push_back(str.substr(start, pos - start));
             start = pos + 1;
         }
@@ -55,22 +32,51 @@ std::vector<std::string> split(const std::string& str, const char c) {
     return res;
 }
 
-bool inline isDigit(char c) {
+bool isDigit(char c) {
     return c >= '0' && c <= '9';
+}
+
+// assumes there is exactly one number per line
+template<typename T, bool readNegative = false>
+auto extractNumbers(std::string_view str) {
+    std::vector<T> res;
+
+    static_assert(!readNegative);
+
+    size_t i = 0;
+    while(i < str.size()) {
+        char c = str[i++];
+
+        // todo: if(readNegative && c == '-') { }
+
+        if(isDigit(c)) {
+            T n = c & 0xF;
+            while(i < str.size()) {
+                c = str[i++];
+                if(!isDigit(c)) {
+                    i--;
+                    break;
+                }
+                n = (n * 10) + (c & 0xF);
+            }
+            res.push_back(n);
+        }
+    }
+    return res;
 }
 
 auto findChar(const char* str, char c) {
     const auto cmp_val = _mm256_set1_epi8(c);
 
-    for (size_t i = 0;; i += 32) {
+    for(size_t i = 0;; i += 32) {
         auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(_mm256_loadu_si256((__m256i*)(str + i)), cmp_val));
-        if (mask != 0) {
+        if(mask != 0) {
             return i + std::countr_zero((uint32_t)mask);
         }
     }
 }
 
-template <size_t N>
+template<size_t N>
 struct StringLiteral {
     constexpr StringLiteral(const char (&str)[N]) {
         std::copy_n(str, N, value);
@@ -79,75 +85,91 @@ struct StringLiteral {
     char value[N];
 };
 
-template <StringLiteral val>
-bool stringMatch(const std::string& str, size_t& pos) {
-    for (size_t i = 0; i < sizeof(val) - 1; i++) {
-        if (str[pos + i] != val.value[i]) return false;
+template<StringLiteral val>
+bool stringMatch(std::string_view str, size_t& pos) {
+    for(size_t i = 0; i < sizeof(val) - 1; i++) {
+        if(str[pos + i] != val.value[i]) return false;
     }
 
     pos += sizeof(val) - 1;
     return true;
 }
 
-template <typename T>
+template<typename T>
 bool contains(const std::span<const T> arr, T search) {
     bool ok = false;
-    for (auto& i : arr) {
+    for(auto& i : arr) {
         ok |= i == search;
     }
     return ok;
 }
 
-template <typename T>
+template<typename T>
 bool contains(const T* ptr, int start, int end, T search) {
     bool ok = false;
-    for (size_t i = start; i < end; i++) {
+    for(size_t i = start; i < end; i++) {
         ok |= ptr[i] == search;
     }
     return ok;
 }
 
-template <typename T = int32_t>
-T readSInt(const std::string& input, size_t& pos) {
+template<typename T = int32_t>
+T readSInt(std::string_view input, size_t& pos) {
     char c = input[pos++];
     T val = 0;
 
-    if (c == '-') {
-        while (isDigit(c = input[pos++])) {
+    if(c == '-') {
+        while(isDigit(c = input[pos++])) {
             val = val * 10 + (c & 0xF);
         }
         return -val;
     }
     val = c & 0xF;
-    while (isDigit(c = input[pos++])) {
+    while(isDigit(c = input[pos++])) {
         val = val * 10 + (c & 0xF);
     }
     return val;
 }
 
-template <typename T = uint32_t>
-T readUInt(const std::string& input, size_t& pos) {
+template<typename T = uint32_t>
+T parseInt(std::string_view str) {
+    T val = 0;
+    if(str[0] == '-') {
+        for(auto c : str.substr(1)) {
+            val = val * 10 + (c & 0xF);
+        }
+        return -val;
+    } else {
+        for(auto c : str) {
+            val = val * 10 + (c & 0xF);
+        }
+        return val;
+    }
+}
+
+template<typename T = uint32_t>
+T readUInt(std::string_view input, size_t& pos) {
     T val = input[pos++] & 0xF;
     char c;
-    while (isDigit(c = input[pos++])) {
+    while(isDigit(c = input[pos++])) {
         val = val * 10 + (c & 0xF);
     }
     return val;
 }
 
 // reads an integer with a maximum of 4 digits
-uint32_t readUInt4(const std::string& input, size_t& pos) {
+uint32_t readUInt4(std::string_view input, size_t& pos) {
     uint32_t val = *(uint32_t*)(input.data() + pos);
 
-    if (!isDigit(val >> 8)) {
+    if(!isDigit(val >> 8)) {
         pos += 2;
         return (val & 0xF);
     }
-    if (!isDigit(val >> 16)) {
+    if(!isDigit(val >> 16)) {
         pos += 3;
         return (val & 0xF) * 10 + ((val >> 8) & 0xF);
     }
-    if (!isDigit(val >> 24)) {
+    if(!isDigit(val >> 24)) {
         pos += 4;
         return (val & 0xF) * 100 + ((val >> 8) & 0xF) * 10 + ((val >> 16) & 0xF);
     }
@@ -171,11 +193,11 @@ uint64_t readUInt128(const char* input, size_t& pos) {
 
     chunk = _mm_and_si128(chunk, _mm_set1_epi8(0xF));
 
-    switch (len) {
+    switch(len) {
         case 0: return 0;
         case 1: return _mm_cvtsi128_si32(chunk) & 0xFF;
         case 2: chunk = _mm_bslli_si128(chunk, 14); break;
-        case 3: chunk = _mm_bslli_si128(chunk, 13); break; 
+        case 3: chunk = _mm_bslli_si128(chunk, 13); break;
         case 4: chunk = _mm_bslli_si128(chunk, 12); break;
         case 5: chunk = _mm_bslli_si128(chunk, 11); break;
         case 6: chunk = _mm_bslli_si128(chunk, 10); break;
@@ -205,23 +227,15 @@ uint64_t readUInt128(const char* input, size_t& pos) {
     return ((a & 0xffffffff) * 100000000) + (a >> 32);
 }
 
-uint64_t readUInt128(const std::string& input, size_t& pos) {
+uint64_t readUInt128(std::string_view input, size_t& pos) {
     return readUInt128(input.data(), pos);
 }
 
-constexpr auto makeHexLookup() {
-    std::array<uint8_t, 256> data;
-    data.fill(0);
-    for (auto i = '0'; i <= '9'; i++) {
-        data[i] = i - '0';
+template<typename T, int length>
+auto readExactInt(std::string_view str, size_t index) {
+    T res = 0;
+    for(int i = 0; i < length; i++) {
+        res = res * 10 + (str[index + i] & 0xF);
     }
-    for (auto i = 'a'; i <= 'f'; i++) {
-        data[i] = i - 'a' + 10;
-    }
-    return data;
-}
-const auto hexLookup = makeHexLookup();
-
-uint8_t hextoint(char x) {
-    return hexLookup[x];
+    return res;
 }

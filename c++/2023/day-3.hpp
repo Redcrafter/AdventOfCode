@@ -1,10 +1,11 @@
 #pragma once
+#include "../aoc.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day3 {
 
-const auto input = readFile("../data/2023/day3.txt");
-const int width = 141;  // 140 chars + newline
+const auto input = aoc::getInput(2023, 3);
+const int width = 141; // 140 chars + newline
 
 bool isSymbol(char c) {
     return c == '*' ||
@@ -20,16 +21,16 @@ bool isSymbol(char c) {
 }
 
 bool checkEdge(int pos, int len) {
-    for (int x1 = -1; x1 <= len; x1++) {
-        if (pos > width && isSymbol(input[pos - width + x1]))
+    for(int x1 = -1; x1 <= len; x1++) {
+        if(pos > width && isSymbol(input[pos - width + x1]))
             return true;
-        if (pos < (width * 139) && isSymbol(input[pos + width + x1]))
+        if(pos < (width * 139) && isSymbol(input[pos + width + x1]))
             return true;
     }
 
-    if (isSymbol(input[pos - 1]))
+    if(isSymbol(input[pos - 1]))
         return true;
-    if (isSymbol(input[pos + len]))
+    if(isSymbol(input[pos + len]))
         return true;
 
     return false;
@@ -39,19 +40,19 @@ uint64_t part1() {
     uint64_t result = 0;
 
     size_t pos = 0;
-    while (pos < input.length()) {
+    while(pos < input.length()) {
         auto c = input[pos++];
 
-        if (!isDigit(c))
+        if(!isDigit(c))
             continue;
 
         int start = pos;
         int num = c - '0';
-        while (isDigit(c = (input[pos++]))) {
+        while(isDigit(c = (input[pos++]))) {
             num = num * 10 + c - '0';
         }
 
-        if (checkEdge(start - 1, pos - start)) {
+        if(checkEdge(start - 1, pos - start)) {
             result += num;
         }
     }
@@ -62,32 +63,33 @@ uint64_t part1() {
 uint64_t part2() {
     uint64_t result = 0;
 
-    for (size_t pos = 0; pos < input.length(); pos++) {
-        if (input[pos] != '*')
+    for(size_t pos = 0; pos < input.length(); pos++) {
+        if(input[pos] != '*')
             continue;
 
         int n1 = 0;
         // int n2 = 0;
 
-        for (int y = -width; y <= width; y += width) {
-            for (int x = -1; x <= 1;) {
+        for(int y = -width; y <= width; y += width) {
+            for(int x = -1; x <= 1;) {
                 int s = pos + y + x;
                 auto c = input[s];
 
-                if (isDigit(c)) {
+                if(isDigit(c)) {
                     s--;
 
                     // find start
-                    while (isDigit(input[s])) s--;
+                    while(isDigit(input[s]))
+                        s--;
                     s++;
 
                     // read value
                     int v = 0;
-                    while (isDigit(c = input[s])) {
+                    while(isDigit(c = input[s])) {
                         v = v * 10 + c - '0';
                         s++;
                     }
-                    if (n1) {
+                    if(n1) {
                         result += n1 * v;
                         goto end;
                     } else
@@ -106,4 +108,7 @@ uint64_t part2() {
     return result;
 }
 
-}  // namespace y2023::Day3
+static auto p1 = aoc::test(part1, 2023, 3, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 3, 2, "part2");
+
+} // namespace y2023::Day3

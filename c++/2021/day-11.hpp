@@ -1,16 +1,18 @@
 #pragma once
 #include <array>
 
+#include "../aoc.hpp"
+
 namespace y2021::Day11 {
 
 std::array<uint8_t, 256> parseData() {
     std::array<uint8_t, 256> data;
 
-    auto input = readLines("../data/2021/day11.txt");
+    auto input = aoc::getInput(2021, 11);
 
-    for (size_t y = 0; y < 10; y++) {
-        for (size_t x = 0; x < 10; x++) {
-            int val = input[y][x] - '0';
+    for(size_t y = 0; y < 10; y++) {
+        for(size_t x = 0; x < 10; x++) {
+            int val = input[x + y * 11] - '0';
             data[(x + 1) + (y + 1) * 16] = val;
         }
     }
@@ -19,7 +21,7 @@ std::array<uint8_t, 256> parseData() {
 
 const auto inp = parseData();
 
-template <int part>
+template<int part>
 uint64_t func() {
     static_assert(part == 1 || part == 2, "invalid day");
 
@@ -33,23 +35,23 @@ uint64_t func() {
 
     int flashes = 0;
 
-    for (int i = 0; part == 2 || i < 100; i++) {
-        for (int j = 0; j < 192; j++) {
+    for(int i = 0; part == 2 || i < 100; i++) {
+        for(int j = 0; j < 192; j++) {
             input[j]++;
         }
 
 #pragma clang loop unroll(full)
-        for (int y = 1; y <= 10; y++) {
+        for(int y = 1; y <= 10; y++) {
 #pragma clang loop unroll(full)
-            for (int x = 1; x <= 10; x++) {
+            for(int x = 1; x <= 10; x++) {
                 int j = x + (y << 4);
-                if (input[j] > 9) {
+                if(input[j] > 9) {
                     reset[resetId++] = j;
 
-                    if (input[j - 1 - 16]++ == 9) stack[stackId++] = j - 1 - 16;
-                    if (input[j + 0 - 16]++ == 9) stack[stackId++] = j + 0 - 16;
-                    if (input[j + 1 - 16]++ == 9) stack[stackId++] = j + 1 - 16;
-                    if (input[j - 1]++ == 9) stack[stackId++] = j - 1;
+                    if(input[j - 1 - 16]++ == 9) stack[stackId++] = j - 1 - 16;
+                    if(input[j + 0 - 16]++ == 9) stack[stackId++] = j + 0 - 16;
+                    if(input[j + 1 - 16]++ == 9) stack[stackId++] = j + 1 - 16;
+                    if(input[j - 1]++ == 9) stack[stackId++] = j - 1;
 
                     input[j + 1]++;
                     input[j - 1 + 16]++;
@@ -59,31 +61,31 @@ uint64_t func() {
             }
         }
 
-        while (stackId > 0) {
+        while(stackId > 0) {
             auto ind = stack[--stackId];
             int x = ind & 0xF;
             int y = ind >> 4;
-            if (x < 1 || x > 10 || y < 1 || y > 10) continue;
+            if(x < 1 || x > 10 || y < 1 || y > 10) continue;
 
             reset[resetId++] = ind;
 
-            if (input[ind - 1 - 16]++ == 9) stack[stackId++] = ind - 1 - 16;
-            if (input[ind + 0 - 16]++ == 9) stack[stackId++] = ind + 0 - 16;
-            if (input[ind + 1 - 16]++ == 9) stack[stackId++] = ind + 1 - 16;
-            if (input[ind - 1]++ == 9) stack[stackId++] = ind - 1;
-            if (input[ind + 1]++ == 9) stack[stackId++] = ind + 1;
-            if (input[ind - 1 + 16]++ == 9) stack[stackId++] = ind - 1 + 16;
-            if (input[ind + 0 + 16]++ == 9) stack[stackId++] = ind + 0 + 16;
-            if (input[ind + 1 + 16]++ == 9) stack[stackId++] = ind + 1 + 16;
+            if(input[ind - 1 - 16]++ == 9) stack[stackId++] = ind - 1 - 16;
+            if(input[ind + 0 - 16]++ == 9) stack[stackId++] = ind + 0 - 16;
+            if(input[ind + 1 - 16]++ == 9) stack[stackId++] = ind + 1 - 16;
+            if(input[ind - 1]++ == 9) stack[stackId++] = ind - 1;
+            if(input[ind + 1]++ == 9) stack[stackId++] = ind + 1;
+            if(input[ind - 1 + 16]++ == 9) stack[stackId++] = ind - 1 + 16;
+            if(input[ind + 0 + 16]++ == 9) stack[stackId++] = ind + 0 + 16;
+            if(input[ind + 1 + 16]++ == 9) stack[stackId++] = ind + 1 + 16;
         }
 
-        if (part == 1) {
+        if(part == 1) {
             flashes += resetId;
-        } else if (part == 2) {
-            if (resetId == 100) return i + 1;
+        } else if(part == 2) {
+            if(resetId == 100) return i + 1;
         }
 
-        while (resetId > 0) {
+        while(resetId > 0) {
             input[reset[--resetId]] = 0;
         }
     }
@@ -91,4 +93,7 @@ uint64_t func() {
     return flashes;
 }
 
-}  // namespace y2021::Day11
+static auto p1 = aoc::test(func<1>, 2021, 11, 1, "part1");
+static auto p2 = aoc::test(func<2>, 2021, 11, 2, "part2");
+
+} // namespace y2021::Day11

@@ -1,41 +1,49 @@
 #pragma once
-#include <vector>
+#include <array>
 
-#include "../util.hpp"
+#include "../aoc.hpp"
+#include "../fixedVector.hpp"
 
 namespace y2024::Day2 {
 
-const auto input = readFile("../data/2024/day2.txt");
+const auto input = aoc::getInput(2024, 2);
 
 auto parse() {
-    std::vector<std::vector<int>> r;
-    r.reserve(1000);
+    std::array<fixedVector<int, 8>, 1000> r{};
 
-    size_t i = 0;
-    while (i < input.size()) {
-        std::vector<int> v;
-        while (true) {
-            v.push_back(readUInt(input, i));
-            if (input[i - 1] == '\n') break;
+    size_t pos = 0;
+    for(int i = 0; pos < input.size(); i++) {
+        while(true) {
+            auto c0 = input[pos];
+            auto c1 = input[pos + 1];
+
+            if(c1 == '\n' || c1 == ' ') {
+                r[i].push_back(c0 & 0xF);
+                pos += 2;
+                if(c1 == '\n') break;
+            } else {
+                r[i].push_back((c0 & 0xF) * 10 + (c1 & 0xF));
+                pos += 3;
+                if(input[pos - 1] == '\n') break;
+            }
         }
-        r.push_back(std::move(v));
     }
     return r;
 }
 auto lines = parse();
 
-int test(std::vector<int>& line) {
-    if (line[0] <= line[line.size() - 1]) {
-        for (int i = 1; i < line.size(); i++) {
+int test(fixedVector<int, 8>& line) {
+    if(line[0] <= line[line.size() - 1]) {
+        for(int i = 1; i < line.size(); i++) {
             auto a = line[i - 1];
             auto b = line[i];
-            if (a >= b || (b - a) > 3) return 0;
+            if(a >= b || (b - a) > 3) return 0;
         }
     } else {
-        for (int i = 1; i < line.size(); i++) {
+        for(int i = 1; i < line.size(); i++) {
             auto a = line[i - 1];
             auto b = line[i];
-            if (a <= b || (a - b) > 3) return 0;
+            if(a <= b || (a - b) > 3) return 0;
         }
     }
     return 1;
@@ -43,35 +51,35 @@ int test(std::vector<int>& line) {
 
 uint64_t part1() {
     uint64_t result = 0;
-    for (int i = 0; i < lines.size(); i++) {
+    for(int i = 0; i < lines.size(); i++) {
         result += test(lines[i]);
     }
     return result;
 }
 
-bool testDescending(std::vector<int>& line) {
-    auto t = [&](int a, int  b) {
+bool testDescending(fixedVector<int, 8>& line) {
+    auto t = [&](int a, int b) {
         return a > b && (a - b) <= 3;
     };
     auto cont = [&](int i) {
-        for (; i < line.size() - 1; i++) {
-            if (!t(line[i], line[i + 1])) {
+        for(; i < line.size() - 1; i++) {
+            if(!t(line[i], line[i + 1])) {
                 return false;
             }
         }
         return true;
     };
 
-    for (int i = 0; i < line.size() - 1; i++) {
+    for(int i = 0; i < line.size() - 1; i++) {
         auto a = line[i];
         auto b = line[i + 1];
-        if (!t(a, b)) {
+        if(!t(a, b)) {
             // try skipping the left
-            if ((i == 0 || t(line[i - 1], line[i + 1])) && cont(i + 1)) {
+            if((i == 0 || t(line[i - 1], line[i + 1])) && cont(i + 1)) {
                 return true;
             }
             // try skipping the right
-            if (i == line.size() - 2 || (t(line[i], line[i + 2])) && cont(i + 2)) {
+            if(i == line.size() - 2 || (t(line[i], line[i + 2])) && cont(i + 2)) {
                 return true;
             }
             return false;
@@ -79,29 +87,29 @@ bool testDescending(std::vector<int>& line) {
     }
     return true;
 }
-bool testAscending(std::vector<int>& line) {
-    auto t = [&](int a, int  b) {
+bool testAscending(fixedVector<int, 8>& line) {
+    auto t = [&](int a, int b) {
         return a < b && (b - a) <= 3;
     };
     auto cont = [&](int i) {
-        for (; i < line.size() - 1; i++) {
-            if (!t(line[i], line[i + 1])) {
+        for(; i < line.size() - 1; i++) {
+            if(!t(line[i], line[i + 1])) {
                 return false;
             }
         }
         return true;
     };
 
-    for (int i = 0; i < line.size() - 1; i++) {
+    for(int i = 0; i < line.size() - 1; i++) {
         auto a = line[i];
         auto b = line[i + 1];
-        if (!t(a, b)) {
+        if(!t(a, b)) {
             // try skipping the left
-            if ((i == 0 || t(line[i - 1], line[i + 1])) && cont(i + 1)) {
+            if((i == 0 || t(line[i - 1], line[i + 1])) && cont(i + 1)) {
                 return true;
             }
             // try skipping the right
-            if (i == line.size() - 2 || (t(line[i], line[i + 2])) && cont(i + 2)) {
+            if(i == line.size() - 2 || (t(line[i], line[i + 2])) && cont(i + 2)) {
                 return true;
             }
             return false;
@@ -113,17 +121,17 @@ bool testAscending(std::vector<int>& line) {
 uint64_t part2() {
     uint64_t result = 0;
 
-    for (int i = 0; i < lines.size(); i++) {
+    for(int i = 0; i < lines.size(); i++) {
         auto& line = lines[i];
 
-        if (line[0] > line[line.size() - 1] || line[1] > line[line.size() - 1] || line[0] > line[line.size() - 2]) {
-            if (testDescending(line)) {
+        if(line[0] > line[line.size() - 1] || line[1] > line[line.size() - 1] || line[0] > line[line.size() - 2]) {
+            if(testDescending(line)) {
                 result++;
                 continue;
             }
         }
-        if (line[0] < line[line.size() - 1] || line[1] < line[line.size() - 1] || line[0] < line[line.size() - 2]) {
-            if (testAscending(line)) {
+        if(line[0] < line[line.size() - 1] || line[1] < line[line.size() - 1] || line[0] < line[line.size() - 2]) {
+            if(testAscending(line)) {
                 result++;
                 continue;
             }
@@ -133,4 +141,7 @@ uint64_t part2() {
     return result;
 }
 
-}  // namespace y2024::Day2
+static auto p1 = aoc::test(part1, 2024, 2, 1, "part1");
+static auto p2 = aoc::test(part2, 2024, 2, 2, "part2");
+
+} // namespace y2024::Day2

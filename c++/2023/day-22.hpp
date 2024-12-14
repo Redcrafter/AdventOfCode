@@ -4,6 +4,7 @@
 #include <tuple>
 #include <vector>
 
+#include "../aoc.hpp"
 #include "../fixedVector.hpp"
 #include "../grid.hpp"
 #include "../util.hpp"
@@ -11,7 +12,7 @@
 
 namespace y2023::Day22 {
 
-const auto input = readFile("../data/2023/day22.txt");
+const auto input = aoc::getInput(2023, 22);
 
 struct Object {
     vec3<int> start;
@@ -21,14 +22,14 @@ struct Object {
     fixedVector<int, 10> below;
 
     void addS(int val) {
-        for (auto i : above) {
-            if (val == i) return;
+        for(auto i : above) {
+            if(val == i) return;
         }
         above.push_back(val);
     }
     void addD(int val) {
-        for (auto i : below) {
-            if (val == i) return;
+        for(auto i : below) {
+            if(val == i) return;
         }
         below.push_back(val);
     }
@@ -51,7 +52,7 @@ always__inline void parse() {
     objects.clear();
 
     size_t pos = 0;
-    while (pos < input.size()) {
+    while(pos < input.size()) {
         auto a = readVec(pos);
         auto b = readVec(pos);
         objects.emplace_back(a, b);
@@ -59,38 +60,38 @@ always__inline void parse() {
 
     std::sort(objects.begin(), objects.end(), [](auto& a, auto& b) { return a.start.z < b.start.z; });
 
-    for (size_t i = 0; i < objects.size(); i++) {
+    for(size_t i = 0; i < objects.size(); i++) {
         auto& obj = objects[i];
 
-        if (obj.start.x != obj.end.x) {
+        if(obj.start.x != obj.end.x) {
             auto z = 0;
-            for (int i = obj.start.x; i <= obj.end.x; i++) {
+            for(int i = obj.start.x; i <= obj.end.x; i++) {
                 z = std::max(z, std::get<1>(heights(i, obj.start.y)));
             }
 
             obj.end.z = (obj.end.z - obj.start.z) + z;
             obj.start.z = z;
 
-            for (int j = obj.start.x; j <= obj.end.x; j++) {
+            for(int j = obj.start.x; j <= obj.end.x; j++) {
                 auto [c, d] = (heights(j, obj.start.y));
-                if (c != -1 && d == z) {
+                if(c != -1 && d == z) {
                     obj.addD(c);
                     objects[c].addS(i);
                 }
                 heights(j, obj.start.y) = {i, z + 1};
             }
-        } else if (obj.start.y != obj.end.y) {
+        } else if(obj.start.y != obj.end.y) {
             auto z = 0;
-            for (int i = obj.start.y; i <= obj.end.y; i++) {
+            for(int i = obj.start.y; i <= obj.end.y; i++) {
                 z = std::max(z, std::get<1>(heights(obj.start.x, i)));
             }
 
             obj.end.z = (obj.end.z - obj.start.z) + z;
             obj.start.z = z;
 
-            for (int j = obj.start.y; j <= obj.end.y; j++) {
+            for(int j = obj.start.y; j <= obj.end.y; j++) {
                 auto [c, d] = (heights(obj.start.x, j));
-                if (c != -1 && d == z) {
+                if(c != -1 && d == z) {
                     obj.addD(c);
                     objects[c].addS(i);
                 }
@@ -102,7 +103,7 @@ always__inline void parse() {
 
             obj.end.z = (obj.end.z - obj.start.z) + z;
             obj.start.z = z;
-            if (c != -1) {
+            if(c != -1) {
                 obj.addD(c);
                 objects[c].addS(i);
             }
@@ -115,10 +116,10 @@ uint64_t part1() {
     parse();
 
     int result = 0;
-    for (auto&& obj : objects) {
+    for(auto&& obj : objects) {
         auto ok = true;
-        for (auto&& o : obj.above) {
-            if (objects[o].below.size() == 1) {
+        for(auto&& o : obj.above) {
+            if(objects[o].below.size() == 1) {
                 ok = false;
                 break;
             }
@@ -137,12 +138,12 @@ uint64_t part2() {
     std::vector<std::bitset<1024 + 512>> madeFall;
     madeFall.resize(objects.size());
 
-    for (int i = 0; i < objects.size(); i++) {
+    for(int i = 0; i < objects.size(); i++) {
         auto& el = objects[i];
         auto& s = madeFall[i];
-        if (el.below.size() != 0) {
+        if(el.below.size() != 0) {
             s.set();
-            for (auto&& a : el.below) {
+            for(auto&& a : el.below) {
                 s &= madeFall[a];
             }
         } else {
@@ -155,4 +156,7 @@ uint64_t part2() {
     return result;
 }
 
-}  // namespace y2023::Day22
+static auto p1 = aoc::test(part1, 2023, 22, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 22, 2, "part2");
+
+} // namespace y2023::Day22

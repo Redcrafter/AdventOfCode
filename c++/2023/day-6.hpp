@@ -3,11 +3,12 @@
 #include <cmath>
 #include <tuple>
 
+#include "../aoc.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day6 {
 
-const auto input = readFile("../data/2023/day6.txt");
+const auto input = aoc::getInput(2023, 6);
 
 #define solve(ftype) 2u * (uint32_t)(0.5f * (std::sqrt((ftype)(time * time - 4 * dist - 4)) + time)) + 1 - time;
 
@@ -15,7 +16,7 @@ auto parse() {
     std::array<uint32_t, 4> times;
     std::array<uint32_t, 4> dists;
 
-    for (size_t i = 0; i < 4; i++) {
+    for(size_t i = 0; i < 4; i++) {
         auto v1 = *(uint16_t*)(input.data() + 13 + i * 7);
         auto _time = ((v1 & 0xF) * 10) + ((v1 >> 8) & 0xF);
 
@@ -31,7 +32,7 @@ auto parse() {
 uint64_t part1() {
     const auto [times, dists] = parse();
     uint64_t result = 1;
-    for (size_t i = 0; i < 4; i++) {
+    for(size_t i = 0; i < 4; i++) {
         auto time = times[i];
         auto dist = dists[i];
         result *= solve(float);
@@ -43,7 +44,7 @@ uint64_t part2() {
     const auto [times, dists] = parse();
     int64_t time = 0;
     int64_t dist = 0;
-    for (size_t i = 0; i < 4; i++) {
+    for(size_t i = 0; i < 4; i++) {
         time = time * 100 + times[i];
         dist = dist * 10000 + dists[i];
     }
@@ -54,18 +55,22 @@ uint64_t part2_dumb() {
     const auto [times, dists] = parse();
     int64_t time = 0;
     int64_t dist = 0;
-    for (size_t i = 0; i < 4; i++) {
+    for(size_t i = 0; i < 4; i++) {
         time = time * 100 + times[i];
         dist = dist * 10000 + dists[i];
     }
 
     int count = 0;
-    for (size_t i = 1; i < time; i++) {
+    for(size_t i = 1; i < time; i++) {
         count += i * (time - i) > dist;
     }
     return count;
 }
 
+static auto p1 = aoc::test(part1, 2023, 6, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 6, 2, "part2");
+static auto p2d = aoc::test(part2_dumb, 2023, 6, 2, "part2_dumb");
+
 #undef solve
 
-}  // namespace y2023::Day6
+} // namespace y2023::Day6

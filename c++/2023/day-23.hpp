@@ -2,6 +2,7 @@
 #include <array>
 #include <bitset>
 
+#include "../aoc.hpp"
 #include "../fixedVector.hpp"
 #include "../grid.hpp"
 #include "../util.hpp"
@@ -9,7 +10,7 @@
 
 namespace y2023::Day23 {
 
-const auto input = readFile("../data/2023/day23.txt");
+const auto input = aoc::getInput(2023, 23);
 const auto size = 141;
 
 char get(int x, int y) {
@@ -43,7 +44,7 @@ fixedVector<Node, 64> pool;
 Grid<size, size, Node*> map;
 
 Edge parse(int x, int y, Dir from, Edge parent) {
-    if (x == size - 2 && y == size - 1) {
+    if(x == size - 2 && y == size - 1) {
         pool.push_back({});
         auto n = &pool[pool.size() - 1];
         n->id = pool.size() - 1;
@@ -62,15 +63,15 @@ Edge parse(int x, int y, Dir from, Edge parent) {
     auto uv = u != '#';
     auto dv = d != '#';
 
-    if (lv + rv + uv + dv < 3) {
-        if (from != Left && lv) return parse(x - 1, y, Right, parent + 1) + 1;
-        if (from != Right && rv) return parse(x + 1, y, Left, parent + 1) + 1;
-        if (from != Up && uv) return parse(x, y - 1, Down, parent + 1) + 1;
-        if (from != Down && dv) return parse(x, y + 1, Up, parent + 1) + 1;
+    if(lv + rv + uv + dv < 3) {
+        if(from != Left && lv) return parse(x - 1, y, Right, parent + 1) + 1;
+        if(from != Right && rv) return parse(x + 1, y, Left, parent + 1) + 1;
+        if(from != Up && uv) return parse(x, y - 1, Down, parent + 1) + 1;
+        if(from != Down && dv) return parse(x, y + 1, Up, parent + 1) + 1;
 
-#ifdef __GNUC__  // GCC, Clang, ICC
+#ifdef __GNUC__ // GCC, Clang, ICC
         __builtin_unreachable();
-#elif defined(_MSC_VER)  // MSVC
+#elif defined(_MSC_VER) // MSVC
         __assume(false);
 #else
         return {};
@@ -78,7 +79,7 @@ Edge parse(int x, int y, Dir from, Edge parent) {
     }
 
     Node* n = map(x, y);
-    if (n)
+    if(n)
         return {n, 0, !parent.valid};
 
     pool.push_back({});
@@ -87,19 +88,19 @@ Edge parse(int x, int y, Dir from, Edge parent) {
     n->neighbours[from] = parent;
     map(x, y) = n;
 
-    if (from != Left && lv && !n->neighbours[Left].dest) {
+    if(from != Left && lv && !n->neighbours[Left].dest) {
         auto p = parse(x - 1, y, Right, {n, 0, l == '>'});
         n->neighbours[Left] = p;
     }
-    if (from != Right && rv && !n->neighbours[Right].dest) {
+    if(from != Right && rv && !n->neighbours[Right].dest) {
         auto p = parse(x + 1, y, Left, {n, 0, r == '<'});
         n->neighbours[Right] = p;
     }
-    if (from != Up && uv && !n->neighbours[Up].dest) {
+    if(from != Up && uv && !n->neighbours[Up].dest) {
         auto p = parse(x, y - 1, Down, {n, 0, u == 'v'});
         n->neighbours[Up] = p;
     }
-    if (from != Down && dv && !n->neighbours[Down].dest) {
+    if(from != Down && dv && !n->neighbours[Down].dest) {
         auto p = parse(x, y + 1, Up, {n, 0, d == '^'});
         n->neighbours[Down] = p;
     }
@@ -107,21 +108,21 @@ Edge parse(int x, int y, Dir from, Edge parent) {
     return {n, 0, !parent.valid};
 }
 
-template <bool part1>
+template<bool part1>
 void search(Node* n, Node* end, std::bitset<64> visited, int dist, int& max) {
-    if (n == end) {
+    if(n == end) {
         max = std::max(max, dist);
         return;
     }
 
     visited[n->id] = 1;
-    for (auto& o : n->neighbours) {
-        if (o.dest && (!part1 || o.valid) && !visited[o.dest->id])
+    for(auto& o : n->neighbours) {
+        if(o.dest && (!part1 || o.valid) && !visited[o.dest->id])
             search<part1>(o.dest, end, visited, dist + o.length + 1, max);
     }
 }
 
-template <bool part1>
+template<bool part1>
 int solve() {
     map.fill(nullptr);
     pool.clear();
@@ -147,4 +148,7 @@ uint64_t part2() {
     return solve<false>();
 }
 
-}  // namespace y2023::Day23
+static auto p1 = aoc::test(part1, 2023, 23, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 23, 2, "part2");
+
+} // namespace y2023::Day23

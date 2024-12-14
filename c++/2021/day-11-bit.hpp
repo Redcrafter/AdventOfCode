@@ -2,6 +2,8 @@
 #include <array>
 #include <bit>
 
+#include "../aoc.hpp"
+
 namespace y2021::Day11_bit {
 
 using uint128_t = unsigned __int128;
@@ -25,7 +27,7 @@ void prop(State& s, Board flash, Board& total_flash);
 
 void bubble(State& s, Board flash, Board& total_flash) {
     Board to_up = 0;
-    for (size_t i = 1; i < 10; i++) {
+    for(size_t i = 1; i < 10; i++) {
         s[i] |= to_up;
         to_up = s[i] & flash;
         s[i] &= ~to_up;
@@ -34,7 +36,7 @@ void bubble(State& s, Board flash, Board& total_flash) {
     to_up &= ~total_flash;
     total_flash |= to_up;
 
-    if (to_up != 0) prop(s, to_up, total_flash);
+    if(to_up != 0) prop(s, to_up, total_flash);
 }
 
 void prop(State& s, Board flash, Board& total_flash) {
@@ -51,11 +53,11 @@ void prop(State& s, Board flash, Board& total_flash) {
 State parseInput() {
     State result{0};
 
-    auto input = readLines("../data/2021/day11.txt");
+    auto input = aoc::getInput(2021, 11);
 
-    for (size_t i = 0; i < 10; i++) {
-        for (size_t j = 0; j < 10; j++)
-            result[input[i][j] - '0'] |= uint128_t(1) << (i * 10 + j);
+    for(size_t i = 0; i < 10; i++) {
+        for(size_t j = 0; j < 10; j++)
+            result[input[j + i * 11] - '0'] |= uint128_t(1) << (i * 10 + j);
     }
 
     return result;
@@ -67,9 +69,10 @@ uint64_t part1() {
     auto s = input;
 
     size_t flash_count = 0;
-    for (size_t i = 0; i < 100; i++) {
+    for(size_t i = 0; i < 100; i++) {
         Board flash = s[9];
-        for (size_t i = 9; i > 0; i--) s[i] = s[i - 1];
+        for(size_t i = 9; i > 0; i--)
+            s[i] = s[i - 1];
         s[0] = 0;
 
         Board total_flash = flash;
@@ -83,19 +86,23 @@ uint64_t part1() {
 uint64_t part2() {
     auto s = input;
 
-    for (size_t i = 0;; i++) {
+    for(size_t i = 0;; i++) {
         Board flash = s[9];
-        for (size_t i = 9; i > 0; i--) s[i] = s[i - 1];
+        for(size_t i = 9; i > 0; i--)
+            s[i] = s[i - 1];
         s[0] = 0;
 
         Board total_flash = flash;
         prop(s, flash, total_flash);
         s[0] = total_flash;
 
-        if (total_flash == rep10(0b11111'11111)) {
+        if(total_flash == rep10(0b11111'11111)) {
             return i + 1;
         }
     }
 }
 
-}  // namespace y2021::Day11_bit
+static auto p1 = aoc::test(part1, 2021, 11, 1, "part1_bit");
+static auto p2 = aoc::test(part2, 2021, 11, 2, "part2_bit");
+
+} // namespace y2021::Day11_bit

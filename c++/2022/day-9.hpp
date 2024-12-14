@@ -2,15 +2,17 @@
 #include <array>
 #include <unordered_set>
 
+#include "../aoc.hpp"
+#include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2022::Day9 {
 
-int praseInt(const std::string& str, int start = 0) {
+int praseInt(std::string_view str, int start = 0) {
     int val = 0;
-    for (int i = start; i < str.size(); i++) {
+    for(int i = start; i < str.size(); i++) {
         auto c = str[i];
-        if (c < '0' || c > '9') break; 
+        if(c < '0' || c > '9') break;
 
         val = val * 10 + c - '0';
     }
@@ -21,7 +23,7 @@ int sgn(int val) {
     return (0 < val) - (val < 0);
 }
 
-const auto input = readLines("../data/2022/day9.txt");
+const auto input = split(aoc::getInput(2022, 9), '\n');
 
 const int arrSize = 520;
 uint64_t part1() {
@@ -35,21 +37,21 @@ uint64_t part1() {
     grid(arrSize / 2, arrSize / 2) = 1;
     auto res = 1;
 
-    for (auto i = 0; i < input.size(); i++) {
+    for(auto i = 0; i < input.size(); i++) {
         auto a = input[i];
         auto b = praseInt(a, 2);
 
         auto mx = 0;
         auto my = 0;
 
-        switch (a[0]) {
+        switch(a[0]) {
             case 'L': mx--; break;
             case 'R': mx++; break;
             case 'U': my--; break;
             case 'D': my++; break;
         }
 
-        for (auto j = 0; j < b; j++) {
+        for(auto j = 0; j < b; j++) {
             hx += mx;
             hy += my;
 
@@ -59,18 +61,18 @@ uint64_t part1() {
             auto ax = std::abs(dx);
             auto ay = std::abs(dy);
 
-            if ((ax >= 1 && ay > 1) || (ax > 1 && ay >= 1)) {
+            if((ax >= 1 && ay > 1) || (ax > 1 && ay >= 1)) {
                 tx += sgn(dx);
                 ty += sgn(dy);
-            } else if (ax > 1) {
+            } else if(ax > 1) {
                 tx += sgn(dx);
-            } else if (ay > 1) {
+            } else if(ay > 1) {
                 ty += sgn(dy);
             } else {
                 continue;
             }
 
-            if (grid(tx, ty) == 0) {
+            if(grid(tx, ty) == 0) {
                 res++;
                 grid(tx, ty) = 1;
             }
@@ -86,33 +88,33 @@ uint64_t part2() {
     Grid<arrSize, arrSize, bool> grid{};
 
     std::array<vec2<int>, 10> nodes;
-    for (auto i = 0; i < 10; i++) {
-        nodes[i] = { arrSize / 2, arrSize / 2 };
+    for(auto i = 0; i < 10; i++) {
+        nodes[i] = {arrSize / 2, arrSize / 2};
     }
 
     grid(arrSize / 2, arrSize / 2) = 1;
     auto res = 1;
 
-    for (auto i = 0; i < input.size(); i++) {
+    for(auto i = 0; i < input.size(); i++) {
         auto a = input[i];
         auto b = praseInt(a, 2);
 
         auto mx = 0;
         auto my = 0;
 
-        switch (a[0]) {
+        switch(a[0]) {
             case 'L': mx--; break;
             case 'R': mx++; break;
             case 'U': my--; break;
             case 'D': my++; break;
         }
 
-        for (auto j = 0; j < b; j++) {
+        for(auto j = 0; j < b; j++) {
             auto last = &nodes[0];
             last->x += mx;
             last->y += my;
 
-            for (auto k = 1; k < 10; k++) {
+            for(auto k = 1; k < 10; k++) {
                 auto n = &nodes[k];
 
                 auto dx = last->x - n->x;
@@ -121,12 +123,12 @@ uint64_t part2() {
                 auto ax = std::abs(dx);
                 auto ay = std::abs(dy);
 
-                if ((ax >= 1 && ay > 1) || (ax > 1 && ay >= 1)) {
+                if((ax >= 1 && ay > 1) || (ax > 1 && ay >= 1)) {
                     n->x += sgn(dx);
                     n->y += sgn(dy);
-                } else if (ax > 1) {
+                } else if(ax > 1) {
                     n->x += sgn(dx);
-                } else if (ay > 1) {
+                } else if(ay > 1) {
                     n->y += sgn(dy);
                 } else {
                     goto loop;
@@ -134,15 +136,18 @@ uint64_t part2() {
                 last = n;
             }
 
-            if (grid(nodes[9].x, nodes[9].y) == 0) {
+            if(grid(nodes[9].x, nodes[9].y) == 0) {
                 res++;
                 grid(nodes[9].x, nodes[9].y) = 1;
             }
-            loop:;
+        loop:;
         }
     }
 
     return res;
 }
 
-}  // namespace y2022::Day9
+static auto p1 = aoc::test(part1, 2022, 9, 1, "part1");
+static auto p2 = aoc::test(part2, 2022, 9, 2, "part2");
+
+} // namespace y2022::Day9

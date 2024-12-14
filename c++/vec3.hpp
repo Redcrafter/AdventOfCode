@@ -1,6 +1,6 @@
 #pragma once
 
-template <typename T>
+template<typename T>
 struct vec3 {
     T x;
     T y;

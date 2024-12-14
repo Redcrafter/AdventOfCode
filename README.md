@@ -12,6 +12,7 @@ Place your inputs into `data/year/dayX.txt`
 Compile `c++/main.cpp` using your favorite compiler e.g.
 ```
 cd c++/
+wget https://raw.githubusercontent.com/nlohmann/json/refs/heads/master/single_include/nlohmann/json.hpp
 clang++ -std=c++23 -O3 -march=native ./main.cpp
 ./a.out
 ```

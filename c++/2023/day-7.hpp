@@ -3,11 +3,12 @@
 #include <array>
 #include <tuple>
 
+#include "../aoc.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day7 {
 
-const auto input = readFile("../data/2023/day7.txt");
+const auto input = aoc::getInput(2023, 7);
 
 struct Card {
     uint32_t score;
@@ -21,7 +22,7 @@ always__inline auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t 
 
     scores.fill(0);
     int value = 0;
-    for (size_t i = 0; i < 5; i++) {
+    for(size_t i = 0; i < 5; i++) {
         auto v = ((hand >> (i * 8)) & 0xFF) - '2';
         scores[v]++;
         value = (value << 4) | charMap[v];
@@ -32,7 +33,7 @@ always__inline auto parseCard(size_t& pos, std::array<int, 35>& scores, uint8_t 
     auto three = false;
     auto two = 0;
 
-    for (auto i : scores) {
+    for(auto i : scores) {
         five |= i == 5;
         four |= i == 4;
         three |= i == 3;
@@ -46,7 +47,7 @@ always__inline auto calcResult(std::array<Card, 1000>& cards) {
     std::sort(cards.begin(), cards.end(), [](auto a, auto b) { return a.score < b.score; });
 
     uint64_t result = 0;
-    for (size_t i = 0; i < cards.size(); i++) {
+    for(size_t i = 0; i < cards.size(); i++) {
         auto c = cards[i];
         result += (i + 1) * c.bet;
     }
@@ -60,17 +61,17 @@ uint64_t part1() {
     std::array<int, 35> scores;
 
     size_t pos = 0;
-    for (size_t i = 0; i < 1000; i++) {
+    for(size_t i = 0; i < 1000; i++) {
         auto [five, four, three, two, value, bet] = parseCard(pos, scores, charMap);
 
         uint32_t type = 0;
 
-        if (five) type = 6;
-        else if (four) type = 5;
-        else if (three && two) type = 4;
-        else if (three) type = 3;
-        else if (two == 2) type = 2;
-        else if (two == 1) type = 1;
+        if(five) type = 6;
+        else if(four) type = 5;
+        else if(three && two) type = 4;
+        else if(three) type = 3;
+        else if(two == 2) type = 2;
+        else if(two == 1) type = 1;
         else type = 0;
 
         cards[i] = {(type * 16777216) | value, bet};
@@ -86,21 +87,21 @@ uint64_t part2() {
     std::array<int, 35> scores;
 
     size_t pos = 0;
-    for (size_t i = 0; i < 1000; i++) {
+    for(size_t i = 0; i < 1000; i++) {
         auto [five, four, three, two, value, bet] = parseCard(pos, scores, charMap);
 
         auto j = scores['J' - '2'];
         uint32_t type = 0;
 
-        if (five) type = 6;
-        else if (four) type = j ? 6 : 5;
-        else if (three && two) type = j ? 6 : 4;
-        else if (three) type = j ? 5 : 3;
-        else if (two == 2) {
-            if (j == 1) type = 4;
-            else if (j == 2) type = 5;
+        if(five) type = 6;
+        else if(four) type = j ? 6 : 5;
+        else if(three && two) type = j ? 6 : 4;
+        else if(three) type = j ? 5 : 3;
+        else if(two == 2) {
+            if(j == 1) type = 4;
+            else if(j == 2) type = 5;
             else type = 2;
-        } else if (two == 1) type = j ? 3 : 1;
+        } else if(two == 1) type = j ? 3 : 1;
         else type = j ? 1 : 0;
 
         cards[i] = {(type * 16777216) | value, bet};
@@ -109,4 +110,7 @@ uint64_t part2() {
     return calcResult(cards);
 }
 
-}  // namespace y2023::Day7
+static auto p1 = aoc::test(part1, 2023, 7, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 7, 2, "part2");
+
+} // namespace y2023::Day7

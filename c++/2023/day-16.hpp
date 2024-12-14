@@ -5,12 +5,13 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "../aoc.hpp"
 #include "../grid.hpp"
 #include "../util.hpp"
 
 namespace y2023::Day16 {
 
-const auto input = readFile("../data/2023/day16.txt");
+const auto input = aoc::getInput(2023, 16);
 
 const int width = 110;
 const int height = 110;
@@ -25,25 +26,25 @@ std::unordered_map<int, bt> cache;
 
 void cast(int x, int y, int dx, int dy) {
     auto dir = 1 << (dx + (dy << 1) + 2);
-    while (x >= 0 && x < width && y >= 0 && y < height) {
+    while(x >= 0 && x < width && y >= 0 && y < height) {
         auto& t = visited(x, y);
-        if ((t & dir) != 0)
+        if((t & dir) != 0)
             return;
         t |= dir;
 
         auto c = input[x + y * 111];
-        if (c == '|' && dx != 0) {
+        if(c == '|' && dx != 0) {
             cast(x, y - 1, 0, -1);
             cast(x, y + 1, 0, 1);
             break;
-        } else if (c == '-' && dy != 0) {
+        } else if(c == '-' && dy != 0) {
             cast(x - 1, y, -1, 0);
             cast(x + 1, y, 1, 0);
             break;
-        } else if (c == '/') {
+        } else if(c == '/') {
             std::tie(dx, dy) = std::tuple(-dy, -dx);
             dir = 1 << (dx + (dy << 1) + 2);
-        } else if (c == '\\') {
+        } else if(c == '\\') {
             std::tie(dx, dy) = std::tuple(dy, dx);
             dir = 1 << (dx + (dy << 1) + 2);
         }
@@ -54,7 +55,7 @@ void cast(int x, int y, int dx, int dy) {
 
 uint64_t countVisited() {
     uint64_t result = 0;
-    for (auto i : visited.data) {
+    for(auto i : visited.data) {
         result += (i != 0);
     }
     return result;
@@ -72,11 +73,11 @@ uint64_t part1() {
 
 uint64_t part2() {
     uint64_t result = 0;
-    for (int x = 0; x < width; x++) {
+    for(int x = 0; x < width; x++) {
         result = std::max(result, castNormal(x, 0, 0, 1));
         result = std::max(result, castNormal(x, (height - 1), 0, -1));
     }
-    for (int y = 0; y < height; y++) {
+    for(int y = 0; y < height; y++) {
         result = std::max(result, castNormal(0, y, 1, 0));
         result = std::max(result, castNormal(width - 1, y, -1, 0));
     }
@@ -91,28 +92,28 @@ enum Dir {
 };
 
 Dir invDir(Dir d) {
-    if (d == Dir::Left) return Dir::Right;
-    if (d == Dir::Right) return Dir::Left;
-    if (d == Dir::Up) return Dir::Down;
-    if (d == Dir::Down) return Dir::Up;
+    if(d == Dir::Left) return Dir::Right;
+    if(d == Dir::Right) return Dir::Left;
+    if(d == Dir::Up) return Dir::Down;
+    if(d == Dir::Down) return Dir::Up;
     return Dir::Left;
 }
 
 void trace(pt start, Dir d) {
-    if (precalc(start)[d] != 0)
+    if(precalc(start)[d] != 0)
         return;
 
     pt delta;
-    if (d == Dir::Left) delta = {-1, 0};
-    if (d == Dir::Right) delta = {1, 0};
-    if (d == Dir::Up) delta = {0, -1};
-    if (d == Dir::Down) delta = {0, 1};
+    if(d == Dir::Left) delta = {-1, 0};
+    if(d == Dir::Right) delta = {1, 0};
+    if(d == Dir::Up) delta = {0, -1};
+    if(d == Dir::Down) delta = {0, 1};
 
     auto pos = start;
     pos += delta;
-    while (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
+    while(pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
         char c = input[pos.x + pos.y * 111];
-        if (!(c == '.' || (c == '|' && (d == Down || d == Up)) || (c == '-' && (d == Left || d == Right)))) {
+        if(!(c == '.' || (c == '|' && (d == Down || d == Up)) || (c == '-' && (d == Left || d == Right)))) {
             break;
         }
         pos += delta;
@@ -130,44 +131,44 @@ void followPrecalc(pt pos, Dir dir) {
     auto delta = (next - pos).sign();
     auto v = 1 << (delta.x + (delta.y << 1) + 2);
 
-    if (pos.x < next.x) {
+    if(pos.x < next.x) {
         pos.x++;
-        if ((visited(pos) & v) != 0) return;
-        while (pos.x != next.x) {
+        if(pos.x >= width || (visited(pos) & v) != 0) return;
+        while(pos.x != next.x) {
             visited(pos) |= v;
             pos.x++;
         }
-    } else if (pos.x > next.x) {
+    } else if(pos.x > next.x) {
         pos.x--;
-        if ((visited(pos) & v) != 0) return;
-        while (pos.x != next.x) {
+        if(pos.x < 0 || (visited(pos) & v) != 0) return;
+        while(pos.x != next.x) {
             visited(pos) |= v;
             pos.x--;
         }
-    } else if (pos.y < next.y) {
+    } else if(pos.y < next.y) {
         pos.y++;
-        if ((visited(pos) & v) != 0) return;
-        auto i = pos.x + pos.y * width;  // have to help out a bit to vectorize it correclty
-        while (pos.y != next.y) {
+        if(pos.y >= height || (visited(pos) & v) != 0) return;
+        auto i = pos.x + pos.y * width; // have to help out a bit to vectorize it correclty
+        while(pos.y != next.y) {
             visited.data[i] |= v;
             pos.y++;
             i += width;
         }
     } else {
         pos.y--;
-        if ((visited(pos) & v) != 0) return;
-        auto i = pos.x + pos.y * width;  // have to help out a bit to vectorize it correclty
-        while (pos.y != next.y) {
+        if(pos.y < 0 || (visited(pos) & v) != 0) return;
+        auto i = pos.x + pos.y * width; // have to help out a bit to vectorize it correclty
+        while(pos.y != next.y) {
             visited.data[i] |= v;
             pos.y--;
             i -= width;
         }
     }
 
-    if (pos.x < 0 || pos.x >= width || pos.y < 0 || pos.y >= height)
+    if(pos.x < 0 || pos.x >= width || pos.y < 0 || pos.y >= height)
         return;
 
-    if ((visited(pos) & v) != 0) {
+    if((visited(pos) & v) != 0) {
         return;
     }
     visited(pos) |= v;
@@ -177,14 +178,14 @@ void followPrecalc(pt pos, Dir dir) {
 
 void shit(pt pos, Dir dir) {
     char c = input[pos.x + pos.y * 111];
-    if (c == '|') {
+    if(c == '|') {
         followPrecalc(pos, Dir::Up);
         followPrecalc(pos, Dir::Down);
-    } else if (c == '-') {
+    } else if(c == '-') {
         followPrecalc(pos, Dir::Left);
         followPrecalc(pos, Dir::Right);
-    } else if (c == '/') {
-        switch (dir) {
+    } else if(c == '/') {
+        switch(dir) {
             case Dir::Left:
                 followPrecalc(pos, Dir::Down);
                 break;
@@ -198,8 +199,8 @@ void shit(pt pos, Dir dir) {
                 followPrecalc(pos, Dir::Left);
                 break;
         }
-    } else if (c == '\\') {
-        switch (dir) {
+    } else if(c == '\\') {
+        switch(dir) {
             case Dir::Left:
                 followPrecalc(pos, Dir::Up);
                 break;
@@ -223,16 +224,16 @@ uint64_t cast2(pt pos, pt delta) {
     auto dir = 1 << (delta.x + (delta.y << 1) + 2);
 
     Dir d;
-    if (delta.x == 1) d = Dir::Right;
-    if (delta.x == -1) d = Dir::Left;
-    if (delta.y == 1) d = Dir::Down;
-    if (delta.y == -1) d = Dir::Up;
+    if(delta.x == 1) d = Dir::Right;
+    if(delta.x == -1) d = Dir::Left;
+    if(delta.y == 1) d = Dir::Down;
+    if(delta.y == -1) d = Dir::Up;
 
     // find initial symbol
-    while (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
+    while(pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height) {
         visited(pos) |= dir;
         char c = input[pos.x + pos.y * 111];
-        if (!(c == '.' || (c == '|' && (d == Down || d == Up)) || (c == '-' && (d == Left || d == Right)))) {
+        if(!(c == '.' || (c == '|' && (d == Down || d == Up)) || (c == '-' && (d == Left || d == Right)))) {
             break;
         }
         pos += delta;
@@ -243,18 +244,18 @@ uint64_t cast2(pt pos, pt delta) {
 }
 
 uint64_t part2_precalc() {
-    for (size_t y = 0; y < height; y++) {
-        for (size_t x = 0; x < width; x++) {
+    for(size_t y = 0; y < height; y++) {
+        for(size_t x = 0; x < width; x++) {
             auto c = input[x + y * 111];
 
             pt p(x, y);
-            if (c == '|') {
+            if(c == '|') {
                 trace(p, Dir::Up);
                 trace(p, Dir::Down);
-            } else if (c == '-') {
+            } else if(c == '-') {
                 trace(p, Dir::Left);
                 trace(p, Dir::Right);
-            } else if (c == '/' || c == '\\') {
+            } else if(c == '/' || c == '\\') {
                 trace(p, Dir::Up);
                 trace(p, Dir::Down);
                 trace(p, Dir::Left);
@@ -264,11 +265,11 @@ uint64_t part2_precalc() {
     }
 
     uint64_t result = 0;
-    for (int x = 0; x < width; x++) {
+    for(int x = 0; x < width; x++) {
         result = std::max(result, cast2({(int8_t)x, 0}, {0, 1}));
         result = std::max(result, cast2({(int8_t)x, (int8_t)(height - 1)}, {0, -1}));
     }
-    for (int y = 0; y < height; y++) {
+    for(int y = 0; y < height; y++) {
         result = std::max(result, cast2({0, (int8_t)y}, {1, 0}));
         result = std::max(result, cast2({(int8_t)(width - 1), (int8_t)y}, {-1, 0}));
     }
@@ -276,34 +277,34 @@ uint64_t part2_precalc() {
 }
 
 pt findMirror(bt& set, int x, int y, int dx, int dy) {
-    while (x >= 0 && x < width && y >= 0 && y < height) {
+    while(x >= 0 && x < width && y >= 0 && y < height) {
         set.set(x + y * width, true);
 
         auto c = input[x + y * 111];
-        if (c == '|' && dx != 0) {
+        if(c == '|' && dx != 0) {
             return pt(x, y);
-        } else if (c == '-' && dy != 0) {
+        } else if(c == '-' && dy != 0) {
             return pt(x, y);
-        } else if (c == '/') {
+        } else if(c == '/') {
             std::tie(dx, dy) = std::tuple(-dy, -dx);
-        } else if (c == '\\') {
+        } else if(c == '\\') {
             std::tie(dx, dy) = std::tuple(dy, dx);
         }
         x += dx;
         y += dy;
     }
-    return pt(-1);
+    return pt(-1, -1);
 }
 
 std::tuple<bt*, std::shared_ptr<loopinfo>> builtSet(int x, int y, std::unordered_set<int>& seen) {
     int i = x + y * width;
 
-    if (seen.contains(i)) {
+    if(seen.contains(i)) {
         auto shit = std::make_shared<loopinfo>();
         (*shit)[i] = {};
         return {nullptr, shit};
     }
-    if (cache.contains(i))
+    if(cache.contains(i))
         return {&cache[i], nullptr};
 
     seen.emplace(i);
@@ -313,7 +314,7 @@ std::tuple<bt*, std::shared_ptr<loopinfo>> builtSet(int x, int y, std::unordered
 
     pt a, b;
     auto c = input[x + y * 111];
-    if (c == '|') {
+    if(c == '|') {
         a = findMirror(set, x, y, 0, -1);
         b = findMirror(set, x, y, 0, 1);
     } else {
@@ -322,24 +323,24 @@ std::tuple<bt*, std::shared_ptr<loopinfo>> builtSet(int x, int y, std::unordered
     }
 
     std::shared_ptr<loopinfo> al, bl, asd;
-    if (a != -1) {
+    if(a != -1) {
         auto [bit, l] = builtSet(a.x, a.y, seen);
-        if (bit)
+        if(bit)
             set |= *bit;
         al = l;
     }
-    if (b != -1) {
+    if(b != -1) {
         auto [bit, l] = builtSet(b.x, b.y, seen);
-        if (bit)
+        if(bit)
             set |= *bit;
         bl = l;
     }
 
-    if (al && bl) {
-        for (auto& [key, val] : *bl) {
-            if (al->contains(key)) {
+    if(al && bl) {
+        for(auto& [key, val] : *bl) {
+            if(al->contains(key)) {
                 auto& arr = (*al)[key];
-                for (auto ind : val) {
+                for(auto ind : val) {
                     arr.emplace(ind);
                 }
             } else {
@@ -347,28 +348,28 @@ std::tuple<bt*, std::shared_ptr<loopinfo>> builtSet(int x, int y, std::unordered
             }
         }
         asd = al;
-    } else if (al) {
+    } else if(al) {
         asd = al;
-    } else if (bl) {
+    } else if(bl) {
         asd = bl;
     }
 
-    if (asd) {
+    if(asd) {
         // If the current mirror was the start of a cycle, then remove it from the cycle dictionary and set all the
         // mirrors in the cycle to have the same seenBits as the current mirror as they should all have the same value
-        if (asd->contains(i)) {
+        if(asd->contains(i)) {
             auto& cycleIndexes = (*asd)[i];
-            for (auto ind : cycleIndexes) {
+            for(auto ind : cycleIndexes) {
                 cache[ind] = set;
             }
             asd->erase(i);
         }
 
-        if (asd->size() == 0) {
+        if(asd->size() == 0) {
             asd = nullptr;
         } else {
             // Insert the current mirror index into all the current cycles
-            for (auto& [_, cycleIndexSet] : *asd) {
+            for(auto& [_, cycleIndexSet] : *asd) {
                 cycleIndexSet.emplace(i);
             }
         }
@@ -383,11 +384,11 @@ uint64_t part2_bits() {
 
     std::unordered_set<int> seen;
 
-    for (size_t y = 0; y < height; y++) {
-        for (size_t x = 0; x < width; x++) {
+    for(size_t y = 0; y < height; y++) {
+        for(size_t x = 0; x < width; x++) {
             auto c = input[x + y * 111];
 
-            if (c == '|' || c == '-') {
+            if(c == '|' || c == '-') {
                 seen.clear();
                 builtSet(x, y, seen);
             }
@@ -403,15 +404,20 @@ uint64_t part2_bits() {
     };
 
     uint64_t result = 0;
-    for (int x = 0; x < width; x++) {
+    for(int x = 0; x < width; x++) {
         result = std::max(result, cast3(x, 0, 0, 1));
         result = std::max(result, cast3(x, height - 1, 0, -1));
     }
-    for (int y = 0; y < height; y++) {
+    for(int y = 0; y < height; y++) {
         result = std::max(result, cast3(0, y, 1, 0));
         result = std::max(result, cast3(width - 1, y, -1, 0));
     }
     return result;
 }
 
-}  // namespace y2023::Day16
+static auto p1 = aoc::test(part1, 2023, 16, 1, "part1");
+static auto p2 = aoc::test(part2, 2023, 16, 2, "part2");
+static auto p2b = aoc::test(part2_bits, 2023, 16, 2, "part2_bits");
+static auto p2p = aoc::test(part2_precalc, 2023, 16, 2, "part2_precalc");
+
+} // namespace y2023::Day16

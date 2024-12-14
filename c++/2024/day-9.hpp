@@ -1,16 +1,12 @@
 #pragma once
 #include <array>
-#include <iostream>
 #include <vector>
-#include <queue>
 
-#include "../fixedVector.hpp"
-#include "../util.hpp"
-#include "../vec2.hpp"
+#include "../aoc.hpp"
 
 namespace y2024::Day9 {
 
-const auto input = readFile("../data/2024/day9.txt");
+const auto input = aoc::getInput(2024, 9);
 
 int64_t triangle(int64_t n) {
     return (n * (n + 1)) / 2;
@@ -33,8 +29,8 @@ uint64_t part1() {
         ind += times;
     };
 
-    while (lIndex < rIndex) {
-        if (lGap == 0) {  // ran out of gap
+    while(lIndex < rIndex) {
+        if(lGap == 0) { // ran out of gap
             auto v = input[lIndex] & 0xF;
             add(lIndex / 2, v);
             lIndex++;
@@ -42,7 +38,7 @@ uint64_t part1() {
             lGap = input[lIndex] & 0xF;
             lIndex++;
         }
-        if (rSize == 0) {  // ran out of right value
+        if(rSize == 0) { // ran out of right value
             rSize = input[rIndex] & 0xF;
             rVal = rIndex / 2;
             rIndex -= 2;
@@ -64,20 +60,21 @@ uint64_t part2() {
     std::array<std::vector<uint32_t>, 10> gaps;
 
     int size = 0;
-    for (int i = 0; i < input.size();) {
+    for(int i = 0; i < input.size();) {
         size += input[i] & 0xF;
         i++;
-        if (i >= input.size()) break;
+        if(i >= input.size()) break;
 
         auto g = input[i] & 0xF;
         i++;
-        if (g == 0) continue;
+        if(g == 0) continue;
 
         gaps[g].push_back(size);
         size += g;
     }
 
-    for (auto&& el : gaps) std::reverse(el.begin(), el.end());
+    for(auto&& el : gaps)
+        std::reverse(el.begin(), el.end());
 
     uint64_t result = 0;
     auto add = [&](int value, int times, int ind) {
@@ -86,46 +83,46 @@ uint64_t part2() {
 
     int i = input.size() - 1;
     int offset = size;
-    while (i >= 0) {
+    while(i >= 0) {
         auto size = input[i] & 0xF;
         offset -= size;
         auto nOffset = offset;
         auto val = i / 2;
         i--;
 
-        if (i >= 0) {
+        if(i >= 0) {
             offset -= input[i] & 0xF;
             i--;
         }
-        if (size == 0) continue;
+        if(size == 0) continue;
 
         auto minG = 1 << 30;
         auto minGapSize = -1;
 
-        for (int j = size; j < gaps.size(); j++) {
+        for(int j = size; j < gaps.size(); j++) {
             auto& g = gaps[j];
-            if (g.size() == 0) continue;
+            if(g.size() == 0) continue;
             auto gi = g[g.size() - 1];
 
-            if (gi < minG) {
+            if(gi < minG) {
                 minG = gi;
                 minGapSize = j;
             }
         }
 
-        if (minGapSize == -1 || minG > nOffset) {
+        if(minGapSize == -1 || minG > nOffset) {
             add(val, size, nOffset);
         } else {
             add(val, size, minG);
 
             gaps[minGapSize].pop_back();
-            if (minGapSize > size) {
+            if(minGapSize > size) {
                 auto& g = gaps[minGapSize - size];
                 auto p = minG + size;
 
                 g.push_back(p);
-                for (int i = g.size() - 2; i >= 0; i--) {
-                    if (g[i] > p) {
+                for(int i = g.size() - 2; i >= 0; i--) {
+                    if(g[i] > p) {
                         g[i + 1] = p;
                         break;
                     } else {
@@ -139,4 +136,7 @@ uint64_t part2() {
     return result;
 }
 
-}  // namespace y2024::Day9
+static auto p1 = aoc::test(part1, 2024, 9, 1, "part1");
+static auto p2 = aoc::test(part2, 2024, 9, 2, "part2");
+
+} // namespace y2024::Day9

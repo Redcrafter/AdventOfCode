@@ -5,12 +5,13 @@
 #include <array>
 #include <vector>
 
+#include "../aoc.hpp"
 #include "../util.hpp"
 #include "../vec2.hpp"
 
 namespace y2023::Day11 {
 
-const auto input = readFile("../data/2023/day11.txt");
+const auto input = aoc::getInput(2023, 11);
 
 uint64_t solve_old(uint32_t add) {
     add--;
@@ -23,15 +24,15 @@ uint64_t solve_old(uint32_t add) {
 
     size_t pos = 0;
     uint32_t y_offset = 0;
-    while (pos < input.size()) {
+    while(pos < input.size()) {
         bool ok = true;
-        for (size_t i = 0; i < 4; i++) {
-            auto v = _mm256_loadu_si256((__m256i *)(input.data() + pos));
+        for(size_t i = 0; i < 4; i++) {
+            auto v = _mm256_loadu_si256((__m256i*)(input.data() + pos));
             auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, cmp_val_256));
             pos += 32;
             ok &= mask == 0;
 
-            while (mask != 0) {
+            while(mask != 0) {
                 auto x = _tzcnt_u32(mask);
                 mask &= ~(1 << x);
                 galac.emplace_back(x + i * 32, y_offset);
@@ -39,11 +40,11 @@ uint64_t solve_old(uint32_t add) {
         }
 
         {
-            auto v = _mm_loadu_si128((__m128i *)(input.data() + pos));
+            auto v = _mm_loadu_si128((__m128i*)(input.data() + pos));
             auto val = _mm_and_si128(v, cmp_mask_128);
             auto mask = _mm_movemask_epi8(_mm_cmpeq_epi8(val, cmp_val_128));
 
-            while (mask != 0) {
+            while(mask != 0) {
                 auto x = _tzcnt_u32(mask);
                 mask &= ~(1 << x);
                 galac.emplace_back(x + 128, y_offset);
@@ -52,26 +53,26 @@ uint64_t solve_old(uint32_t add) {
 
         pos += 13;
         y_offset++;
-        if (ok) y_offset += add;
+        if(ok) y_offset += add;
     }
 
-    for (int x = 140 - 1; x >= 0; x--) {
+    for(int x = 140 - 1; x >= 0; x--) {
         auto ok = true;
-        for (int y = 0; y < 140; y++) {
+        for(int y = 0; y < 140; y++) {
             ok &= input[x + y * 141] != '#';
         }
-        if (ok) {
-            for (auto &g : galac) {
+        if(ok) {
+            for(auto& g : galac) {
                 g.x += (g.x > x) * add;
             }
         }
     }
 
     int64_t res = 0;
-    for (int i = 0; i < galac.size(); i++) {
+    for(int i = 0; i < galac.size(); i++) {
         const auto a = galac[i];
 
-        for (int j = i + 1; j < galac.size(); j++) {
+        for(int j = i + 1; j < galac.size(); j++) {
             const auto b = galac[j];
             res += std::abs(a.x - b.x);
             res += std::abs(a.y - b.y);
@@ -91,11 +92,11 @@ uint64_t solve_general(int64_t add) {
     std::vector<vec2<int32_t>> data(size - 1);
     std::fill(data.begin(), data.end(), vec2(0));
 
-    while (pos < input.size()) {
-        auto v = _mm256_loadu_si256((__m256i *)(input.data() + pos));
+    while(pos < input.size()) {
+        auto v = _mm256_loadu_si256((__m256i*)(input.data() + pos));
         auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, cmp_val_256));
 
-        while (mask != 0) {
+        while(mask != 0) {
             auto p = _tzcnt_u32(mask);
             mask &= ~(1 << p);
 
@@ -112,7 +113,7 @@ uint64_t solve_general(int64_t add) {
     vec2 count = {0, 0};
     vec2 rmn = vec2(_count) - count;
 
-    for (size_t i = 0; i < data.size(); i++) {
+    for(size_t i = 0; i < data.size(); i++) {
         score += rmn.x * count.x * ((data[i].x == 0) ? add : 1);
         score += rmn.y * count.y * ((data[i].y == 0) ? add : 1);
 
@@ -135,13 +136,13 @@ uint64_t solve(int64_t add) {
     size_t pos = 0;
     int32_t _count = 0;
     int32_t height = 0;
-    while (pos < input.size()) {
-        for (size_t i = 0; i < 4; i++) {
-            auto v = _mm256_loadu_si256((__m256i *)(input.data() + pos));
+    while(pos < input.size()) {
+        for(size_t i = 0; i < 4; i++) {
+            auto v = _mm256_loadu_si256((__m256i*)(input.data() + pos));
             auto mask = _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, cmp_val_256));
             pos += 32;
 
-            while (mask != 0) {
+            while(mask != 0) {
                 auto x = _tzcnt_u32(mask);
                 mask &= ~(1 << x);
                 data[x + i * 32].x++;
@@ -151,11 +152,11 @@ uint64_t solve(int64_t add) {
         }
 
         {
-            auto v = _mm_loadu_si128((__m128i *)(input.data() + pos));
+            auto v = _mm_loadu_si128((__m128i*)(input.data() + pos));
             auto mask = _mm_movemask_epi8(_mm_cmpeq_epi8(_mm_and_si128(v, cmp_mask_128), cmp_val_128));
             pos += 13;
 
-            while (mask != 0) {
+            while(mask != 0) {
                 auto x = _tzcnt_u32(mask);
                 mask &= ~(1 << x);
                 data[x + 128].x++;
@@ -171,7 +172,7 @@ uint64_t solve(int64_t add) {
     vec2 count = {0, 0};
     vec2 rmn = vec2(_count) - count;
 
-    for (size_t i = 0; i < data.size(); i++) {
+    for(size_t i = 0; i < data.size(); i++) {
         score += rmn.x * count.x * ((data[i].x == 0) ? add : 1);
         score += rmn.y * count.y * ((data[i].y == 0) ? add : 1);
 
@@ -206,4 +207,12 @@ uint64_t part2() {
     return solve(1000000);
 }
 
-}  // namespace y2023::Day11
+static auto p1 = aoc::test(part1, 2023, 11, 1, "part1");
+static auto p1o = aoc::test(part1_old, 2023, 11, 1, "part1_old");
+static auto p1g = aoc::test(part1_general, 2023, 11, 1, "part1_general");
+
+static auto p2 = aoc::test(part2, 2023, 11, 2, "part2");
+static auto p2o = aoc::test(part2_old, 2023, 11, 2, "part2_old");
+static auto p2g = aoc::test(part2_general, 2023, 11, 2, "part2_general");
+
+} // namespace y2023::Day11
