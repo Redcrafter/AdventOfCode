@@ -4,7 +4,7 @@
 #include "../aoc.hpp"
 #include "../util.hpp"
 
-namespace y2024::Day13 {
+namespace y2024::Day14 {
 
 const auto input = extractNumbers<int8_t, true>(aoc::getInput(2024, 14));
 const int width = 101;
@@ -111,4 +111,4 @@ static auto p2bc = aoc::test(part2_brute<false>, 2024, 14, 2, "part 2 brute chai
 static auto p2bo = aoc::test(part2_brute<true>, 2024, 14, 2, "part 2 brute overlap");
 static auto p2c = aoc::test(part2_crt, 2024, 14, 2, "part 2 crt");
 
-} // namespace y2024::Day13
+} // namespace y2024::Day14

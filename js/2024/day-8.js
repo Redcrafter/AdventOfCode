@@ -70,14 +70,17 @@ export function part2() {
                 const dx = a[0] - b[0];
                 const dy = a[1] - b[1];
 
-                for (let i = 0; ; i++) {
+                set[a[0] + a[1] * width] = 1;
+                set[b[0] + b[1] * width] = 1;
+
+                for (let i = 1; ; i++) {
                     const x = a[0] + dx * i;
                     const y = a[1] + dy * i;
                     if (x < 0 || x >= width || y < 0 || y >= height) break;
                     add(x, y);
                 }
 
-                for (let i = 0; ; i++) {
+                for (let i = 2; ; i++) {
                     const x = a[0] - dx * i;
                     const y = a[1] - dy * i;
                     if (x < 0 || x >= width || y < 0 || y >= height) break;

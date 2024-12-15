@@ -2,7 +2,7 @@
 #include "../aoc.hpp"
 #include "../grid.hpp"
 
-namespace y2024::Day13 {
+namespace y2024::Day15 {
 
 const auto input = aoc::getInput(2024, 15);
 
@@ -154,4 +154,4 @@ uint64_t part2() {
 static auto p1 = aoc::test(part1, 2024, 15, 1, "part 1");
 static auto p2 = aoc::test(part2, 2024, 15, 2, "part 2");
 
-} // namespace y2024::Day13
+} // namespace y2024::Day15
