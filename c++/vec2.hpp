@@ -10,7 +10,7 @@ struct vec2 {
     vec2(T x, T y) : x(x), y(y) {}
 
     template<typename U>
-    explicit vec2(const U& other) : x(other.x), y(other.y) {}
+    explicit vec2(const vec2<U>& other) : x(other.x), y(other.y) {}
 
     vec2<T> sign() {
         return {T((x > 0) - (x < 0)), T((y > 0) - (y < 0))};
