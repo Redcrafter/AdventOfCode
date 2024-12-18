@@ -3,10 +3,13 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
-#include <unordered_map>
+#include <variant>
 #include <vector>
 
 namespace aoc {
+
+using numFunc = uint64_t (*)();
+using stringFunc = std::string (*)();
 
 struct RegisteredFunction {
     // std::source_location location;
@@ -15,7 +18,7 @@ struct RegisteredFunction {
     int day;
     int part;
 
-    uint64_t (*func)();
+    std::variant<numFunc, stringFunc> func;
 };
 
 auto& registered_functions() {
@@ -29,12 +32,10 @@ RegisteredFunction& test(uint64_t (*func)(), int year, int day, int part, const 
     return funs.back();
 }
 
-RegisteredFunction* test(std::string (*func)(), int year, int day, int part, const char* name) {
-    printf("%i-%i-%i string return not implemented\n", year, day, part);
-    return nullptr;
-    // auto& funs = registered_functions();
-    // funs.emplace_back(name, year, day, part, func);
-    // return funs.back();
+RegisteredFunction& test(std::string (*func)(), int year, int day, int part, const char* name) {
+    auto& funs = registered_functions();
+    funs.emplace_back(name, year, day, part, func);
+    return funs.back();
 }
 
 std::string readFile(const std::string& path) {

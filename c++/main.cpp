@@ -83,6 +83,37 @@ std::string formatTime(std::chrono::duration<double, std::nano> value) {
     return buf;
 }
 
+template<typename T>
+void runFunc(aoc::RegisteredFunction& i, std::chrono::duration<double, std::nano>& total, nlohmann::json& solutions) {
+    auto fp = std::get<T (*)()>(i.func);
+
+    if(i.part != 0) {
+        auto res = fp();
+        T expected = solutions[std::to_string(i.year)][std::to_string(i.day)][i.part - 1];
+        if(res != expected) {
+            std::cout << i.year << "-" << i.day << "-" << i.name << " incorrect solution " << res << " != " << expected << std::endl;
+            // printf("{}-{}-{} incorrect solution {} != {}\n", i.year, i.day, i.name.c_str(), res, expected);
+            return;
+        }
+    }
+
+    auto [mean, times] = test(fp);
+
+    total += mean;
+
+    std::sort(times.begin(), times.end());
+    auto med = median(std::span(times));
+
+    // drawGraph(times, mean);
+
+    std::cout << " " << i.year << "-" << std::format("{:02}", i.day) << " │"
+              << formatTime(times[0]) << " │"
+              << formatTime(times[times.size() - 1]) << " │"
+              << formatTime(med) << " │"
+              << formatTime(mean) << " │ "
+              << i.name << std::endl;
+}
+
 int main() {
     std::ifstream f("../data/solutions.json");
     auto solutions = nlohmann::json::parse(f);
@@ -94,28 +125,11 @@ int main() {
 
     auto funs = aoc::registered_functions();
     for(auto&& i : funs) {
-        if(i.part != 0) {
-            auto res = i.func();
-            uint64_t expected = solutions[std::to_string(i.year)][std::to_string(i.day)][i.part - 1];
-            if(res != expected) {
-                printf("%i-%i-%s incorrect solution %lu != %lu\n", i.year, i.day, i.name.c_str(), res, expected);
-                continue;
-            }
+        if(std::holds_alternative<aoc::numFunc>(i.func)) {
+            runFunc<uint64_t>(i, total, solutions);
+        } else {
+            runFunc<std::string>(i, total, solutions);
         }
-
-        auto [mean, times] = test(i.func);
-
-        total += mean;
-
-        std::sort(times.begin(), times.end());
-        auto med = median(std::span(times));
-
-        std::cout << " " << i.year << "-" << std::format("{:02}", i.day) << " │"
-                  << formatTime(times[0]) << " │"
-                  << formatTime(times[times.size() - 1]) << " │"
-                  << formatTime(med) << " │"
-                  << formatTime(mean) << " │ "
-                  << i.name << std::endl;
     }
 
     std::cout << "Total time:" << formatTime(total) << std::endl;

@@ -26,10 +26,11 @@ class fixedVector {
     }
 
     void clear() {
-        for(size_t i = 0; i < pos; i++) {
-            data[i].~T();
+        if constexpr(!std::is_trivially_destructible_v<T>) {
+            for(size_t i = 0; i < pos; i++) {
+                data[i].~T();
+            }
         }
-
         pos = 0;
     }
     auto size() const {

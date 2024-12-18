@@ -58,3 +58,4 @@
 #include "./2024/day-15.hpp"
 #include "./2024/day-16.hpp"
 #include "./2024/day-17.hpp"
+#include "./2024/day-18.hpp"
