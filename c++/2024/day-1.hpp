@@ -57,8 +57,8 @@ auto parse() {
     std::array<uint32_t, 1000> l, r;
 
     for(size_t i = 0; i < 1000; i++) {
-        l[i] = readExactInt<uint32_t, 5>(input, i * 14);
-        r[i] = readExactInt<uint32_t, 5>(input, i * 14 + 8);
+        l[i] = readExactInt<uint32_t, 5>(input.substr(i * 14));
+        r[i] = readExactInt<uint32_t, 5>(input.substr(i * 14 + 8));
     }
     return std::pair(l, r);
 }

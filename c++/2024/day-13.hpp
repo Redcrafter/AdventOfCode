@@ -10,10 +10,10 @@ auto parseFast() {
     std::vector<double> nums;
 
     for(size_t i = 0; i < inp.size();) {
-        nums.push_back(readExactInt<double, 2>(inp, i + 12));
-        nums.push_back(readExactInt<double, 2>(inp, i + 18));
-        nums.push_back(readExactInt<double, 2>(inp, i + 33));
-        nums.push_back(readExactInt<double, 2>(inp, i + 39));
+        nums.push_back(readExactInt<double, 2>(inp.substr(i + 12)));
+        nums.push_back(readExactInt<double, 2>(inp.substr(i + 18)));
+        nums.push_back(readExactInt<double, 2>(inp.substr(i + 33)));
+        nums.push_back(readExactInt<double, 2>(inp.substr(i + 39)));
         i += 51;
         nums.push_back(readUInt<double>(inp, i));
         i += 3;

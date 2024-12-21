@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include "../alignedAllocator.hpp"
 #include "../aoc.hpp"
 #include "../fixedVector.hpp"
 #include "../util.hpp"
