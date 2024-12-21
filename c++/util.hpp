@@ -246,10 +246,10 @@ uint64_t readUInt128(std::string_view input, size_t& pos) {
 }
 
 template<typename T, int length>
-auto readExactInt(std::string_view str, size_t index) {
+auto readExactInt(std::string_view str) {
     T res = 0;
     for(int i = 0; i < length; i++) {
-        res = res * 10 + (str[index + i] & 0xF);
+        res = res * 10 + (str[i] & 0xF);
     }
     return res;
 }

@@ -19,6 +19,10 @@ struct vec2 {
         return std::sqrt(x * x + y * y);
     }
 
+    vec2<T> abs() const {
+        return vec2<T>(std::abs(x), std::abs(y));
+    }
+
     vec2<T>& operator+=(const vec2<T>& rhs) {
         x += rhs.x;
         y += rhs.y;
