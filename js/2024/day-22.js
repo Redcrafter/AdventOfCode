@@ -1,6 +1,6 @@
 import { extractNumbers, getInput } from "../util.js";
 
-const input = extractNumbers(getInput());
+const input = extractNumbers(getInput().join("\n"));
 
 export function part1() {
     let result = 0;
@@ -23,7 +23,7 @@ export function part2() {
     const is = [];
 
     for (let i = 0; i < input.length; i++) {
-        let num = input[i][0];
+        let num = input[i];
         let last = num;
 
         let seq = 0;

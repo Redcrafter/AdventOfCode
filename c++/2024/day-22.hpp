@@ -27,16 +27,25 @@ uint64_t part1_simd() {
     alignas(32) int temp[8];
 
     int i = 0;
-    for(; i + 8 <= input.size(); i += 8) {
-        auto nums = _mm256_loadu_si256((__m256i*)&input[i]);
+    for(; i + 16 <= input.size(); i += 16) {
+        auto nums1 = _mm256_loadu_si256((__m256i*)&input[i]);
+        auto nums2 = _mm256_loadu_si256((__m256i*)&input[i + 8]);
         for(int j = 0; j < 2000; ++j) {
-            nums = _mm256_and_si256(_mm256_xor_si256(nums, _mm256_slli_epi32(nums, 6)), mask);
-            nums = _mm256_xor_si256(nums, _mm256_srli_epi32(nums, 5));
-            nums = _mm256_xor_si256(nums, _mm256_slli_epi32(nums, 11));
+            nums1 = _mm256_and_si256(_mm256_xor_si256(nums1, _mm256_slli_epi32(nums1, 6)), mask);
+            nums2 = _mm256_and_si256(_mm256_xor_si256(nums2, _mm256_slli_epi32(nums2, 6)), mask);
+            nums1 = _mm256_xor_si256(nums1, _mm256_srli_epi32(nums1, 5));
+            nums2 = _mm256_xor_si256(nums2, _mm256_srli_epi32(nums2, 5));
+            nums1 = _mm256_xor_si256(nums1, _mm256_slli_epi32(nums1, 11));
+            nums2 = _mm256_xor_si256(nums2, _mm256_slli_epi32(nums2, 11));
         }
-        nums = _mm256_and_si256(nums, mask);
+        nums1 = _mm256_and_si256(nums1, mask);
+        nums2 = _mm256_and_si256(nums2, mask);
 
-        _mm256_store_si256((__m256i*)temp, nums);
+        _mm256_store_si256((__m256i*)temp, nums1);
+        for(int j = 0; j < 8; ++j)
+            result += temp[j];
+
+        _mm256_store_si256((__m256i*)temp, nums2);
         for(int j = 0; j < 8; ++j)
             result += temp[j];
     }

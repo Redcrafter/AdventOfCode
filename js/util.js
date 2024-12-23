@@ -82,13 +82,19 @@ export function getInput(skipEmpty = true) {
 }
 
 /**
- * @param {ArrayLike<number>} arr 
- * @returns 
+ * @param {Iterable<number>} arr 
+ * @returns {number}
  */
 export function sum(arr) {
     let res = 0;
-    for (let i = 0; i < arr.length; i++) {
-        res += arr[i];
+    if (Array.isArray(arr)) {
+        for (let i = 0; i < arr.length; i++) {
+            res += arr[i];
+        }
+    } else {
+        for (const val of arr) {
+            res += val;
+        }
     }
     return res;
 }

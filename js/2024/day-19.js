@@ -4,6 +4,8 @@ const input = getInput();
 const input1 = input[0].split(", ");
 const input2 = input.slice(1);
 
+input1.sort((a, b) => a.length - b.length);
+
 export function part1() {
     const reg = new RegExp(`^(${input1.join("|")})+$`);
     return input2.reduce((v, x) => v + reg.test(x), 0);
