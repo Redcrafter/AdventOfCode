@@ -63,3 +63,4 @@
 #include "./2024/day-20.hpp"
 #include "./2024/day-21.hpp"
 #include "./2024/day-22.hpp"
+#include "./2024/day-23.hpp"

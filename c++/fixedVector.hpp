@@ -24,6 +24,12 @@ class fixedVector {
             data[index] = data[index + 1];
         }
     }
+    bool contains(T val) const {
+        for(int i = 0; i < pos; i++) {
+            if(data[i] == val) return true;
+        }
+        return false;
+    }
 
     void clear() {
         if constexpr(!std::is_trivially_destructible_v<T>) {
@@ -51,6 +57,13 @@ class fixedVector {
     auto end() {
         return data.begin() + pos;
     }
+    auto begin() const {
+        return data.begin();
+    }
+    auto end() const {
+        return data.begin() + pos;
+    }
+
     operator std::span<T>() {
         return std::span<T>(data).subspan(0, pos);
     }
