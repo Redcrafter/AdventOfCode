@@ -35,7 +35,7 @@ uint64_t part1() {
     for(auto& key : keys) {
         for(auto& lock : locks) {
             auto ok = true;
-            for(int i = 0; i < key.size(); i++) {
+            for(size_t i = 0; i < key.size(); i++) {
                 if(key[i] + lock[i] > 7) {
                     ok = false;
                 }
@@ -49,9 +49,9 @@ uint64_t part1() {
     return result;
 }
 
-uint64_t part1_bit() {
-    fixedVector<uint32_t, 250> keys;
-    fixedVector<uint32_t, 250> locks;
+auto parse() {
+    fixedVector<uint32_t, 256> keys;
+    fixedVector<uint32_t, 256> locks;
 
     for(size_t i = 0; i < input.size(); i += 43) {
         uint32_t v = 0;
@@ -66,17 +66,27 @@ uint64_t part1_bit() {
             locks.push_back(v);
         }
     }
+    for (int i = 250; i < 256; i++) {
+        keys[i] = -1;
+        locks[i] = -1;
+    }
+    
+    return std::pair(keys, locks);
+}
+auto [keys, locks] = parse();
 
+uint64_t part1_bit() {
     int result = 0;
-    for(size_t i = 0; i < 250; i++) {
-        for(size_t j = 0; j < 250; j++) {
+    for(size_t i = 0; i < 256; i++) {
+        for(size_t j = 0; j < 256; j++) {
             result += (keys[i] & locks[j]) == 0;
         }
     }
     return result;
 }
 
-static auto p1 = aoc::test(part1, 2024, 25, 1, "part 1");
+// static auto p1 = aoc::test(part1, 2024, 25, 1, "part 1");
+static auto p = aoc::test([]() { return (uint64_t)parse().first.size(); }, 2024, 25, 0, "parse bit");
 static auto p1b = aoc::test(part1_bit, 2024, 25, 1, "part 1 bit");
 
 } // namespace y2024::Day25

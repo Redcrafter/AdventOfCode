@@ -6,11 +6,11 @@
 
 namespace y2022::Day7 {
 
-auto input = split(aoc::getInput(2022, 7), '\n');
+auto input = split(trimEnd(aoc::getInput(2022, 7)), '\n');
 
 int praseInt(std::string_view str) {
     int val = 0;
-    for(int i = 0; i < str.size(); i++) {
+    for(size_t i = 0; i < str.size(); i++) {
         auto c = str[i];
         if(c == ' ') break;
 
@@ -24,7 +24,7 @@ uint64_t part1() {
     std::array<int, 32> stack{};
     int sp = 0;
 
-    for(auto i = 0; i < input.size();) {
+    for(size_t i = 0; i < input.size();) {
         auto& line = input[i];
         i++;
 
@@ -58,7 +58,7 @@ uint64_t part2() {
     std::array<int, 32> stack{};
     int sp = 0;
 
-    for(auto i = 0; i < input.size();) {
+    for(size_t i = 0; i < input.size();) {
         auto& line = input[i];
         i++;
 
@@ -84,7 +84,7 @@ uint64_t part2() {
     int req = 30000000 - (70000000 - stack[0]);
     int m = 70000000;
 
-    for(size_t i = 0; i < pos; i++) {
+    for(int i = 0; i < pos; i++) {
         auto v = sizes[i];
         if(v > req && v < m) m = sizes[i];
     }

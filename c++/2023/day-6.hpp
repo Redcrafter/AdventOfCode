@@ -53,15 +53,15 @@ uint64_t part2() {
 
 uint64_t part2_dumb() {
     const auto [times, dists] = parse();
-    int64_t time = 0;
-    int64_t dist = 0;
+    uint64_t time = 0;
+    uint64_t dist = 0;
     for(size_t i = 0; i < 4; i++) {
         time = time * 100 + times[i];
         dist = dist * 10000 + dists[i];
     }
 
     int count = 0;
-    for(size_t i = 1; i < time; i++) {
+    for(uint64_t i = 1; i < time; i++) {
         count += i * (time - i) > dist;
     }
     return count;

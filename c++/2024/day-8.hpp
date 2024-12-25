@@ -40,10 +40,10 @@ uint64_t part1() {
     };
 
     for(auto&& g : groups) {
-        for(int i = 0; i < g.size(); i++) {
+        for(size_t i = 0; i < g.size(); i++) {
             auto a = g[i];
 
-            for(int j = i + 1; j < g.size(); j++) {
+            for(size_t j = i + 1; j < g.size(); j++) {
                 auto b = g[j];
 
                 auto d = a - b;
@@ -66,10 +66,10 @@ uint64_t part2() {
     std::array<uint8_t, width * height> set{};
 
     for(auto&& g : groups) {
-        for(int i = 0; i < g.size(); i++) {
+        for(size_t i = 0; i < g.size(); i++) {
             auto a = vec2<int>(g[i]);
 
-            for(int j = i + 1; j < g.size(); j++) {
+            for(size_t j = i + 1; j < g.size(); j++) {
                 auto b = vec2<int>(g[j]);
                 auto d = a - b;
 

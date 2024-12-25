@@ -75,7 +75,7 @@ uint64_t part2() {
     ranges.reserve(32);
     n_ranges.reserve(32);
 
-    for(int i = 0; i < seeds.size(); i += 2) {
+    for(size_t i = 0; i < seeds.size(); i += 2) {
         ranges.emplace_back(seeds[i], seeds[i] + seeds[i + 1]);
     }
 

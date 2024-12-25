@@ -12,7 +12,7 @@ auto toStringView(std::ranges::subrange<const char*>&& r) {
 }
 
 auto parse() {
-    const auto input = aoc::getInput(2024, 19);
+    const auto input = trimEnd(aoc::getInput(2024, 19));
     auto split_ = input.find('\n');
 
     using std::operator""sv;
@@ -29,7 +29,7 @@ const auto [input1, input2] = parse();
 
 bool starts_with(std::string_view a, std::string_view b) {
     if(a.size() < b.size()) return false;
-    for(int i = 0; i < b.size(); i++) {
+    for(size_t i = 0; i < b.size(); i++) {
         if(a[i] != b[i]) return false;
     }
     return true;

@@ -10,7 +10,7 @@ namespace y2022::Day9 {
 
 int praseInt(std::string_view str, int start = 0) {
     int val = 0;
-    for(int i = start; i < str.size(); i++) {
+    for(size_t i = start; i < str.size(); i++) {
         auto c = str[i];
         if(c < '0' || c > '9') break;
 
@@ -23,7 +23,7 @@ int sgn(int val) {
     return (0 < val) - (val < 0);
 }
 
-const auto input = split(aoc::getInput(2022, 9), '\n');
+const auto input = split(trimEnd(aoc::getInput(2022, 9)), '\n');
 
 const int arrSize = 520;
 uint64_t part1() {
@@ -37,7 +37,7 @@ uint64_t part1() {
     grid(arrSize / 2, arrSize / 2) = 1;
     auto res = 1;
 
-    for(auto i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto a = input[i];
         auto b = praseInt(a, 2);
 
@@ -95,7 +95,7 @@ uint64_t part2() {
     grid(arrSize / 2, arrSize / 2) = 1;
     auto res = 1;
 
-    for(auto i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto a = input[i];
         auto b = praseInt(a, 2);
 

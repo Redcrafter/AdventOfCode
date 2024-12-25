@@ -29,7 +29,7 @@ uint64_t part2() {
 
     for(int i = 0; i < 25; i++) {
         // #pragma clang loop unroll(full)
-        for(int i = width + 1; i < grid.size() - width - 1; i++) {
+        for(size_t i = width + 1; i < grid.size() - width - 1; i++) {
             int num =
                 grid[i - width - 1] << 8 | grid[i - width] << 7 | grid[i - width + 1] << 6 |
                 grid[i - 1] << 5 | grid[i] << 4 | grid[i + 1] << 3 |
@@ -49,7 +49,7 @@ uint64_t part2() {
         }
 
         // #pragma clang loop unroll(full)
-        for(int i = width + 1; i < next.size() - width - 1; i++) {
+        for(size_t i = width + 1; i < next.size() - width - 1; i++) {
             int num =
                 next[i - width - 1] << 8 | next[i - width] << 7 | next[i - width + 1] << 6 |
                 next[i - 1] << 5 | next[i] << 4 | next[i + 1] << 3 |
@@ -70,7 +70,7 @@ uint64_t part2() {
     }
 
     int count = 0;
-    for(int i = 0; i < grid.size(); i++) {
+    for(size_t i = 0; i < grid.size(); i++) {
         count += grid[i];
     }
     return count;

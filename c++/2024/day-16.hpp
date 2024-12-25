@@ -33,7 +33,7 @@ auto calcGrid() {
     stack.push_back({{1, height - 2}, {1, 0}, 0});
     stack.push_back({{1, height - 2}, {0, -1}, 1000});
 
-    for(int i = 0; i < stack.size(); i++) {
+    for(size_t i = 0; i < stack.size(); i++) {
         auto [pos, d, score] = stack[i];
 
         auto p1 = vec2<int>(pos) + vec2<int>(d);

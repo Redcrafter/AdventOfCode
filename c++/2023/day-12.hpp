@@ -27,7 +27,7 @@ uint64_t rec(std::span<const char> line, std::span<const uint32_t> nums, uint32_
     }
     if(numi + 1 < nums.size()) {
         uint64_t n = 0;
-        for(int i = end + 1; i < line.size(); i++) {
+        for(size_t i = end + 1; i < line.size(); i++) {
             n += rec(line, nums, numi + 1, i);
             if(line[i] == '#') {
                 break;
@@ -48,7 +48,7 @@ uint64_t rec(std::span<const char> line, std::span<const uint32_t> nums, uint32_
 uint64_t solveLine(std::span<const char> line, std::span<const uint32_t> nums) {
     uint64_t asd = 0;
     cache.fill(-1);
-    for(int i = 0; i < line.size(); i++) {
+    for(size_t i = 0; i < line.size(); i++) {
         asd += rec(line, nums, 0, i);
         if(line[i] == '#') {
             break;

@@ -18,7 +18,7 @@ auto parse() {
     std::vector<listType> vals;
     vals.reserve(1200);
 
-    int i = 0;
+    size_t i = 0;
     while(true) {
         if(input[i] == '\n') break;
 
@@ -45,7 +45,7 @@ auto parse() {
 }
 
 bool check(std::array<uint8_t, 256 * 256>& map, const listType& page) {
-    for(int i = 1; i < page.size(); i++) {
+    for(size_t i = 1; i < page.size(); i++) {
         if(map[page[i] | (page[i - 1] << 8)]) {
             return false;
         }
@@ -74,7 +74,7 @@ uint64_t part2() {
         auto eq = true;
 
         // insertion sort + equality check
-        for(int i = 1; i < item.size(); i++) {
+        for(size_t i = 1; i < item.size(); i++) {
             auto a = item[i];
             auto j = i;
             for(; j > 0 && map[a | (item[j - 1] << 8)] == 1; j--) {

@@ -6,7 +6,7 @@
 
 namespace y2023::Day4 {
 
-const auto input = aoc::getInput(2023, 4);
+const auto input = trimEnd(aoc::getInput(2023, 4));
 
 always__inline int countDup(size_t& pos, std::array<uint16_t, 10>& mine, std::array<uint16_t, 25>& winning) {
     pos += 10;
@@ -21,7 +21,6 @@ always__inline int countDup(size_t& pos, std::array<uint16_t, 10>& mine, std::ar
         winning[i] = *(uint16_t*)(input.data() + pos);
         pos += 3;
     }
-    pos++;
     int n = 0;
     for(int i = 0; i < 10; i++) {
         const auto item = mine[i];

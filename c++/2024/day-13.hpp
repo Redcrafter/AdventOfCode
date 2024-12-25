@@ -38,7 +38,7 @@ double calc(double ax, double ay, double bx, double by, double px, double py) {
 
 uint64_t part1() {
     double result = 0;
-    for(int i = 0; i < input.size(); i += 6) {
+    for(size_t i = 0; i < input.size(); i += 6) {
         result += calc(input[i + 0], input[i + 1],
                        input[i + 2], input[i + 3],
                        input[i + 4], input[i + 5]);
@@ -48,7 +48,7 @@ uint64_t part1() {
 
 uint64_t part2() {
     double result = 0;
-    for(int i = 0; i < input.size(); i += 6) {
+    for(size_t i = 0; i < input.size(); i += 6) {
         result += calc(input[i + 0], input[i + 1],
                        input[i + 2], input[i + 3],
                        input[i + 4] + 10000000000000.0, input[i + 5] + 10000000000000.0);

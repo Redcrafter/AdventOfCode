@@ -16,11 +16,11 @@ auto parseInput() {
 
     std::vector<int> dat(width * height);
 
-    for(size_t y = 0; y < height; y++) {
+    for(int y = 0; y < height; y++) {
         auto& line = input_[y];
         if(line.empty()) break;
 
-        for(size_t x = 0; x < width; x++) {
+        for(int x = 0; x < width; x++) {
             dat[x + y * width] = line[x];
         }
     }
@@ -31,9 +31,9 @@ auto parseInput() {
 const auto [input, width, height] = parseInput();
 
 vec2<int> findEnd() {
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         if(input[i] == 'E') {
-            return {i % width, i / width};
+            return {(int)i % width, (int)i / width};
         }
     }
     return {0, 0};
@@ -49,13 +49,11 @@ inline uint64_t bsf() {
 
     graph[end.x + end.y * width] = 0;
 
-    auto pos = 0;
-
     std::vector<vec2<int>> heap;
     heap.push_back(end);
 
-    while(pos < heap.size()) {
-        auto currentNode = heap[pos++];
+    for(size_t pos = 0; pos < heap.size(); pos++) {
+        auto currentNode = heap[pos];
 
         auto x = currentNode.x;
         auto y = currentNode.y;

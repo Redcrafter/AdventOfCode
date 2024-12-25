@@ -132,7 +132,7 @@ std::string part2_fast() {
             if(u == uniqueNodes.empty) continue;
 
             if(u == a) continue;
-            int n = 1;
+            uint32_t n = 1;
             for(auto& net : networks) {
                 n += net->contains(u);
             }

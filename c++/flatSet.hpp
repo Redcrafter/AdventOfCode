@@ -9,7 +9,7 @@ class FlatSet {
     static constexpr Tkey empty = -1;
 
     std::array<Tkey, capacity> data;
-    int used;
+    size_t used;
 
     FlatSet() {
         used = 0;

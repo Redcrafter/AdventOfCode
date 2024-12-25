@@ -6,7 +6,7 @@
 
 namespace y2024::Day9 {
 
-const auto input = aoc::getInput(2024, 9);
+const auto input = trimEnd(aoc::getInput(2024, 9));
 
 int64_t triangle(int64_t n) {
     return (n * (n + 1)) / 2;
@@ -59,8 +59,8 @@ uint64_t part1() {
 uint64_t part2() {
     std::array<std::vector<uint32_t>, 10> gaps;
 
-    int size = 0;
-    for(int i = 0; i < input.size();) {
+    uint32_t size = 0;
+    for(size_t i = 0; i < input.size();) {
         size += input[i] & 0xF;
         i++;
         if(i >= input.size()) break;
@@ -82,7 +82,7 @@ uint64_t part2() {
     };
 
     int i = input.size() - 1;
-    int offset = size;
+    auto offset = size;
     while(i >= 0) {
         auto size = input[i] & 0xF;
         offset -= size;
@@ -96,10 +96,10 @@ uint64_t part2() {
         }
         if(size == 0) continue;
 
-        auto minG = 1 << 30;
+        auto minG = 1u << 30;
         auto minGapSize = -1;
 
-        for(int j = size; j < gaps.size(); j++) {
+        for(size_t j = size; j < gaps.size(); j++) {
             auto& g = gaps[j];
             if(g.size() == 0) continue;
             auto gi = g[g.size() - 1];

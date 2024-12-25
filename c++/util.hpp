@@ -18,7 +18,7 @@ std::vector<T> split(T str, const char c) {
     std::vector<T> res;
 
     int start = 0;
-    int pos = 0;
+    size_t pos = 0;
 
     while(pos < str.size()) {
         if(str[pos] == c) {
@@ -99,6 +99,11 @@ struct StringLiteral {
     char value[N];
 };
 
+std::string_view trimEnd(std::string_view str, const char* chars = " \t\r\n") {
+    auto end = str.find_last_not_of(chars);
+    return str.substr(0, end + 1);
+}
+
 template<StringLiteral val>
 bool stringMatch(std::string_view str, size_t& pos) {
     for(size_t i = 0; i < sizeof(val) - 1; i++) {
@@ -121,7 +126,7 @@ bool contains(const std::span<const T> arr, T search) {
 template<typename T>
 bool contains(const T* ptr, int start, int end, T search) {
     bool ok = false;
-    for(size_t i = start; i < end; i++) {
+    for(int i = start; i < end; i++) {
         ok |= ptr[i] == search;
     }
     return ok;

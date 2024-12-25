@@ -18,14 +18,14 @@ class fixedVector {
     void pop_back() {
         pos--;
     }
-    void erase(int index) {
+    void erase(size_t index) {
         pos--;
         for(; index < pos; index++) {
             data[index] = data[index + 1];
         }
     }
     bool contains(T val) const {
-        for(int i = 0; i < pos; i++) {
+        for(size_t i = 0; i < pos; i++) {
             if(data[i] == val) return true;
         }
         return false;

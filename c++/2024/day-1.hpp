@@ -15,7 +15,7 @@ void radixSortUint32(std::array<uint32_t, size>& input) {
     std::array<uint32_t, size> output;
 
     // count all bytes in one pass
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto val = input[i];
         count[val & 0xFF]++;
         count[((val >> 8) & 0xFF) | 256]++;
@@ -35,19 +35,19 @@ void radixSortUint32(std::array<uint32_t, size>& input) {
         }
     }
 
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto val = input[i];
         output[count[val & 0xFF]++] = val;
     }
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto val = output[i];
         input[count[((val >> 8) & 0xFF) | 256]++] = val;
     }
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto val = input[i];
         output[count[((val >> 16) & 0xFF) | 512]++] = val;
     }
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto val = output[i];
         input[count[((val >> 24) & 0xFF) | 768]++] = val;
     }
@@ -70,7 +70,7 @@ uint64_t part1() {
     radixSortUint32(r);
 
     uint64_t result = 0;
-    for(int i = 0; i < l.size(); i++) {
+    for(size_t i = 0; i < l.size(); i++) {
         result += std::abs((int)l[i] - (int)r[i]);
     }
     return result;
@@ -81,12 +81,12 @@ uint64_t part2() {
 
     std::array<uint8_t, 100000> map{};
 
-    for(int i = 0; i < r.size(); i++) {
+    for(size_t i = 0; i < r.size(); i++) {
         map[r[i]]++;
     }
 
     uint64_t result = 0;
-    for(int i = 0; i < l.size(); i++) {
+    for(size_t i = 0; i < l.size(); i++) {
         auto a = l[i];
         result += a * map[a];
     }

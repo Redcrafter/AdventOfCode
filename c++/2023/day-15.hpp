@@ -7,7 +7,7 @@
 
 namespace y2023::Day15 {
 
-const auto input = aoc::getInput(2023, 15);
+const auto input = trimEnd(aoc::getInput(2023, 15));
 
 uint64_t part1() {
     uint64_t result = 0;
@@ -59,7 +59,7 @@ uint64_t part2() {
 
         auto& b = boxes[hash & 0xFF];
 
-        int i = 0;
+        size_t i = 0;
         for(; i < b.size(); i++) {
             if(b[i].label == raw) {
                 break;

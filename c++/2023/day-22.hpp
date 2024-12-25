@@ -138,7 +138,7 @@ uint64_t part2() {
     std::vector<std::bitset<1024 + 512>> madeFall;
     madeFall.resize(objects.size());
 
-    for(int i = 0; i < objects.size(); i++) {
+    for(size_t i = 0; i < objects.size(); i++) {
         auto& el = objects[i];
         auto& s = madeFall[i];
         if(el.below.size() != 0) {

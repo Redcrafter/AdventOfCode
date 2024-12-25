@@ -9,7 +9,7 @@ const auto input = extractNumbers<int>(aoc::getInput(2024, 22));
 
 uint64_t part1() {
     uint64_t result = 0;
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         auto num = input[i];
         for(int j = 0; j < 2000; j++) {
             num = (num ^ (num << 6)) & 0xFFFFFF;
@@ -26,7 +26,7 @@ uint64_t part1_simd() {
     uint64_t result = 0;
     alignas(32) int temp[8];
 
-    int i = 0;
+    size_t i = 0;
     for(; i + 16 <= input.size(); i += 16) {
         auto nums1 = _mm256_loadu_si256((__m256i*)&input[i]);
         auto nums2 = _mm256_loadu_si256((__m256i*)&input[i + 8]);
@@ -67,7 +67,7 @@ uint64_t part2() {
     std::array<bool, 1 << 20> sub{};
     fixedVector<uint32_t, 2000> is; // keeping track of set indecies is slightly faster than std::bitset
 
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         int num = input[i];
         uint32_t last = num % 10;
 

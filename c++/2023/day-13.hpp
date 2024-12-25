@@ -73,9 +73,9 @@ uint64_t solve() {
             }
         }
 
-        for(size_t i = 0; i < width; i++) {
+        for(int i = 0; i < width; i++) {
             uint32_t v = 0;
-            for(size_t y = 0; y < 32; y++) {
+            for(int y = 0; y < 32; y++) {
                 if(pattern[y] & (1u << i)) {
                     v |= 1u << y;
                 }

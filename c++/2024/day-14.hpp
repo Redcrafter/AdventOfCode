@@ -16,7 +16,7 @@ uint64_t part1() {
     int bl = 0;
     int br = 0;
 
-    for(int i = 0; i < input.size(); i += 4) {
+    for(size_t i = 0; i < input.size(); i += 4) {
         auto px = input[i];
         auto py = input[i + 1];
         auto vx = input[i + 2];
@@ -40,7 +40,7 @@ uint64_t part2_brute() {
     for(int i = 1;; i++) {
         grid.fill(0);
 
-        for(int j = 0; j < input.size(); j += 4) {
+        for(size_t j = 0; j < input.size(); j += 4) {
             auto px = input[j];
             auto py = input[j + 1];
             auto vx = input[j + 2];
@@ -54,12 +54,12 @@ uint64_t part2_brute() {
 
         if constexpr(overlap) {
             bool valid = true;
-            for(int j = 0; j < grid.size(); j++) {
+            for(size_t j = 0; j < grid.size(); j++) {
                 if(grid[j] == 2) valid = false;
             }
             if(valid) return i;
         } else {
-            for(int j = 0; j + 15 < grid.size(); j += 15) {
+            for(size_t j = 0; j + 15 < grid.size(); j += 15) {
                 bool valid = true;
                 for(int k = 0; k < 15; k++) {
                     if(grid[j + k] == 0) valid = false;
@@ -80,7 +80,7 @@ uint64_t part2_crt() {
         arr1.fill(0);
         arr2.fill(0);
 
-        for(int j = 0; j < input.size(); j += 4) {
+        for(size_t j = 0; j < input.size(); j += 4) {
             auto px = input[j];
             auto py = input[j + 1];
             auto vx = input[j + 2];

@@ -15,7 +15,7 @@ constexpr int height = 130;
 constexpr int width1 = width + 1; // actual string length
 
 std::pair<int, int> findStart() {
-    for(int i = 0; i < input.size(); i++) {
+    for(size_t i = 0; i < input.size(); i++) {
         if(input[i] == '^') return {i % width1, i / width1};
     }
     return {0, 0};
@@ -38,9 +38,9 @@ auto line(std::array<uint8_t, width * height>& s, int& x, int& y) {
 }
 
 auto base_path() {
-    // auto [x, y] = findStart();
-    int x = 61;
-    int y = 85;
+    auto [x, y] = findStart();
+    // int x = 61;
+    // int y = 85;
 
     std::array<uint8_t, width * height> s{};
     s[x + y * width] = 1;

@@ -32,7 +32,7 @@ uint64_t part1() {
         }
     };
 
-    for(int i = 0; i < stack.size(); i++) {
+    for(size_t i = 0; i < stack.size(); i++) {
         auto [x, y, cost] = stack[i];
 
         if(x == 70 && y == 70)
@@ -123,7 +123,7 @@ std::string part2_union() {
         }
     };
 
-    for(int i = 0; i < input.size(); i += 2) {
+    for(size_t i = 0; i < input.size(); i += 2) {
         int x = input[i];
         int y = input[i + 1];
 

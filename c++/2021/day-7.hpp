@@ -12,10 +12,10 @@ uint64_t func() {
 
     auto [min, max] = std::ranges::minmax_element(input);
 
-    unsigned int best = -1;
+    uint32_t best = -1;
     for(int i = *min; i < *max; i++) {
-        int cost = 0;
-        for(int j = 0; j < input.size(); j++) {
+        uint32_t cost = 0;
+        for(size_t j = 0; j < input.size(); j++) {
             auto val = std::abs(input[j] - i);
             if(part == 1) {
                 cost += val;

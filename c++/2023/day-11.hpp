@@ -69,10 +69,10 @@ uint64_t solve_old(uint32_t add) {
     }
 
     int64_t res = 0;
-    for(int i = 0; i < galac.size(); i++) {
+    for(size_t i = 0; i < galac.size(); i++) {
         const auto a = galac[i];
 
-        for(int j = i + 1; j < galac.size(); j++) {
+        for(size_t j = i + 1; j < galac.size(); j++) {
             const auto b = galac[j];
             res += std::abs(a.x - b.x);
             res += std::abs(a.y - b.y);

@@ -36,7 +36,7 @@ uint64_t part1() {
     int i = 0;
     while(curr != ZZZ) {
 #pragma clang loop unroll_count(8)
-        for(int j = 0; j < dirLen; j++)
+        for(size_t j = 0; j < dirLen; j++)
             curr = map[curr][input[j] == 'L' ? 0 : 1];
         i += dirLen;
     }
@@ -85,7 +85,7 @@ uint64_t part2() {
         int j = 0;
         while((curr >> 16) != 'Z') {
 #pragma clang loop unroll_count(8)
-            for(int k = 0; k < dirLen; k++)
+            for(size_t k = 0; k < dirLen; k++)
                 curr = map[curr][input[k] == 'L' ? 0 : 1];
             j += dirLen;
         }

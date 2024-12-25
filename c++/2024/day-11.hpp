@@ -29,7 +29,7 @@ class CustomMap {
         data.fill({-1, 0});
         used.clear();
     }
-    uint64_t& operator[](uint64_t i) {
+    uint64_t& operator[](int64_t i) {
         auto x = (i * 0x45d9f3b) % data.size();
 
         while(true) {

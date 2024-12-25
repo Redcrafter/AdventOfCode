@@ -96,7 +96,7 @@ uint64_t part1() {
         }
         groupCount = pool.size();
 
-        int i = 0;
+        size_t i = 0;
         for(; groupCount > 2; i++) {
             auto [a, b] = edges[i];
             merge(a, b);

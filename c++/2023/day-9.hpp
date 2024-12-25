@@ -55,7 +55,7 @@ always__inline auto calcStack(size_t& pos, std::array<std::array<int32_t, size>,
 
         bool b = true;
         auto v = n[0];
-        for(size_t j = 0; j < s; j++) {
+        for(int j = 0; j < s; j++) {
             b &= n[j] == v;
         }
         if(b) break;
@@ -103,7 +103,7 @@ uint64_t part2() {
 constexpr auto genTable() {
     std::array<std::array<int, 32>, 32> res;
 
-    for(size_t i = 0; i < 32; i++) {
+    for(int i = 0; i < 32; i++) {
         int c = 1;
         for(int j = 0; j < i + 1; j++) {
             res[i][j] = c;
@@ -127,7 +127,7 @@ uint64_t part1_math() {
     while(pos < input.size()) {
         auto size = readLine(pos, arr);
         int s = 0;
-        for(size_t i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             s = table[size][i] * arr[i] - s;
         }
         result += s;
@@ -146,7 +146,7 @@ uint64_t part2_math() {
         auto size = readLine(pos, arr);
 
         int s = 0;
-        for(size_t i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             s = table[size][i] * arr[size - i - 1] - s;
         }
         result += s;
@@ -166,13 +166,13 @@ uint64_t part1_sum() {
     int size;
     while(pos < input.size()) {
         size = readLine(pos, arr);
-        for(size_t i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             sum[i] += arr[i];
         }
     }
 
     int64_t result = 0;
-    for(size_t i = 0; i < size; i++) {
+    for(int i = 0; i < size; i++) {
         result = table[size][i] * sum[i] - result;
     }
     return result;
@@ -189,13 +189,13 @@ uint64_t part2_sum() {
     while(pos < input.size()) {
         size = readLine(pos, arr);
 
-        for(size_t i = 0; i < size; i++) {
+        for(int i = 0; i < size; i++) {
             sum[i] += arr[i];
         }
     }
 
     int64_t result = 0;
-    for(size_t i = 0; i < size; i++) {
+    for(int i = 0; i < size; i++) {
         result = table[size][i] * sum[size - i - 1] - result;
     }
     return result;

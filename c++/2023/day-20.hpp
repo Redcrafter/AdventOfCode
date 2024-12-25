@@ -147,7 +147,7 @@ uint64_t part2() {
 
     auto& targets = map[0].dest;
     uint64_t result = 1;
-    int count = 0;
+    size_t count = 0;
 
     for(size_t j = 1; count != ends.size(); j++) {
         stack.clear();

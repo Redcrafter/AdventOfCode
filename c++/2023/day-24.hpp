@@ -60,11 +60,11 @@ uint64_t part1() {
     const float min = 200000000000000.0f;
     const float max = 400000000000000.0f;
 
-    for(int i = 0; i < lines.size(); i++) {
+    for(size_t i = 0; i < lines.size(); i++) {
         auto a = lines[i];
         auto sa = toSlope(a.start, a.vel);
 
-        for(int j = i + 1; j < lines.size(); j++) {
+        for(size_t j = i + 1; j < lines.size(); j++) {
             auto b = lines[j];
             auto sb = toSlope(b.start, b.vel);
 

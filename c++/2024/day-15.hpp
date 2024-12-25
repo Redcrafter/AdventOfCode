@@ -45,7 +45,7 @@ uint64_t part1() {
         }
     }
 
-    for(int i = 50 * 51 + 1; i < input.size(); i++) {
+    for(size_t i = 50 * 51 + 1; i < input.size(); i++) {
         char dir = input[i];
 
         // clang-format off
@@ -120,7 +120,7 @@ uint64_t part2() {
         }
     }
 
-    for(int i = 50 * 51 + 1; i < input.size(); i++) {
+    for(size_t i = 50 * 51 + 1; i < input.size(); i++) {
         char dir = input[i];
 
         if(dir == '>' && tryPush2<1, 0, false>(x + 1, y, g)) {

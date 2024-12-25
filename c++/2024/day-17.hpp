@@ -21,7 +21,7 @@ const auto [a, program] = parse();
 auto run(fixedVector<uint32_t, 32>& out, uint64_t a) {
     uint64_t b = 0;
     uint64_t c = 0;
-    int pc = 0;
+    size_t pc = 0;
 
     auto combo = [&](int i) {
         switch(i) {
