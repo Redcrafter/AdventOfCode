@@ -35,7 +35,7 @@ export function _getCallerFile() {
  * @returns {string[]}
  */
 export function readLines(path, skipEmpty = true) {
-    let lines = fs.readFileSync(path).toString().split("\n");
+    let lines = fs.readFileSync(path).toString().replaceAll("\r\n", "\n").split("\n");
     if (skipEmpty) lines = lines.filter(x => x.length != 0);
     return lines;
 }
@@ -216,4 +216,47 @@ export function radixSortUint32(input) {
     }
 
     return input;
+}
+
+/**
+ * 
+ * @param {string[]} walls 
+ * @param {number} x 
+ * @param {number} y 
+ * @returns 
+ */
+export function bfs(walls, x, y) {
+    const height = walls.length;
+    const width = walls[0].length;
+
+    const grid = new Uint32Array(width * height);
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            grid[x + y * walls] = -1;
+        }
+    }
+
+    const stack = [];
+    stack.push([x, y, 0]);
+
+    function add(x, y, dist) {
+        if (x < 0 || y < 0 || x >= width || y >= height)
+            return
+
+        if (!grid[x + y * width]) {
+            grid[x + y * width] = dist;
+            next.push([x, y, dist]);
+        }
+    }
+
+    while (stack.length != 0) {
+        let [x, y, dist] = stack.shift();
+
+        add(x - 1, y, dist + 1);
+        add(x + 1, y, dist + 1);
+        add(x, y - 1, dist + 1);
+        add(x, y + 1, dist + 1);
+    }
+
+    return grid;
 }

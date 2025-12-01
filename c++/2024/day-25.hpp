@@ -56,28 +56,30 @@ auto parse() {
     for(size_t i = 0; i < input.size(); i += 43) {
         uint32_t v = 0;
 
-        for(int j = 6; j < 36; j++) {
-            v += (input[j + i] == '#') << (j - 6);
+        for(int j = 4; j < 36; j++) {
+            v += (input[j + i] == '#') << (j - 4);
         }
 
-        if(input[i] == '#') {
+        if(v & 1) {
             keys.push_back(v);
         } else {
             locks.push_back(v);
         }
     }
-    for (int i = 250; i < 256; i++) {
+    for(int i = 250; i < 256; i++) {
         keys[i] = -1;
         locks[i] = -1;
     }
-    
+
     return std::pair(keys, locks);
 }
-auto [keys, locks] = parse();
+const auto inp = parse();
+alignas(32) const auto keys = inp.first;
+alignas(32) const auto locks = inp.second;
 
 uint64_t part1_bit() {
     int result = 0;
-    for(size_t i = 0; i < 256; i++) {
+    for(size_t i = 0; i < 250; i++) {
         for(size_t j = 0; j < 256; j++) {
             result += (keys[i] & locks[j]) == 0;
         }

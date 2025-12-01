@@ -1,6 +1,7 @@
 import { arraySplit, extractNumbers, getInput } from "../util.js";
 
 const input = arraySplit(getInput(false), x => x.length == 0);
+input.pop();
 
 export function part1() {
     const locks = [];
@@ -13,7 +14,7 @@ export function part1() {
         for (let x = 0; x < 5; x++) {
             let c = -1;
             for (let y = 0; y < 7; y++) {
-                if (el[y][x] == 35) c++;
+                if (el[y][x] == "#") c++;
             }
             counts.push(c);
         }
@@ -25,7 +26,6 @@ export function part1() {
         }
     }
 
-    /*
     let result = 0;
 
     for (const l of locks) {
@@ -45,11 +45,11 @@ export function part1() {
         }
     }
 
-    return result;*/
+    return result;
 }
 
 export function part2() {
-
+    return 0;
 }
 
 import { checkAnswers } from "../test.js";

@@ -1,7 +1,7 @@
 
 const warmUpTime = 1 * 1e9; // 1 second
 
-const testTime = 30 * 1e9; // 30 seconds
+const testTime = 10 * 1e9; // 10 seconds
 const maxIters = 1_000_000;
 
 function now() {
@@ -12,17 +12,32 @@ function format(n) {
     return (n / 1000).toFixed(1).padStart(7) + "μs";
 }
 
+// warms up v8 engine and estimates the function runtime
+function warmUp_estimate(func) {
+    // force v8 to optimize functions
+    const start = now();
+
+    // exponentially increase number of estimation itterations
+    for (let i = 0; ; i++) {
+        const start1 = now();
+        for (let j = 0; j < (1 << i); j++) {
+            func();
+        }
+        const end = now();
+
+        if ((end - start) >= warmUpTime) {
+            return Number(end - start1) / (1 << i);
+        }
+    }
+}
+
 /**
  * @param {number} day 
  * @param {number} part 
  * @param {() => void} func 
  */
 function runTest(func) {
-    // force v8 to optimize functions
-    const start = now();
-    while ((now() - start) < warmUpTime) {
-        func();
-    }
+    const runs = Math.ceil(100_0000 / warmUp_estimate(func));
 
     let i = 0;
     let time = 0;
@@ -32,17 +47,19 @@ function runTest(func) {
 
     while (time < testTime && i < maxIters) {
         const start = now();
-        func();
+        for (let j = 0; j < runs; j++) {
+            func();
+        }
         const end = now();
 
         const dt = Number(end - start);
-        times.push(dt);
+        times.push(dt / runs);
 
         if (dt < min) min = dt;
         if (dt > max) max = dt;
 
         time += dt;
-        i++;
+        i += runs;
     }
 
     return [min, max, time / i, times];
@@ -57,49 +74,35 @@ function median(arr) {
     }
 }
 
+function stdDiv(times, mean) {
+    let stdDiv = 0;
+    for (const item of times)
+        stdDiv += (item - mean) ** 2;
+    return Math.sqrt(stdDiv / (times.length - 1));
+}
+
 function drawGraph(times, mean) {
     const height = 5;
     const width = 100;
 
     times.sort((a, b) => a - b);
 
-    let q2 = median(times);
+    const σ = stdDiv(times, mean);
+
+    const q2 = median(times);
     const q1 = median(times.slice(0, times.length / 2));
     const q3 = median(times.slice(times.length / 2));
-    let iqr = q3 - q1;
-
-    if (iqr < 100) iqr = 100;
+    const iqr = Math.max(q3 - q1, 100);
 
     const upper = q3 + (1.5 * iqr);
-    let lower = q1 - (1.5 * iqr);
-    lower = Math.max(lower, times[0]);
-
+    const lower = Math.max(q1 - (1.5 * iqr), times[0]);
     const range = upper - lower;
 
-    const dist = new Uint32Array(width);
-    let dMax = 0;
-
-    let stdDiv = 0;
-
+    const dist = new Float64Array(width);
     for (const item of times) {
-        stdDiv += (item - mean) ** 2;
-
         const pos = Math.floor(((item - lower) / range) * width);
-        if (pos < 0 || pos >= width) continue;
-
-        dist[pos]++;
-        dMax = Math.max(dMax, dist[pos]);
+        if (pos >= 0 || pos < width) dist[pos]++;
     }
-
-    // interpolate gaps if time resoultion is not high enough
-    // doesn't work for 2 wide gaps
-    for (let i = 1; i < dist.length - 1; i++) {
-        if(dist[i] == 0) {
-            dist[i] = (dist[i - 1] + dist[i + 1]) / 2;
-        }
-    }
-
-    stdDiv = Math.sqrt(stdDiv / (times.length - 1));
 
     const blocks = " ▁▂▃▄▅▆▇█";
     const result = [];
@@ -107,6 +110,7 @@ function drawGraph(times, mean) {
         result.push(new Array(width).fill(" "));
     }
 
+    const dMax = dist.reduce((v, x) => Math.max(v, x), 0);
     for (let x = 0; x < dist.length; x++) {
         let h = (dist[x] / dMax) * height;
 
@@ -120,7 +124,7 @@ function drawGraph(times, mean) {
 
     console.log(`Range (min … max): ${format(times[0])} … ${format(times.at(-1))}`);
     console.log(`Time  (median):    ${format(q2)}`);
-    console.log(`Time  (mean ± σ):  ${format(mean)} ± ${format(stdDiv)}`);
+    console.log(`Time  (mean ± σ):  ${format(mean)} ± ${format(σ)}`);
     console.log();
 
     for (let y = 0; y < height; y++) {
@@ -135,7 +139,7 @@ function drawGraph(times, mean) {
     const mid = Math.floor(((q2 - lower) / range) * width) + 1;
 
     process.stdout.write("└");
-    process.stdout.write("─".repeat(mid - 2));
+    process.stdout.write("─".repeat(Math.max(mid - 2, 0)));
     process.stdout.write("┴");
     process.stdout.write("─".repeat(width - mid - 1));
     process.stdout.write("┘\n");
