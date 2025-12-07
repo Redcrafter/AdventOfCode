@@ -258,3 +258,21 @@ auto readExactInt(std::string_view str) {
     }
     return res;
 }
+
+template<typename R, typename D>
+R sum(std::span<const D> data) {
+    R res = 0;
+    for(const auto& i : data) {
+        res += i;
+    }
+    return res;
+}
+
+template<typename R, typename D>
+R prod(std::span<const D> data) {
+    R res = 1;
+    for(const auto& i : data) {
+        res *= i;
+    }
+    return res;
+}

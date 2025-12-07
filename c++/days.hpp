@@ -72,3 +72,4 @@
 #include "./2025/day-4.hpp"
 #include "./2025/day-5.hpp"
 #include "./2025/day-6.hpp"
+#include "./2025/day-7.hpp"
