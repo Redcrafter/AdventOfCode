@@ -1,6 +1,7 @@
 #pragma once
 #include <immintrin.h>
 
+#include <array>
 #include <span>
 #include <string_view>
 #include <vector>
@@ -275,4 +276,45 @@ R prod(std::span<const D> data) {
         res *= i;
     }
     return res;
+}
+
+template<typename T, class PR>
+void counting_sort(std::span<T> input, PR pred) {
+    using KeyType = std::invoke_result_t<PR, T&>;
+    const auto bitCount = 8; // should be power of 2
+    const auto bitMask = (1 << bitCount) - 1;
+
+    std::array<std::array<uint32_t, 1 << bitCount>, (sizeof(KeyType) * 8) / bitCount> count {};
+    std::vector<T> output(input.size());
+
+    // count all bytes in one pass
+    for(size_t i = 0; i < input.size(); i++) {
+        auto key = pred(input[i]);
+
+        for(size_t j = 0; j < count.size(); j++) {
+            count[j][((key >> (j * bitCount)) & bitMask)]++;
+        }
+    }
+
+    // create summed array
+    for(int j = 0; j < count.size(); j++) {
+        int sum = 0;
+        for(int i = 0; i < (1 << bitCount); i++) {
+            int t = count[j][i];
+            count[j][i] = sum;
+            sum += t;
+        }
+    }
+
+    for(int j = 0; j < count.size(); j++) {
+        for(int i = 0; i < input.size(); i++) {
+            auto val = input[i];
+            output[count[j][(pred(val) >> (j * bitCount)) & bitMask]++] = val;
+        }
+        j++;
+        for(int i = 0; i < input.size(); i++) {
+            auto val = output[i];
+            input[count[j][(pred(val) >> (j * bitCount)) & bitMask]++] = val;
+        }
+    }
 }
