@@ -2,6 +2,7 @@
     "imports": {
         "fs": "node:fs",
         "url": "node:url",
-        "readline": "node:readline"
+        "readline": "node:readline",
+        "z3-solver": "npm:z3-solver"
     }
 }

@@ -2,6 +2,6 @@
   "type": "module",
   "dependencies": {
     "heap-js": "^2.5.0",
-    "z3-solver": "^4.13.3"
+    "z3-solver": "^4.15.4"
   }
 }
