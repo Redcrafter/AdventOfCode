@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const _input = getInput()[0].match(/-?\d+/gm).map(x => parseInt(x));
 
@@ -71,5 +71,5 @@ export function part2() {
     return hits;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

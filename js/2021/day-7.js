@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput()[0].split(",").map(x => parseInt(x));
 
 export function part1() {
@@ -80,5 +80,5 @@ export function part2() {
     return best;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,5 +1,5 @@
 
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(x => parseInt(x, 2));
 
 function findCommon(arr, mask) {
@@ -46,5 +46,5 @@ export function part2() {
     return a[0] * b[0];
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

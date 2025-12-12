@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput();
 
 export function part1() {
@@ -91,5 +91,5 @@ export function part2() {
     return sums[Math.floor(sums.length / 2)];
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

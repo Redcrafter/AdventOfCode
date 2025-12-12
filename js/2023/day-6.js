@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 
 const input1 = extractNumbers(getInput());
 const input2 = extractNumbers(getInput().map(x => x.replace(/ /g, "")));
@@ -27,5 +27,5 @@ export function part2() {
     return solve(time, dist);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

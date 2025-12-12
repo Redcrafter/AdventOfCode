@@ -1,4 +1,4 @@
-import { arraySplit, extractNumbers, getInput, sum } from "../util.js";
+import { arraySplit, extractNumbers, getInput } from "../util.ts";
 
 const input = arraySplit(getInput(), 6).map(x => {
     let i = extractNumbers(x[0])[0];
@@ -92,5 +92,5 @@ export function part2() {
     return b.at(-1) * b.at(-2);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

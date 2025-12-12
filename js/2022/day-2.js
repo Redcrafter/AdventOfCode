@@ -1,4 +1,4 @@
-import { getInput, sum } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput();
 
 const A = "A".charCodeAt(0);
@@ -30,5 +30,5 @@ export function part2() {
     return res;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

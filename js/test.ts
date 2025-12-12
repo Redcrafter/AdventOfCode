@@ -1,9 +1,10 @@
 import fs from "fs";
 import readline from "readline";
 import { fileURLToPath } from "url";
+import process from "process";
 
-import { downloadInput } from "./api.js";
-import { getCallStack, _getCallerFile } from "./util.js";
+import { downloadInput } from "./api.ts";
+import { getCallStack, _getCallerFile } from "./util.ts";
 
 let testAll = false;
 
@@ -11,30 +12,30 @@ const red = "\x1b[31m";
 const green = "\x1b[32m";
 const reset = "\x1b[0m";
 
-let solutions = null;
-let results = {};
+let solutions: Record<string, Record<string, (string | number)[]>> | null = null;
+const results: Record<string, Record<string, (string | number)[]>> = {};
 if (!fs.existsSync(`./data/solutions.json`)) {
     console.log(`${red}Missing solutions.json${reset}`);
 } else {
     solutions = JSON.parse(fs.readFileSync(`./data/solutions.json`));
 }
 
-function format(pad, val) {
+function format(pad: number, val: object | null | undefined) {
     if (val === null || val === undefined) {
         return "N/A";
     }
-    val = val.toString().split("\n");
+    const arr: string[] = val.toString().split("\n");
 
-    for (let i = 1; i < val.length; i++) {
-        val[i] = " ".repeat(pad) + val[i];
+    for (let i = 1; i < arr.length; i++) {
+        arr[i] = " ".repeat(pad) + arr[i];
     }
 
-    return val.join("\n");
+    return arr.join("\n");
 }
 
 export async function checkAnswers() {
-    let stack = getCallStack();
-    let callFile = stack[1].getFileName();
+    const stack = getCallStack();
+    let callFile: string = stack[1].getFileName();
     if (callFile.startsWith("file://"))
         callFile = fileURLToPath(callFile);
 
@@ -43,17 +44,17 @@ export async function checkAnswers() {
         return;
     }
 
-    let test = callFile.match(/\d+/g);
-    let year = test.at(-2);
-    let day = test.at(-1);
+    const test = callFile.match(/\d+/g)!;
+    const year = test.at(-2)!;
+    const day = test.at(-1)!;
 
-    let mod = await import(`./${year}/day-${day}.js`);
+    const mod = await import(`./${year}/day-${day}.js`);
 
     if (!solutions) {
-        let p1 = await mod.part1();
-        let p2 = await mod.part2();
-        console.log(`[${year}-${day.padStart(2)}-1] ${format(12, p1)}`);
-        console.log(`[${year}-${day.padStart(2)}-2] ${format(12, p2)}`);
+        const p1 = await mod.part1();
+        const p2 = await mod.part2();
+        console.log(`[${year}-${day!.padStart(2)}-1] ${format(12, p1)}`);
+        console.log(`[${year}-${day!.padStart(2)}-2] ${format(12, p2)}`);
 
         let y = results[year];
         if (!y) y = results[year] = {};
@@ -62,7 +63,7 @@ export async function checkAnswers() {
         return;
     }
 
-    let sol = solutions[year]?.[day];
+    const sol = solutions[year]?.[day];
 
     if (!sol) {
         console.log(`${red}Missing solutions for Year ${year} Day ${day} showing results:${reset}`);
@@ -71,14 +72,14 @@ export async function checkAnswers() {
         return;
     }
 
-    let p1 = await mod.part1();
+    const p1 = await mod.part1();
     if (p1 === sol[0]) {
         console.log(`${green}[${year}-${day}-1] Passed${reset}`);
     } else {
         console.log(`[${year}-${day}-1] Failed - Result: ${p1} - Expected: ${sol[0]}`);
     }
 
-    let p2 = await mod.part2();
+    const p2 = await mod.part2();
     if (p2 === sol[1]) {
         console.log(`${green}[${year}-${day}-2] Passed${reset}`);
     } else {
@@ -111,7 +112,7 @@ async function main() {
             output: process.stdout
         });
 
-        inquirer.question("Save input to solutions.json? (Y/n)", val => {
+        inquirer.question("Save input to solutions.json? (Y/n)", (val: string) => {
             val = val.toLowerCase();
             if (val == "" || val == "y") {
                 fs.writeFileSync("./data/solutions.json", JSON.stringify(results));

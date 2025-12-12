@@ -1,4 +1,4 @@
-import { arraySplit, getInput } from "../util.js";
+import { arraySplit, getInput } from "../util.ts";
 const input = arraySplit(getInput(false), x => x == "");
 
 export function part1() {
@@ -39,5 +39,5 @@ export function part2() {
 
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

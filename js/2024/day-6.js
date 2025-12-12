@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input_ = getInput();
 const input = new Uint8Array([...getInput().join("")].map(x => x.charCodeAt(0)));;
@@ -96,5 +96,5 @@ export function part2() {
     return result;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

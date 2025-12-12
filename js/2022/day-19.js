@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 
 const input = extractNumbers(getInput());
 
@@ -113,5 +113,5 @@ export function part2() {
     return calc(input[0], 32) * calc(input[1], 32) * calc(input[2], 32)
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

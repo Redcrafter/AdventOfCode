@@ -1,4 +1,4 @@
-import { getInput, } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput();
 
 function pi(str) {
@@ -81,5 +81,5 @@ export function part2() {
     return m;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,4 +1,4 @@
-import { getInput, arraySplit, sum } from "../util.js";
+import { getInput, arraySplit } from "../util.ts";
 const input = arraySplit(getInput(false).map(x => x == "" ? "" : parseInt(x)), x => x == "");
 
 export function part1() {
@@ -49,5 +49,5 @@ export function part2() {
     return a + b + c;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const forward = [1, 0];
 const down = [0, 1];
@@ -42,5 +42,5 @@ export function part2() {
     return depth * dist;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

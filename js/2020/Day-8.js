@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput().map(x => x.split(" "));
 
@@ -63,5 +63,5 @@ export function part2() {
     }
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

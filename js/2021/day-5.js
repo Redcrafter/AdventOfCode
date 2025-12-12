@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(x => x.split(/,| -> /).map(y => parseInt(y)))
 
 export function part1() {
@@ -53,5 +53,5 @@ export function part2() {
     return sum;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

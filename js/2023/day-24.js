@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 import { init } from "z3-solver";
 
 const input = getInput();
@@ -111,5 +111,5 @@ export async function part2() {
     return Number(result);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

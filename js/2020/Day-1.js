@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(x => parseInt(x));
 input.sort((a, b) => a - b);
 
@@ -24,5 +24,5 @@ export function part2() {
     }
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

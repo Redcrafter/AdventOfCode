@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput();
 
@@ -64,7 +64,7 @@ export function part2() {
         return res;
     }
 
-    return visit("svr");
+    return visit("svr")[2];
 }
 
 import { checkAnswers } from "../test.ts";

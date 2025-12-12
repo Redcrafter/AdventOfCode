@@ -1,4 +1,4 @@
-import { arraySplit, getInput } from "../util.js";
+import { arraySplit, getInput } from "../util.ts";
 
 const input1 = arraySplit(getInput(false), x => x == "").map(x => x.map(y => JSON.parse(y))).filter(x => x.length);
 const input2 = getInput().map(x => JSON.parse(x));
@@ -50,5 +50,5 @@ export function part2() {
     return i1 * i2;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

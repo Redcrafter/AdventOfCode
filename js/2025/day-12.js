@@ -1,4 +1,4 @@
-import { extractNumbers, getInput, sum } from "../util.js";
+import { extractNumbers, getInput, sum } from "../util.ts";
 
 const input = extractNumbers(getInput(false).slice(30, -1));
 

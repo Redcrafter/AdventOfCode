@@ -1,4 +1,4 @@
-import { getInput, sum } from "../util.js";
+import { getInput, sum } from "../util.ts";
 
 const input = getInput().map(x => [...x].map(y => y == "." ? 0 : (y == "L" ? 1 : 2)));
 
@@ -173,5 +173,5 @@ export function part2() {
 }
 
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

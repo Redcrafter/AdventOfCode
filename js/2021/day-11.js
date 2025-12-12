@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().flatMap(x => [...x].map(y => parseInt(y)));
 
 export function part1() {
@@ -123,5 +123,5 @@ export function part2() {
     }
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

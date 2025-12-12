@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 
 const [_input1, _input2] = getInput(false).join("\n").trim().split("\n\n");
 const input1 = extractNumbers(_input1.split("\n"));
@@ -52,5 +52,5 @@ export function part2() {
     return result;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,13 +1,14 @@
 import fs from "fs";
+import process from "process";
 
-const session = "";
+const session = "53616c7465645f5fbc9d8c427ea002e38a05dc6143cf9cb4bb415e9fb76a6737184f35d0fb6099f236d05376e9a7bceba7d547c5c2f75361c4262172d24ba41f";
 
 if (session.length == 0) {
     console.log("Missing session token. Please set in 'js/api.js'");
     process.exit();
 }
 
-export async function downloadInput(year, day) {
+export async function downloadInput(year: number, day: number) {
     const path = `./data/${year}/day${day}.txt`;
     if (fs.existsSync(path)) return;
 
@@ -15,7 +16,7 @@ export async function downloadInput(year, day) {
         headers: { Cookie: `session=${session}` }
     });
     if (req.ok) {
-        let text = await req.text();
+        const text = await req.text();
         fs.mkdirSync(`./data/${year}/`, { recursive: true });
         fs.writeFileSync(path, text);
     }

@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 
 // const input = getInput();
 const input = extractNumbers(getInput());
@@ -18,13 +18,12 @@ export function part1() {
 }
 
 export function part2() {
-
-    let str = "polygon(";
-    for (let i = 0; i < input.length; i++) {
-        const [x1, y1] = input[i];
-        str += `(${x1},${y1}),`;
-    }
-    console.log(str + ")");
+    // let str = "polygon(";
+    // for (let i = 0; i < input.length; i++) {
+    //     const [x1, y1] = input[i];
+    //     str += `(${x1},${y1}),`;
+    // }
+    // console.log(str + ")");
 
     let max = 0;
     for (let i = 0; i < input.length; i++) {
@@ -92,10 +91,6 @@ export function part2() {
             }
 
             if (!valid) continue;
-
-            if (area > max) {
-                console.log([x1, y1], [x2, y2]);
-            }
             max = Math.max(max, area);
         }
     }
@@ -103,5 +98,5 @@ export function part2() {
     return max;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

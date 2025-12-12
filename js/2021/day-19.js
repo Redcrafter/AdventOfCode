@@ -1,4 +1,4 @@
-import { arraySplit, getInput } from "../util.js";
+import { arraySplit, getInput } from "../util.ts";
 
 const input = arraySplit(getInput().slice(1), x => x.match(/---/)).map(x => x.map(y => y.split(",").map(z => parseInt(z))));
 
@@ -138,5 +138,5 @@ export function part2() {
     return max;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

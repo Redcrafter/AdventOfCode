@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = new Int32Array(getInput().map(x => parseInt(x)));
 
@@ -46,5 +46,5 @@ export function part2() {
 }
 
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

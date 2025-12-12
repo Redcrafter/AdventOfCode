@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput().map(x => [...x].map(y => parseInt(y)));
 
@@ -58,5 +58,5 @@ export function part2() {
     return riskMap[width + height * w];
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

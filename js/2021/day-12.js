@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(x => x.split("-"));
 
 function isUpperCase(str) {
@@ -94,5 +94,5 @@ export function part2() {
     return count;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

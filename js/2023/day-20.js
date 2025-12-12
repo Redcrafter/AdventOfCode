@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput();
 
@@ -170,5 +170,5 @@ export function part2() {
     return vals[0] * vals[1] * vals[2] * vals[3];
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

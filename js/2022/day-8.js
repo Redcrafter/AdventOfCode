@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().flatMap(x => [...x].map(x => +x));
 
 const size = 99;
@@ -91,5 +91,5 @@ export function part2() {
     return best;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

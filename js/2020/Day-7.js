@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(l => {
     let arr = l.split(/ bags contain |, /);
 
@@ -59,5 +59,5 @@ export function part2() {
     return countBags("shiny gold") - 1;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 
 const input = extractNumbers(getInput()).map(x => new Float64Array(x));
 
@@ -60,5 +60,5 @@ export function part2() {
 
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

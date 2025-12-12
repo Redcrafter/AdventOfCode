@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput().map(x => [...x]);
 
@@ -62,5 +62,5 @@ export function part2() {
     return solve(1000000 - 1);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

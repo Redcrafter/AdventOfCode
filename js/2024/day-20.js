@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput();
 const height = input.length;
@@ -119,5 +119,5 @@ export function part2() {
     return solve(20);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

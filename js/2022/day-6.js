@@ -1,4 +1,4 @@
-import { getInput, window } from "../util.js";
+import { getInput, window } from "../util.ts";
 const input = [...getInput()[0]].map(x => x.charCodeAt(0) - 'a'.charCodeAt(0));
 
 function s1(size) {
@@ -121,5 +121,5 @@ export function part2() {
     }
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

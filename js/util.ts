@@ -29,25 +29,16 @@ export function _getCallerFile() {
     return callerfile;
 }
 
-/**
- * @param {string} path 
- * @param {bool} skipEmpty 
- * @returns {string[]}
- */
-export function readLines(path, skipEmpty = true) {
-    let lines = fs.readFileSync(path).toString().replaceAll("\r\n", "\n").split("\n");
+export function readLines(path: string, skipEmpty = true): string[] {
+    let lines = (fs.readFileSync(path) as string).toString().replaceAll("\r\n", "\n").split("\n");
     if (skipEmpty) lines = lines.filter(x => x.length != 0);
     return lines;
 }
 
 /**
  * splits array into chunks of size or based on predicate
- * @template T
- * @param {T[]} array 
- * @param {number|(T) => bool} size
- * @returns {T[][]}
  */
-export function arraySplit(array, size) {
+export function arraySplit<T>(array: T[], size: number | ((t: T) => boolean)) {
     const sections = [];
     let current = [];
 
@@ -81,11 +72,7 @@ export function getInput(skipEmpty = true) {
     return readLines(path, skipEmpty);
 }
 
-/**
- * @param {Iterable<number>} arr 
- * @returns {number}
- */
-export function sum(arr) {
+export function sum(arr: Iterable<number>): number {
     let res = 0;
     if (Array.isArray(arr)) {
         for (let i = 0; i < arr.length; i++) {
@@ -99,11 +86,7 @@ export function sum(arr) {
     return res;
 }
 
-/**
- * [0, 0], [1, 1] => [[0, 1], [0, 1]]
- * @param  {...any[]} arrays 
- */
-export function zip(...arrays) {
+export function zip<T>(...arrays: T[][]) {
     const res = [];
     const len = Math.max(...arrays.map(x => x.length));
     for (let i = 0; i < len; i++) {
@@ -112,30 +95,21 @@ export function zip(...arrays) {
     return res;
 }
 
-/**
- * 
- * @param {string|string[]} dat 
- * @param {boolean} readNegative 
- * @returns {number[][]}
- */
-export function extractNumbers(dat, readNegative = true) {
+type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
+type Numberized<T> = T extends string ? number : T extends Array<infer U> ? Array<Numberized<U>> : never;
+
+export function extractNumbers<T extends ValueOrArray<string>>(dat: T, readNegative = true): Numberized<T>[] {
     if (Array.isArray(dat))
         return dat.map(x => extractNumbers(x, readNegative));
 
     if (readNegative) {
-        return dat.match(/-?\d+/g)?.map(Number);
+        return dat.match(/-?\d+/g)?.map(Number) as number[];
     } else {
-        return dat.match(/\d+/g)?.map(Number);
+        return dat.match(/\d+/g)?.map(Number) as number[];
     }
 }
 
-/**
- * @template {T}
- * @param {T[]} arr 
- * @param {number} size 
- * @returns {T[][]}
- */
-export function window(arr, size, step = 1) {
+export function window<T>(arr: T[], size: number, step = 1) {
     const res = []
     for (let i = size; i < arr.length; i += step) {
         res.push(arr.slice(i - size, i));
@@ -145,11 +119,8 @@ export function window(arr, size, step = 1) {
 
 /**
  * fairly fast int parsing with support for negative numbers
- * @param {string} str 
- * @param {number} start 
- * @returns {number}
  */
-export function parseInt(str, start = 0) {
+export function parseInt(str: string, start = 0) {
     let val = 0;
     let neg = 1;
     if (str.charCodeAt(start) == 45) {
@@ -168,9 +139,8 @@ export function parseInt(str, start = 0) {
 
 /**
  * see https://stackoverflow.com/a/46720474
- * @param {ArrayLike<number>} input
  */
-export function radixSortUint32(input) {
+export function radixSortUint32(input: number[]) {
     const arrayConstr = input.length < (1 << 16) ? Uint16Array : Uint32Array;
     const numberOfBins = 256 * 4;
     const count = new arrayConstr(numberOfBins);
@@ -218,44 +188,48 @@ export function radixSortUint32(input) {
     return input;
 }
 
-/**
- * 
- * @param {string[]} walls 
- * @param {number} x 
- * @param {number} y 
- * @returns 
- */
-export function bfs(walls, x, y) {
+export function bfs(walls: string[], x: number, y: number) {
     const height = walls.length;
     const width = walls[0].length;
 
     const grid = new Uint32Array(width * height);
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-            grid[x + y * walls] = -1;
+            grid[x + y * width] = -1;
         }
     }
 
     const stack = [];
     stack.push([x, y, 0]);
 
-    function add(x, y, dist) {
+    function add(x: number, y: number, dist: number) {
         if (x < 0 || y < 0 || x >= width || y >= height)
             return
 
         if (!grid[x + y * width]) {
             grid[x + y * width] = dist;
-            next.push([x, y, dist]);
+            stack.push([x, y, dist]);
         }
     }
 
     while (stack.length != 0) {
-        let [x, y, dist] = stack.shift();
+        const [x, y, dist] = stack.shift()!;
 
         add(x - 1, y, dist + 1);
         add(x + 1, y, dist + 1);
         add(x, y - 1, dist + 1);
         add(x, y + 1, dist + 1);
+    }
+
+    function backtrack(x: number, y: number, res: number[][]) {
+        const d = grid[x + y * width];
+        res.push([x, y]);
+        if (d == 0) return;
+
+        if (x > 0 && grid[(x - 1) + y * width] + 1 == d) backtrack(x - 1, y, res);
+        if (x + 1 < width && grid[(x + 1) + y * width] + 1 == d) backtrack(x + 1, y, res);
+        if (y > 0 && grid[x + (y - 1) * width] + 1 == d) backtrack(x, y - 1, res);
+        if (y + 1 < height && grid[x + (y + 1) * width] + 1 == d) backtrack(x, y + 2, res);
     }
 
     return grid;

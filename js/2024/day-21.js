@@ -1,4 +1,4 @@
-import { getInput, zip } from "../util.js";
+import { getInput, zip } from "../util.ts";
 
 const input = getInput();
 const posi = new Map([
@@ -75,5 +75,5 @@ export function part2() {
     return solve(25);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

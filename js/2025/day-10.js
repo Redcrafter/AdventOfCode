@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 import { init } from "z3-solver";
 
 const { Context } = await init();
@@ -91,5 +91,5 @@ export async function part2() {
     return res;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

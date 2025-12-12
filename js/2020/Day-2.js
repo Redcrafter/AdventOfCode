@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(x => x.split(/(\d+)-(\d+) (\w): /).slice(1));
 
 function counteLetter(str, l) {
@@ -32,5 +32,5 @@ export function part2() {
     return part2;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,4 +1,4 @@
-import { getInput, sum } from "../util.js";
+import { getInput, sum } from "../util.ts";
 
 const input = getInput().map(x => [...x].map(x => x.charCodeAt(0)));
 const height = input.length;
@@ -93,5 +93,5 @@ export function part2() {
     return sum(set);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

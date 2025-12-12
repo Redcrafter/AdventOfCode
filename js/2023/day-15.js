@@ -1,4 +1,4 @@
-import { getInput, sum } from "../util.js";
+import { getInput, sum } from "../util.ts";
 
 const input = getInput()[0].split(",");
 
@@ -51,5 +51,5 @@ export function part2() {
     return result;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

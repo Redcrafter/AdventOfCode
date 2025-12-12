@@ -1,4 +1,4 @@
-import { getInput, sum } from "../util.js";
+import { getInput, sum } from "../util.ts";
 
 const input_ = getInput();
 const height = input_.length;
@@ -105,5 +105,5 @@ export function part2() {
     return sum(visited);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

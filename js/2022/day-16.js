@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 /** @type { [string, number, string[]] } */
 const input = getInput().map(x => {
@@ -380,5 +380,5 @@ export function part2() {
     return ans;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

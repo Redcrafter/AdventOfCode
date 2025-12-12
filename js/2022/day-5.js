@@ -1,4 +1,4 @@
-import { extractNumbers, getInput } from "../util.js";
+import { extractNumbers, getInput } from "../util.ts";
 const input = getInput();
 
 const _stacks = [];
@@ -63,5 +63,5 @@ export function part2() {
     return String.fromCharCode(...stacks.map(x => x.at(-1)));
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

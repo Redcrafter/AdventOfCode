@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput().map(x => parseInt(x));
 
@@ -50,5 +50,5 @@ export function part2() {
     return Math.min(...range) + Math.max(...range);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

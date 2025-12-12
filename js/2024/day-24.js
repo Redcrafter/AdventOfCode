@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 
 const input = getInput();
 const input1 = input.slice(0, 90);
@@ -132,5 +132,5 @@ export function part2() {
     return part2_test(input2).flatMap(x => x).sort().join(",")
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

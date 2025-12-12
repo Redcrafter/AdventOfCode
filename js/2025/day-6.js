@@ -1,4 +1,4 @@
-import { extractNumbers, getInput, parseInt, zip } from "../util.js";
+import { extractNumbers, getInput, parseInt, zip } from "../util.ts";
 
 const input = getInput();
 
@@ -57,5 +57,5 @@ export function part2() {
     return res;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 import { Heap } from 'heap-js';
 
 const input = getInput().map(x => [...x].map(y => parseInt(y)));
@@ -91,5 +91,5 @@ export function part2() {
     return slove(false);
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

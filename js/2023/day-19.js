@@ -1,4 +1,4 @@
-import { arraySplit, getInput } from "../util.js";
+import { arraySplit, getInput } from "../util.ts";
 
 const input = arraySplit(getInput(false), x => x.length == 0)
 
@@ -118,5 +118,5 @@ export function part2() {
     return count("in", { x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] });
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

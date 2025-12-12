@@ -1,4 +1,4 @@
-import { arraySplit, extractNumbers, getInput } from "../util.js";
+import { arraySplit, getInput } from "../util.ts";
 
 const input = arraySplit(getInput(false), x => x.length == 0);
 input.pop();
@@ -52,5 +52,5 @@ export function part2() {
     return 0;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();

@@ -1,4 +1,4 @@
-import { getInput } from "../util.js";
+import { getInput } from "../util.ts";
 const input = getInput().map(x => [...x].map(y => parseInt(y)));
 
 export function part1() {
@@ -76,5 +76,5 @@ export function part2() {
     return a * b * c;
 }
 
-import { checkAnswers } from "../test.js";
+import { checkAnswers } from "../test.ts";
 checkAnswers();
